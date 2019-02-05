@@ -42,7 +42,7 @@ A container derives from an image ans is creted by running an image
 This will create a dev and a home folder in your selected development folder
 It also downloads the 
 
-```sh devel.sh $(pwd)```
+```sh init_devel.sh $(pwd)```
 
 They are mounted to /opt/devel and as home directory for the devel user, by default, bash starts in /opt/devel
 
@@ -89,6 +89,18 @@ roslaunch cuttlefish upload_cuttlefish.launch
 ```
 
 TIP: you can add ". /opt/devel/devel/setup.sh" to ~/.bashrc, if you want
+
+
+# upgrade image
+
+if you need to upgrade to a new image version, you need to delete the container
+
+`docker rm ros-melodic-devel-18.04-mare-it`
+
+and re-init the container
+
+
+```sh init_devel.sh $(pwd)```
 
 
 
