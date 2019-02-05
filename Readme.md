@@ -2,6 +2,17 @@
 
 The build_image folder is only used to build a new image, normally don't use it
 
+You will need nvidia-docker2: 
+
+https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-2.0)
+
+WARNING: Check if your docker version is compatible:
+
+when in doubst, install docker-ce from the docker apt sources:
+
+https://docs.docker.com/install/linux/docker-ce/debian/
+
+
 
 # Docker quick guide
 
@@ -31,7 +42,7 @@ A container derives from an image ans is creted by running an image
 This will create a dev and a home folder in your selected development folder
 It also downloads the 
 
-sh devel.sh $(pwd)
+```sh devel.sh $(pwd)```
 
 They are mounted to /opt/devel and as home directory for the devel user, by default, bash starts in /opt/devel
 
