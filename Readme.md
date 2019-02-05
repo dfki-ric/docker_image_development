@@ -1,3 +1,8 @@
+# Docker development for mare-it
+
+The build_image folder is only used to build a new image, normally don't use it
+
+
 # Docker quick guide
 
 Docker separates between images and containers.
@@ -17,9 +22,14 @@ A container derives from an image ans is creted by running an image
 
 # setup workspace
 
+* login to dfki docker registry:
+
+```docker login d-reg.hb.dfki.de```
+
 * select a development folder 
 
-This will create a dev and a home folder in your selected development folder:
+This will create a dev and a home folder in your selected development folder
+It also downloads the 
 
 sh devel.sh $(pwd)
 
