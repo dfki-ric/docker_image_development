@@ -102,6 +102,9 @@ and re-init the container
 
 ```sh init_devel.sh $(pwd)```
 
+also run 
+```rosdep install --from-paths src --ignore-src --rosdistro=melodic -y --skip-keys "gazebo gazebo\_msgs gazebo\_plugins gazebo\_ros gazebo\_ros\_control gazebo\_ros\_pkgs"``` on your mounted workspace
+
 
 
 
