@@ -35,6 +35,8 @@ sh devel.sh $(pwd)
 
 They are mounted to /opt/devel and as home directory for the devel user, by default, bash starts in /opt/devel
 
+This makes it possible to use the editors, git etc. on your host system and not from within the docker container
+
 * init your workspace, the setup.sh from uuwsim is auto-mounted
 
 mkdir src
@@ -63,13 +65,20 @@ roscore
 
 * attach bashes 
 
+```
 sh add_bash.sh
 . devel/setup.sh 
 roslaunch offshore_field test_world.launch
+```
 
+```
 sh add_bash.sh
 . devel/setup.sh 
 roslaunch cuttlefish upload_cuttlefish.launch
+```
+
+TIP: you can add ". /opt/devel/devel/setup.sh" to ~/.bashrc, if you want
+
 
 
 
