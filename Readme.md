@@ -26,7 +26,7 @@ They are generated using so called Dockerfiles
 
 ## Containers
 
-A container derives from an image ans is creted by running an image
+A container derives from an image and is created by running an image
 
 
 
@@ -38,13 +38,16 @@ A container derives from an image ans is creted by running an image
 ```docker login d-reg.hb.dfki.de```
 
 * select a development folder 
+* clone this repo to it
 
 This will create a dev and a home folder in your selected development folder
-It also downloads the 
+It also downloads the image
 
-```sh init_devel.sh $(pwd)```
+```sh ./init_devel_container.sh```
 
-They are mounted to /opt/devel and as home directory for the devel user, by default, bash starts in /opt/devel
+This creates a workspace and a home folder
+
+They are mounted to /opt/workspace and as home directory for the devel user, by default, bash starts in /opt/workspace
 
 This makes it possible to use the editors, git etc. on your host system and not from within the docker container
 
