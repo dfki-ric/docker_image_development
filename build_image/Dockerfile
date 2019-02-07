@@ -4,8 +4,13 @@ From d-reg.hb.dfki.de/rosbasic/melodic_18.04:latest
 RUN mkdir -p /opt/uuw-sim/src
 WORKDIR /opt/uuw-sim
 
-#generate uuwsim workspace
-RUN . /opt/ros/melodic/setup.sh && catkin_make
+#add gazebo to ros installation
+# To avoid some errors when fetching apt-get updates. # See: https://stackoverflow.com/a/35976127 
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y ros-melodic-gazebo-*
+
+#generate uuwsim workspace, need to build to generate setup.sh
+RUN . /opt/ros/melodic/setup.sh && catkin init && catkin build
 
 WORKDIR /opt/uuw-sim/src
 
@@ -18,14 +23,14 @@ WORKDIR /opt/uuw-sim
 RUN rosdep install --from-paths src --ignore-src --rosdistro=melodic -y --skip-keys "gazebo gazebo_msgs gazebo_plugins gazebo_ros gazebo_ros_control gazebo_ros_pkgs"
 
 #build uuw-sim
-RUN . /opt/uuw-sim/devel/setup.sh && catkin_make install
+RUN . /opt/uuw-sim/devel/setup.sh && catkin build
 
 #we can set the workspace, but not the content, it is mounted later
 RUN mkdir -p /opt/workspace/src
 WORKDIR /opt/workspace
 
 # keep entrypoint, but add new source
-RUN echo "source /opt/uuw-sim/devel/setup.sh" >> /opt/setup_env.sh
+RUN echo "source /opt/uuw-sim/devel/setup.bash" >> /opt/setup_env.sh
 
 #add workspace init to container initialization
 ADD setup_mare_it_workspace.sh /opt/setup_mare_it_workspace.sh

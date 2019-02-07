@@ -26,8 +26,9 @@ They are generated using so called Dockerfiles
 
 ## Containers
 
-A container derives from an image and is created by running an image
-
+A container derives from an image and is created by running an image.
+Once a container is "run" (a.k.a. created), it can be started again.
+Local changes are preseved in the container until the container is deleted
 
 
 
@@ -43,45 +44,39 @@ A container derives from an image and is created by running an image
 This will create a dev and a home folder in your selected development folder
 It also downloads the image
 
+* initialize the container, the image will be downloaded automatically
 ```sh ./init_devel_container.sh```
 
-This creates a workspace and a home folder
+This init also creates a `workspace` and a `home` folder
 
-They are mounted to /opt/workspace and as home directory for the devel user, by default, bash starts in /opt/workspace
+They are mounted to `/opt/workspace` and as `/home/devel` directory in the container, bash starts in /opt/workspace
 
 This makes it possible to use the editors, git etc. on your host system and not from within the docker container
 
-* init your workspace, the setup.sh from uuwsim is auto-mounted
+* initally run the container
+```sh ./use_devel_container.sh```
 
-mkdir src
+On the first run, when no workspace/src folder exist, the workspace is initialized automatically using the build_image/setup_mare_it_workspace.sh script
 
-clone env into src and build/install
+# Running 
 
-```
-cd src
-git clone https://git.hb.dfki.de/models-environments/offshore_field
-git clone https://git.hb.dfki.de/models-robots/cuttlefish
-rosdep install --from-paths src --ignore-src --rosdistro=melodic -y --skip-keys "gazebo gazebo\_msgs gazebo\_plugins gazebo\_ros gazebo\_ros\_control gazebo\_ros\_pkgs"
-catkin\_make install
-```
+## start container
 
-exit container
+* call ```sh ./use_devel_container.sh``` again, the workspace initialization is skipped this time
 
-```$> exit```
+Now you can run roslaunch 
 
-# run
+`roslaunch offshore_field test_world.launch`
 
-* start container
-```
-sh reuse_devel.sh
-roscore
-```
 
-* attach bashes 
+## attach more bashes 
+
+You can attach more bashes to the container using
+
+```sh add_bash.sh```
 
 ```
 sh add_bash.sh
-. devel/setup.sh 
 roslaunch offshore_field test_world.launch
 ```
 
@@ -90,8 +85,6 @@ sh add_bash.sh
 . devel/setup.sh 
 roslaunch cuttlefish upload_cuttlefish.launch
 ```
-
-TIP: you can add ". /opt/devel/devel/setup.sh" to ~/.bashrc, if you want
 
 
 # upgrade image
@@ -102,11 +95,8 @@ if you need to upgrade to a new image version, you need to delete the container
 
 and re-init the container
 
+```sh init_devel_container.sh```
 
-```sh init_devel.sh $(pwd)```
-
-also run 
-```rosdep install --from-paths src --ignore-src --rosdistro=melodic -y --skip-keys "gazebo gazebo\_msgs gazebo\_plugins gazebo\_ros gazebo\_ros\_control gazebo\_ros\_pkgs"``` on your mounted workspace
 
 
 

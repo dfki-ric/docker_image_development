@@ -26,3 +26,5 @@ docker run -ti --runtime=nvidia \
            -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
            --name $CONTAINER_NAME \
            d-reg.hb.dfki.de/mare-it/uuv-sim_18.04:latest
+
+xhost -local:root
