@@ -2,6 +2,8 @@
 
 The build_image folder is only used to build a new image, normally don't use it
 
+`If you have no nvidia graphics card: sudo apt install docker.io and skip this section`
+
 You will need nvidia-docker2: 
 
 https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-2.0)
@@ -30,12 +32,18 @@ A container derives from an image and is created by running an image.
 Once a container is "run" (a.k.a. created), it can be started again.
 Local changes are preseved in the container until the container is deleted
 
+#setup docker
+
+* Add your user to the docker group
+
+`sudo usermod -aG docker $USER` (https://docs.docker.com/install/linux/linux-postinstall/)
+
+* Log out and log back in so that your group membership is re-evaluated.
 
 
 # setup workspace
 
 * login to dfki docker registry using your DFKI-RIC Domain account:
-* Log out and log back in so that your group membership is re-evaluated.
 
 ```docker login d-reg.hb.dfki.de```
 
@@ -47,6 +55,10 @@ It also downloads the image
 
 * initialize the container, the image will be downloaded automatically
 ```sh ./init_devel_container.sh```
+
+if you do not have a nvidia card, use 
+
+```sh ./init_devel_container_no_nvidia.sh```
 
 This init also creates a `workspace` and a `home` folder
 
