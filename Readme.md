@@ -34,7 +34,8 @@ Local changes are preseved in the container until the container is deleted
 
 # setup workspace
 
-* login to dfki docker registry:
+* login to dfki docker registry using your DFKI-RIC Domain account:
+* Log out and log back in so that your group membership is re-evaluated.
 
 ```docker login d-reg.hb.dfki.de```
 
