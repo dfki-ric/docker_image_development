@@ -15,8 +15,7 @@ CONTAINER_NAME=ros-melodic-devel-18.04-mare-it
 mkdir -p $HOST_WORKSPACE/workspace
 mkdir -p $HOST_WORKSPACE/home
 
-DNSIP=$(nmcli dev show | grep 'IP4.DNS' | grep "\[1\]" | \
-    egrep -oe "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}")
+DNSIP=$(nmcli dev show | grep 'IP4.DNS' | grep "\[1\]" | egrep -oe "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}" | head -n 1)
 
 docker run -ti --runtime=nvidia \
            -v $HOST_WORKSPACE/workspace/:/opt/workspace -v $HOST_WORKSPACE/home/:/home/devel \
