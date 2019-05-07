@@ -33,13 +33,12 @@ WORKDIR /opt/workspace
 RUN echo "source /opt/uuw-sim/devel/setup.bash" >> /opt/setup_env.sh
 
 #add workspace init to container initialization
-ADD setup_mare_it_workspace.sh /opt/setup_mare_it_workspace.sh
-RUN chmod 755 /opt/setup_mare_it_workspace.sh
+ADD setup_workspace.sh /opt/setup_workspace.sh
+RUN chmod 755 /opt/setup_workspace.sh
 #opt/init_workspace.sh is run by the entrypoint of the base image
-RUN echo "/opt/setup_mare_it_workspace.sh" >> /opt/init_workspace.sh
+RUN echo "/opt/setup_workspace.sh" >> /opt/init_workspace.sh
 
-
-
+ENV PATH="/opt/startscripts:${PATH}"
 
 
 

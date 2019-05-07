@@ -24,5 +24,7 @@ if [ ! -d /opt/workspace/src ]; then
     echo "Initial build"
     catkin build
 
+    echo 'export PATH=${PATH}:/opt/startscripts' >> /home/devel/.bashrc
+
 fi
 

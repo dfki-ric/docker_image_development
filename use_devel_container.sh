@@ -1,5 +1,10 @@
-xhost +local:root
 
-docker start -ai ros-melodic-devel-18.04-mare-it
+echo "updating docker image"
+docker pull d-reg.hb.dfki.de/mare-it/uuv-sim_18.04:latest
 
-xhost -local:root
+echo "\n\nThis script is deprecated, use $>./exec_in_devel.sh /bin/bash instead\n"
+
+echo "calling it now:"
+
+./exec_in_devel.sh /bin/bash
+
