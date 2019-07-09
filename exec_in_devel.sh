@@ -41,6 +41,7 @@ DOCKER_RUN_ARGS=" \
                 -u devel \
                 --dns $DNSIP \
                 --dns-search=dfki.uni-bremen.de \
+                --expose 7001 --expose 7002 \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 -v $HOST_WORKSPACE/startscripts:/opt/startscripts \
                 -v $HOST_WORKSPACE/workspace/:/opt/workspace -v $HOST_WORKSPACE/home/:/home/devel \

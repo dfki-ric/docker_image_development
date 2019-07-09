@@ -37,6 +37,7 @@ DOCKER_RUN_ARGS=" \
                 -u devel \
                 --dns $DNSIP \
                 --dns-search=dfki.uni-bremen.de \
+                -p 7001:7001/tcp -p 7002:7002/tcp \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 "
 
