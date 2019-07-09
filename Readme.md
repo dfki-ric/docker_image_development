@@ -50,55 +50,44 @@ Local changes are preseved in the container until the container is deleted
 * select a development folder 
 * clone this repo to it
 
+* initially start the container and a bash shell inside
+
+```bash ./exec_in_devel.sh /bin/bash```
+
 This will create a dev and a home folder in your selected development folder
 It also downloads the image
 
-* initialize the container, the image will be downloaded automatically
-```sh ./init_devel_container.sh```
-
-if you do not have a nvidia card, use 
-
-```sh ./init_devel_container_no_nvidia.sh```
-
-This init also creates a `workspace` and a `home` folder
-
+The first run creates a `workspace` and a `home` folder
 They are mounted to `/opt/workspace` and as `/home/devel` directory in the container, bash starts in /opt/workspace
 
 This makes it possible to use the editors, git etc. on your host system and not from within the docker container
 
-* initally run the container
-```sh ./use_devel_container.sh```
+You can run ```sh ./use_devel_container.sh``` anytime you wish to add more consoles to the container
 
 On the first run, when no workspace/src folder exist, the workspace is initialized automatically using the build_image/setup_mare_it_workspace.sh script
+
 
 # Running 
 
 ## start container
 
-* call ```sh ./use_devel_container.sh``` again, the workspace initialization is skipped this time
+* you can call ```bash ./exec_in_devel.sh /bin/bash``` again, the workspace initialization is skipped this time
 
 Now you can run roslaunch 
 
 `roslaunch offshore_field test_world.launch`
 
 
+or use a startscript from the startscripts folder (they are in the path)
+
+```bash ./exec_in_devel.sh my_startscript.sh```
+
+
 ## attach more bashes 
 
-You can attach more bashes to the container using
+You can attach more bashes to the container using this command again
 
-```sh add_bash.sh```
-
-```
-sh add_bash.sh
-roslaunch offshore_field test_world.launch
-```
-
-```
-sh add_bash.sh
-. devel/setup.sh 
-roslaunch cuttlefish upload_cuttlefish.launch
-```
-
+```bash ./exec_in_devel.sh /bin/bash```
 
 # upgrade image
 
