@@ -9,7 +9,8 @@ xhost +local:root
 #fi
 
 #this flag defines if an interactive container (console inputs) is created ot not
-INTERACTIVE="true"
+#if env already set, use external set value
+INTERACTIVE=${INTERACTIVE:="true"}
 
 . ./docker_commands.sh
 
@@ -19,7 +20,8 @@ FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
 
 #use current folder name + devel + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)
-CONTAINER_NAME="${PWD##*/}-devel-$FOLDER_MD5"
+CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-devel-$FOLDER_MD5"}
+
 IMAGE_NAME="d-reg.hb.dfki.de/mare-it/uuv-sim_18.04:latest"
 CONTAINER_ID_FILENAME=devel-container_id.txt
 
