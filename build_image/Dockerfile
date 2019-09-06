@@ -9,7 +9,7 @@ WORKDIR /opt/uuw-sim
 ENV DEBIAN_FRONTEND=noninteractive
 #update ros key (ols one in base image)
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-RUN apt-get update && apt-get install -y ros-melodic-gazebo-* ros-melodic-moveit ros-melodic-moveit-visual-tools ros-melodic-pcl-ros ros-melodic-rqt-reconfigure
+RUN apt-get update && apt-get install -y ros-melodic-gazebo-* ros-melodic-moveit ros-melodic-moveit-visual-tools ros-melodic-pcl-ros ros-melodic-rqt-reconfigure libzmqpp-dev
 #generate uuwsim workspace, need to build to generate setup.sh
 RUN . /opt/ros/melodic/setup.sh && catkin init && catkin build
 
