@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 xhost +local:root
 
 #if [ $# -lt 2  ] ;then
