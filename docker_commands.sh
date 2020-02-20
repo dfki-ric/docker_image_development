@@ -12,6 +12,21 @@ else
     RUNTIME_ARG=""
 fi
 
+#detect if gpus command is supoiorted and working from docker 19.03
+GPUS_SETTINGS_FILE="has_gpu_support.txt"
+if [ ! -f $GPUS_SETTINGS_FILE ]; then
+    touch $GPUS_SETTINGS_FILE
+    docker run --gpus=all hello-world > /dev/null
+    echo $? > $GPUS_SETTINGS_FILE
+fi
+HAS_GPU_SUPPORT=$(cat $GPUS_SETTINGS_FILE)
+
+if [[ $HAS_GPU_SUPPORT = "0" ]]; then
+    echo "supports gpu setting, hardware acceleration enables"
+    RUNTIME_ARG="--gpus all"
+fi
+
+
 init_docker(){
 
     if [ "$1" = "noninteractive" ]; then
