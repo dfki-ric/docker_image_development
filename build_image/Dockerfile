@@ -25,6 +25,8 @@ RUN apt-get update && apt-get install -y\
     ros-melodic-effort-controllers \
     ros-melodic-panda-moveit-config \
     ros-melodic-uuv-gazebo-worlds \
+    ros-melodic-uuv-thruster-manager \
+    ros-melodic-uuv-world-ros-plugins \
     libzmqpp-dev \
     ruby-dev
 #generate uuwsim workspace, need to build to generate setup.sh
