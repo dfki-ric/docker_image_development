@@ -18,7 +18,11 @@ RUN apt-get update && apt-get install -y \
     git \
     wget \
     cmake \
-    sudo
+    sudo \
+    build-essential \
+    cmake \
+    python \
+    python-dev
 
 
 ADD ${INSTALL_SCRIPT} /opt/install.sh

@@ -14,7 +14,7 @@ INTERACTIVE=${INTERACTIVE:="true"}
 
 . ./docker_commands.sh
 
-#get a md5 for the curretn folder used as container name suffix
+#get a md5 for the current folder used as container name suffix
 #(several checkouts  of this repo possible withtou interfering)
 FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
 

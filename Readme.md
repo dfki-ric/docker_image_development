@@ -26,20 +26,26 @@ https://github.com/NVIDIA/nvidia-docker
 
 # Running 
 
-## start container
+Before you run a container, check and edit the docker paramaters (DOCKER\_RUN\_ARGS) in exec_in_devel.sh and exec_in_release.sh
 
-* You can call ```bash ./exec_in_devel.sh /bin/bash``` 
+## Start Container
+
+You can start the workspace in devel or release mode:
+
+* call ```bash ./exec_in_devel.sh /bin/bash``` 
+* or   ```bash ./exec_in_release.sh /bin/bash``` 
+  * In case a release image is available in your registry, it will be automatically pulled and launched
 
 Now you can run programs as you like
 
-Or you execure a startscript from the startscripts folder (they are in the path)
+Or you execute a startscript from the startscripts folder (they are in the path) and also available in the release
 
 ```bash ./exec_in_devel.sh my_startscript.sh```
 
 
 ## attach more bashes 
 
-You can attach more bashes to the container using this command again
+You can attach more bashes to the container using the exec\_in\_ command again
 
 ```bash ./exec_in_devel.sh /bin/bash```
 

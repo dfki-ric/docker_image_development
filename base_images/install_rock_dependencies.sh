@@ -6,13 +6,10 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update && apt-get install -y \
  ruby \
  ruby-dev \
- python \
  autoconf \
  automake \
  avahi-daemon \
-  build-essential \
  castxml \
- cmake \
  freeglut3-dev \
  graphviz \
  graphviz-dev \
@@ -47,7 +44,6 @@ apt-get update && apt-get install -y \
  omniidl \
  omniorb-nameserver \
  pkg-config \
- python-dev \
  python-msgpack \
  python-nose \
  python-pexpect \
