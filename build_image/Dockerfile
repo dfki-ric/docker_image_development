@@ -1,4 +1,4 @@
-From d-reg.hb.dfki.de/rosbasic/melodic_18.04:latest
+From d-reg.hb.dfki.de/docker_development/ros_melodic_18.04:latest
 #https://git.hb.dfki.de/dfki-dockerfiles/ros-docker-with-hw-acceleration/blob/master/Ubuntu18.04_Melodic/Dockerfile
 
 

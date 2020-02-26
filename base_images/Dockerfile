@@ -18,10 +18,11 @@ RUN apt-get update && apt-get install -y \
     git \
     wget \
     cmake \
-    sudo \
+    sudo
 
 
 ADD ${INSTALL_SCRIPT} /opt/install.sh
+RUN chmod 755 /opt/install.sh
 RUN /opt/install.sh
 
 
