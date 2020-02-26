@@ -1,30 +1,33 @@
 #!/bin/bash
 
-#this file is added to the entrypoint by a guard ans called from entrypoint
-#todo: add before exec or bashrc? -> /opt/setup_env.sh
-# /opt/workspace/src is existing in a workspace, so we test for that folder
-if [ ! -d /opt/workspace/src ]; then
+    
     echo "first start: setting up mare-it-workspace"
-    cd /opt/workspace
-    mkdir -p src
-    cat /opt/setup_env.sh
-    source /opt/setup_env.sh
+
+    mkdir -p /opt/workspace/src
+    cd /opt/workspace/
+
+    #source /opt/setup_env.sh
+    source /opt/ros/melodic/setup.bash 
     catkin init && catkin build
-    # the /opt/setup_env.sh is copied later in the entypoint, so we need to
-    # write /opt/setup_env.sh here instead of /home/devel/setup_env.sh
-    echo "source /opt/workspace/devel/setup.bash" | sudo tee -a /opt/setup_env.sh > /dev/null
 
-    echo "cloning repositories"
-    cd src
+
+
+    echo 'export PATH=${PATH}:/opt/startscripts' | sudo tee -a /home/devel/.bashrc > /dev/null
+
+    echo "[INFO] Setting up mare-it-workspace with autoproj."
+    mkdir /opt/workspace/src
+    cd /opt/workspace/src
+    wget https://rock-robotics.org/autoproj_bootstrap
     git config --global credential.helper cache
-    git clone https://git.hb.dfki.de/models-environments/offshore_field
-    git clone https://git.hb.dfki.de/models-robots/cuttlefish
-    cd /opt/workspace
+    ruby autoproj_bootstrap git https://git.hb.dfki.de/mare-it/buildconf
+    . env.sh
+    aup
+    cd ..
 
-    echo "Initial build"
-    catkin build
 
-    echo 'export PATH=${PATH}:/opt/startscripts' >> /home/devel/.bashrc
-
-fi
+    echo 
+    echo "workspace initialized, please"
+    echo "source devel/setup.bash"
+    echo "catkin build"
+    echo
 

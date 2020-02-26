@@ -22,7 +22,7 @@ fi
 HAS_GPU_SUPPORT=$(cat $GPUS_SETTINGS_FILE)
 
 if [[ $HAS_GPU_SUPPORT = "0" ]]; then
-    echo "supports gpu setting, hardware acceleration enables"
+    echo "supports gpu setting, hardware acceleration enabled"
     RUNTIME_ARG="--gpus all"
 fi
 
@@ -78,7 +78,13 @@ generate_container(){
     #/bin/bash will be default nontheless when called later without command
     docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS $IMAGE_NAME
     # default container exists after initial run
-    start_container $@
+
+    echo "docker start $CONTAINER_NAME"
+    docker start $CONTAINER_NAME
+    echo "running /opt/check_init_workspace.sh in $CONTAINER_NAME"
+    docker exec -ti $CONTAINER_NAME /opt/check_init_workspace.sh
+    echo "running $@ in $CONTAINER_NAME"
+    docker exec -ti $CONTAINER_NAME $@
 }
 
 #starts container with the param given in first run
