@@ -28,5 +28,6 @@ echo
 echo "don't forget to push the image if you wish:"
 echo "docker push $IMAGE_BASENAME:release"
 echo "docker push $IMAGE_BASENAME:release_$TAG"
+echo
 
 

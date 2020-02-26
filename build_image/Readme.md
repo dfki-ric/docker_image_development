@@ -1,7 +1,10 @@
 # Build workspace image
 
-The worspace image contains additional dependencies of your specific project.
-If the image is in the registry, this step can be omitted
+You need to adapt the Dockerfile to the needs of your project:
+
+* If the image is already in your registry, this step can be omitted
+* Add worspace dependencies your project to the image (add the install to the Dockerfile)
+* Add workspace initialization scripts/howto
 
 ## Workspace Dependencies
 You should try to pre-install all workspace dependencies in this steps Dockerfile.
@@ -9,7 +12,7 @@ The list_*_osdeps scripts help to determine which workspace-specific packages ar
 Add these to the Dockerfile
 
 
-## Workspace init
+## Workspace Initialization
 
 When the devel container is started for the first time, the /opt/init_workspace.sh script is executed.
 You can use it to inittialize the workspace, but it is executed each time a new image is available.
