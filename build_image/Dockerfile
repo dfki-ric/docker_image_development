@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y\
     ros-melodic-dynamic-robot-state-publisher \
     ros-melodic-joint-state-controller \
     ros-melodic-joint-trajectory-controller \
-    ros-melodic-effort-controllers \
+    ros-melodic-ros-controllers \
     ros-melodic-panda-moveit-config \
     ros-melodic-uuv-gazebo-worlds \
     ros-melodic-uuv-thruster-manager \
