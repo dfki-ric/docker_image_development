@@ -1,4 +1,7 @@
-FROM nvidia/opengl:1.0-glvnd-devel-ubuntu18.04
+ARG BASE_IMAGE
+
+FROM ${BASE_IMAGE}
+
 # This is a intermediate layer, that gets thown away in the build process
 # This is because the git credentials of the jenkins buildserver should not be stored within the image
 

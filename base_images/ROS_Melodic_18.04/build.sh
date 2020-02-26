@@ -8,5 +8,7 @@
 #fi
 
 
-docker build -f Dockerfile -t d-reg.hb.dfki.de/rosbasic/melodic_18.04:latest .
+docker build -f Dockerfile -t d-reg.hb.dfki.de/rosbasic/melodic_18.04:latest --build-arg BASE_IMAGE=nvidia/opengl:1.0-glvnd-devel-ubuntu18.04 ..
+
+
 
