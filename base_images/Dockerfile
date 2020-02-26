@@ -2,13 +2,11 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
-# This is a intermediate layer, that gets thown away in the build process
-# This is because the git credentials of the jenkins buildserver should not be stored within the image
+ARG INSTALL_SCRIPT
 
 
 LABEL version="0.1"
-LABEL maintainer "Steffen Planthaber"
-LABEL description="This image was generated to be used with Gitlab-CI"
+LABEL description="This image was generated to be a base image for docker_development"
 
 # To avoid some errors when fetching apt-get updates. # See: https://stackoverflow.com/a/35976127 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -21,20 +19,10 @@ RUN apt-get update && apt-get install -y \
     wget \
     cmake \
     sudo \
-    lsb-release \
-    gnupg2 \
-    gosu
-
-#install ROS melodic (second install because needs gnupg)
-RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-RUN apt-get update && apt-get install -y ros-melodic-desktop python-rosinstall python-rosinstall-generator python-wstool python-catkin-tools
-RUN rosdep init && rosdep update
 
 
-#let's keep /opt/rock as install path, so the scripts don't have to be edited
-RUN mkdir -p /opt/workspace
-WORKDIR /opt/workspace
+ADD ${INSTALL_SCRIPT} /opt/install.sh
+RUN /opt/install.sh
 
 
 ADD init_user_id.sh /opt/init_user_id.sh
