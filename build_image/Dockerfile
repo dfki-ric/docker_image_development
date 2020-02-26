@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y\
     ros-melodic-teleop-tools \
     ros-melodic-ros-controllers \
     libzmqpp-dev \
-    ruby-dev
+    ruby-dev \
+    bash-completion
 
 # we can set the workspace, but not the content, it is mounted later
 WORKDIR /opt/workspace

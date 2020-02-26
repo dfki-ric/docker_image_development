@@ -14,10 +14,19 @@ DATE=$(date)
 TAG=$(date +%Y_%m_%d-%H_%M)
 HOST=$(hostname)
 
-IMAGE_BASENAME=d-reg.hb.dfki.de/mare-it/uuv-sim_18.04_release
+IMAGE_BASENAME=d-reg.hb.dfki.de/mare-it/uuv-sim_18.04
+export IMAGE_NAME=$IMAGE_BASENAME:latest
+
 
 echo "$USER on $HOST Date: $DATE"
-docker build --no-cache --build-arg USER --build-arg HOST --build-arg DATE -f Dockerfile -t $IMAGE_BASENAME:latest ..
+docker build --no-cache --build-arg IMAGE_NAME --build-arg USER --build-arg HOST --build-arg DATE -f Dockerfile -t $IMAGE_BASENAME:$TAG ..
 
-echo "tagging $IMAGE_BASENAME:latest as $IMAGE_BASENAME:$TAG"
-docker tag d-reg.hb.dfki.de/vrlab/docker_release:latest $IMAGE_BASENAME:$TAG
+echo "tagging $IMAGE_BASENAME:$TAG as $IMAGE_BASENAME:release"
+docker tag $IMAGE_BASENAME:$TAG $IMAGE_BASENAME:release
+
+echo
+echo "don't forget to push the image if you wish:"
+echo "docker push $IMAGE_BASENAME:release"
+echo "docker push $IMAGE_BASENAME:$TAG"
+
+
