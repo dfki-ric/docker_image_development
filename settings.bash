@@ -13,9 +13,3 @@ export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development_test:devel
 export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development_test:release
 
 
-
-#FROM_IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE_NAME
-#IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_IMAGE_NAME
-
-#echo $PROJECT_IMAGE_NAME
-#echo $IMAGE_NAME
