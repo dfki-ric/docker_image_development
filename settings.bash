@@ -17,6 +17,8 @@ export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development:release
 
 # In case your docker container needs special run paramaters
 # like open ports, additinal mounts etc.
+# When you change this, you need to recreate the container
+# best way ist to delete the devel-container_id.txt and release-container_id
 export ADDITIONAL_DOCKER_RUN_ARGS=" \
         --dns-search=dfki.uni-bremen.de \
         "
