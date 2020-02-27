@@ -13,6 +13,7 @@ xhost +local:root
 INTERACTIVE=${INTERACTIVE:="true"}
 
 . ./docker_commands.bash
+. ./settings.bash
 
 #get a md5 for the current folder used as container name suffix
 #(several checkouts  of this repo possible withtou interfering)
@@ -22,7 +23,11 @@ FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
 #(several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-devel-$FOLDER_MD5"}
 
-IMAGE_NAME="d-reg.hb.dfki.de/docker_development/ros_melodic_18.04:latest"
+# DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
+IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
+echo
+echo -e "\e[32musing $IMAGE_NAME\e[0m"
+echo
 
 CONTAINER_ID_FILENAME=devel-container_id.txt
 

@@ -21,7 +21,13 @@ FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
 #use current folder name + devel + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-release-$FOLDER_MD5"}
-IMAGE_NAME="d-reg.hb.dfki.de/mare-it/uuv-sim_18.04:release"
+
+# DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
+IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+echo
+echo -e "\e[32musing $IMAGE_NAME\e[0m"
+echo
+
 CONTAINER_ID_FILENAME=release-container_id.txt
 
 if [ ! -f $CONTAINER_ID_FILENAME ]; then
