@@ -21,7 +21,9 @@ FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
 #use current folder name + devel + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-devel-$FOLDER_MD5"}
-IMAGE_NAME="d-reg.hb.dfki.de/mare-it/uuv-sim_18.04:devel"
+
+IMAGE_NAME="d-reg.hb.dfki.de/docker_development/ros_melodic_18.04:latest"
+
 CONTAINER_ID_FILENAME=devel-container_id.txt
 
 if [ ! -f $CONTAINER_ID_FILENAME ]; then
