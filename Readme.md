@@ -26,7 +26,7 @@ This way, changes and updates can be tracked and updated more easily in both dir
 
 * Edit the settings.bash with your project paramaters, the base iamges are most probably in the registry
 * Edit the image_setup/02_workspace_image/Dockerfile to install your workspace dependencies
-* If you want, fill the setup_workspace script
+* If you want, edit/fill the setup_workspace script
 * build the workspace image
  * docker push the image
 * start setting up/building the workspace ```./exec_in_devel.sh /bin/bash```
