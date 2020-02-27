@@ -8,16 +8,31 @@ They are based on different docker image setup steps, which can be omitted for o
 
 * build a base image for Rock or ROS (shared for all)
  * if already in your registry, omit this step
- * readme in image_setup/base_image
+ * readme in image_setup/01_base_image
 * build a workspace image (shared for project) with a mounted workspace, hoem and startscript folders
- * readme in image_setup/workspace_image
+ * if already in your registry, omit this step
+ * readme in image_setup/02_workspace_image
 * build a release image containing the workspace
- * readme in image_setup/workspace_release
+ * readme in image_setup/03_release_image
 
 ## Start your own project
 
 In case you want to setup your own workspace image, please fork this repository into your group using the git web interface.
 This way, changes and updates can be tracked and updated more easily in both directions.
+
+* Edit the settings.bash with your project paramaters, the base iamges are most probably in the registry
+* Edit the image_setup/02_workspace_image/Dockerfile to install your workspace dependencies
+* If you want, fill the setup_workspace script
+* build the workspace image
+ * docker push the image
+* start setting up/building the workspace ```bash ./exec_in_devel.sh /bin/bash```
+* build the release image
+ * docker push the image
+
+git push the changes to your fork of this repository
+
+Now others can clone this repository and directly call ```bash ./exec_in_release.sh /bin/bash```
+
 
 # 3D acceleration
 
