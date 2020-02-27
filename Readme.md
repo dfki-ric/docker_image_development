@@ -14,6 +14,11 @@ They are based on different docker image setup steps, which can be omitted for o
 * build a release image containing the workspace
  * readme in image_setup/workspace_release
 
+## Start your own project
+
+In case you want to setup your own workspace image, please fork this repository into your group using the git web interface.
+This way, changes and updates can be tracked and updated more easily in both directions.
+
 # 3D acceleration
 
 The images support 3D acceleration, when you have a nvidia card installed, if you don't the images will still work.
