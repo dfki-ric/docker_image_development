@@ -13,6 +13,7 @@ xhost +local:root
 INTERACTIVE=${INTERACTIVE:="true"}
 
 . ./docker_commands.bash
+. ./settings.bash
 
 #get a md5 for the current folder used as container name suffix
 #(several checkouts  of this repo possible withtou interfering)
@@ -38,13 +39,10 @@ CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 
 DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
-                --privileged \
-                -v /dev/input/:/dev/input \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
                 -u devel \
                 --dns $DNSIP \
                 --dns-search=dfki.uni-bremen.de \
-                -p 7001:7001/tcp -p 7002:7002/tcp \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 "
 

@@ -56,7 +56,6 @@ ADD entrypoint.sh /opt/entrypoint.sh
 #these scripts must be runnable by users, not only root
 RUN chmod 755 /opt/entrypoint.sh /opt/init_user_id.sh /opt/init_workspace.sh /opt/check_init_workspace.sh
 
-RUN mkdir -p /opt/workspace
 WORKDIR /opt/workspace
 
 ENV PATH="/opt/startscripts:${PATH}"

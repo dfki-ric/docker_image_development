@@ -38,10 +38,6 @@ RUN apt-get update && apt-get install -y \
 #     ruby-dev \
 #     bash-completion
 
-# we can set the workspace, but not the content, it is mounted later
-WORKDIR /opt/workspace
-
-
 # add workspace init to container initialization
 ADD setup_workspace.sh /opt/setup_workspace.sh
 RUN chmod 755 /opt/setup_workspace.sh

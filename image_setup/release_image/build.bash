@@ -10,7 +10,7 @@ export DEVEL_IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_
 #do not pull for release, use the local image
 #docker pull $BASE_IMAGE_NAME
 
-RELEASE_IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
+RELEASE_IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 echo "Buidling release image: ${RELEASE_IMAGE_NAME}_$TAG by $USER on $HOST Date: $DATE"
 
 docker build --no-cache --build-arg DEVEL_IMAGE_NAME --build-arg USER --build-arg HOST --build-arg DATE -f Dockerfile -t $RELEASE_IMAGE_NAME ../..
