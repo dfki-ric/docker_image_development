@@ -20,6 +20,10 @@ They are based on different docker image setup steps, which can be omitted for o
 In case you want to setup your own workspace image, please fork this repository into your group using the git web interface.
 This way, changes and updates can be tracked and updated more easily in both directions.
 
+* fork the repository to the new group
+* git clone it to your system, rename the repo name locally
+ * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
+
 * Edit the settings.bash with your project paramaters, the base iamges are most probably in the registry
 * Edit the image_setup/02_workspace_image/Dockerfile to install your workspace dependencies
 * If you want, fill the setup_workspace script
