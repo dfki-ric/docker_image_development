@@ -7,7 +7,7 @@ docker pull $BASE_IMAGE_NAME
 
 IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
 
-docker build --no-cache -f Dockerfile --buils-arg BASE_IMAGE_NAME -t $IMAGE_NAME .
+docker build --no-cache -f Dockerfile --build-arg BASE_IMAGE_NAME -t $IMAGE_NAME .
 
 
 echo

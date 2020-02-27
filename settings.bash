@@ -9,8 +9,8 @@ export DOCKER_REGISTRY=d-reg.hb.dfki.de
 export WORKSPACE_BASE_IMAGE=docker_development/ros_melodic_18.04:latest
 
 # The Name of the Workspace image to use
-export WORKSPACE_DEVEL_IMAGE=docker_development/ros_melodic_18.04:devel
-export WORKSPACE_RELEASE_IMAGE=docker_development/ros_melodic_18.04:release
+export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development_test:devel
+export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development_test:release
 
 
 
