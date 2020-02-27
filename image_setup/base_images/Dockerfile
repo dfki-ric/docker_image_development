@@ -56,7 +56,7 @@ ADD entrypoint.sh /opt/entrypoint.sh
 #these scripts must be runnable by users, not only root
 RUN chmod 755 /opt/entrypoint.sh /opt/init_user_id.sh /opt/init_workspace.sh /opt/check_init_workspace.sh
 
-RUN mkfir -p /opt/workspace
+RUN mkdir -p /opt/workspace
 WORKDIR /opt/workspace
 
 ENTRYPOINT ["/opt/entrypoint.sh"]

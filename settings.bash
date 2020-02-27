@@ -4,6 +4,7 @@
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
 
 # The base image used when building a workspace image (one of the ones build in base_images)
+# docker_development/plain_18.04
 # docker_development/rock_master_18.04
 # docker_development/ros_melodic_18.04
 export WORKSPACE_BASE_IMAGE=docker_development/ros_melodic_18.04:latest
