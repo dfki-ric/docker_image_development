@@ -10,8 +10,9 @@ export DOCKER_REGISTRY=d-reg.hb.dfki.de
 export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:latest
 
 # The Name of the Workspace image to use
-export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development_test:devel
-#export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development_test:devel
-export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development_test:release
+# you shoule add a workspace name folder and a image name
+# e.g MY_PROJECT/docker_development:devel
+export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development:devel
+export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development:release
 
 
