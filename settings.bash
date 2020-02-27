@@ -10,9 +10,14 @@ export DOCKER_REGISTRY=d-reg.hb.dfki.de
 export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:latest
 
 # The Name of the Workspace image to use
-# you shoule add a workspace name folder and a image name
+# you should add a workspace name folder and a image name
 # e.g MY_PROJECT/docker_development:devel
 export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development:devel
 export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development:release
 
+# In case your docker container needs special run paramaters
+# like open ports, additinal mounts etc.
+export ADDITIONAL_DOCKER_RUN_ARGS=" \
+        --dns-search=dfki.uni-bremen.de \
+        "
 

@@ -42,8 +42,8 @@ DOCKER_RUN_ARGS=" \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
                 -u devel \
                 --dns $DNSIP \
-                --dns-search=dfki.uni-bremen.de \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
+                $ADDITIONAL_DOCKER_RUN_ARGS \
                 "
 
 init_docker $@
