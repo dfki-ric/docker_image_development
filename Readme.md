@@ -8,11 +8,11 @@ They are based on different docker image setup steps, which can be omitted for o
 
 * build a base image for Rock or ROS (shared for all)
  * if already in your registry, omit this step
- * readme in base_image
-* build a workspace image (shared for project)
- * readme in build_image
+ * readme in image_setup/base_image
+* build a workspace image (shared for project) with a mounted workspace, hoem and startscript folders
+ * readme in image_setup/workspace_image
 * build a release image containing the workspace
- * readme in build_release
+ * readme in image_setup/workspace_release
 
 # 3D acceleration
 
@@ -40,14 +40,23 @@ Now you can run programs as you like
 
 Or you execute a startscript from the startscripts folder (they are in the path) and also available in the release
 
-```bash ./exec_in_devel.sh my_startscript.sh```
+```bash ./exec_in_devel.sh hello_world.sh```
+
+This can be used to execute specific executables from your workspace
 
 
-## attach more bashes 
+## attach more bashes or start more programs
+
+Each subsequent call to exec\_in\_devel is using the same container
 
 You can attach more bashes to the container using the exec\_in\_ command again
 
 ```bash ./exec_in_devel.sh /bin/bash```
+
+or 
+
+```bash ./exec_in_devel.sh hello_world.sh```
+
 
 # upgrade image
 

@@ -52,7 +52,6 @@ RUN echo 'echo -e "\e[32mplease run /opt/setup_workspace.sh to initialize the wo
 RUN echo "echo" >> /opt/init_workspace.sh
 #RUN echo "/opt/setup_workspace.sh" >> /opt/init_workspace.sh
 
-ENV PATH="/opt/startscripts:${PATH}"
 
 
 

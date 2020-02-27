@@ -59,6 +59,8 @@ RUN chmod 755 /opt/entrypoint.sh /opt/init_user_id.sh /opt/init_workspace.sh /op
 RUN mkdir -p /opt/workspace
 WORKDIR /opt/workspace
 
+ENV PATH="/opt/startscripts:${PATH}"
+
 ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["/bin/bash"]
 
