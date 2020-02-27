@@ -25,13 +25,15 @@ This way, changes and updates can be tracked and updated more easily in both dir
 * If you want, fill the setup_workspace script
 * build the workspace image
  * docker push the image
-* start setting up/building the workspace ```bash ./exec_in_devel.sh /bin/bash```
+* start setting up/building the workspace ```./exec_in_devel.sh /bin/bash```
 * build the release image
  * docker push the image
 
 git push the changes to your fork of this repository
 
-Now others can clone this repository and directly call ```bash ./exec_in_release.sh /bin/bash```
+Now others can clone this repository and directly call ```./exec_in_release.sh /bin/bash```.
+Docker will pull the release image automatically.
+
 
 
 # 3D acceleration
@@ -52,15 +54,15 @@ Before you run a container, check and edit the docker paramaters (DOCKER\_RUN\_A
 
 You can start the workspace in devel or release mode:
 
-* call ```bash ./exec_in_devel.sh /bin/bash``` 
-* or   ```bash ./exec_in_release.sh /bin/bash``` 
+* call ```./exec_in_devel.sh /bin/bash``` 
+* or   ```./exec_in_release.sh /bin/bash``` 
   * In case a release image is available in your registry, it will be automatically pulled and launched
 
 Now you can run programs as you like
 
 Or you execute a startscript from the startscripts folder (they are in the path) and also available in the release
 
-```bash ./exec_in_devel.sh hello_world.sh```
+```./exec_in_devel.sh hello_world.sh```
 
 This can be used to execute specific executables from your workspace
 
@@ -71,11 +73,11 @@ Each subsequent call to exec\_in\_devel is using the same container
 
 You can attach more bashes to the container using the exec\_in\_ command again
 
-```bash ./exec_in_devel.sh /bin/bash```
+```./exec_in_devel.sh /bin/bash```
 
 or 
 
-```bash ./exec_in_devel.sh hello_world.sh```
+```./exec_in_devel.sh hello_world.sh```
 
 
 # upgrade image
