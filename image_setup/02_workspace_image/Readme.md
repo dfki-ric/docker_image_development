@@ -27,6 +27,12 @@ RUN echo 'echo -e "\n\e[32mplease run /opt/setup_workspace.sh to initialize the 
 
 <table border="0">
  <tr>
+    <td>0.</td>
+    <td>edit image names, tags & registry</td>
+    <td> => </td>
+    <td> edit ../../settings.bash </td>
+ </tr>
+ <tr>
     <td>1.</td>
     <td>build image</td>
     <td> => </td>
