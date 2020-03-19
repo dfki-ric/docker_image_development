@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#set a project name
+export PROJECT_NAME=docker_development
+
 # URL path to your docker registry, leave blank if you don't have one
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
 
@@ -12,8 +15,8 @@ export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:latest
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
 # e.g MY_PROJECT/docker_development:devel
-export WORKSPACE_DEVEL_IMAGE=docker_development/docker_development:devel
-export WORKSPACE_RELEASE_IMAGE=docker_development/docker_development:release
+export WORKSPACE_DEVEL_IMAGE=${PROJECT_NAME}/docker_development:devel
+export WORKSPACE_RELEASE_IMAGE=${PROJECT_NAME}/docker_development:release
 
 # In case your docker container needs special run paramaters
 # like open ports, additinal mounts etc.
