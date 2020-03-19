@@ -1,15 +1,23 @@
 # Build workspace image
 
+Workspace images contain pre-installed libraries of specific projects (not shared as commonly as the ones installed in the base_images)
+
+
 You need to adapt the Dockerfile to the needs of your project:
 
 * If the image is already in your registry, this step can be omitted
+
+The following steps are explained in detail in the next sections.
+
 * Add workspace dependencies of your project to the image (add the install to the Dockerfile)
 * Add workspace initialization scripts/howto
 
+
 ## Workspace Dependencies
-You should try to pre-install all workspace dependencies in this steps Dockerfile.
-The list_*_osdeps scripts help to determine which workspace-specific packages are required
-Add these to the Dockerfile
+
+* You should try to pre-install all workspace dependencies using this Dockerfile.
+* The list_*_osdeps scripts help to determine which workspace-specific packages are required
+* Add these dependencies to be installed by the Dockerfile
 
 ## Workspace Initialization
 
