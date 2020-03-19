@@ -15,6 +15,8 @@ They are based on different docker image setup steps, which can be omitted for o
 * develop your code
 * build a release image containing the workspace
    * readme in _image_setup/03_release_image_
+* build archives with image and scritps to deploy to others
+   * readme in _image_setup/04_save_release_
 
 # Running 
 
