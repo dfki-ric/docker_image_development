@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 IMAGE_NAME=d-reg.hb.dfki.de/docker_development/rock_master_18.04
 
