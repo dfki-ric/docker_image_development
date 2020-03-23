@@ -9,6 +9,6 @@
 if [ ! -f /initialized_workspace ]; then
     #only executed on container creation
     sudo touch /initialized_workspace
-    /opt/init_workspace.sh
+    /opt/init_workspace.bash
 fi
 
