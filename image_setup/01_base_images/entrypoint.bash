@@ -8,7 +8,7 @@
 if [ ! -f /initialized_container ]; then
     #only executed by docker run
     sudo touch /initialized_container
-    sudo sh /opt/init_user_id.sh
+    sudo sh /opt/init_user_id.bash
     #id script needs exit to apply uid nest start
 
     echo

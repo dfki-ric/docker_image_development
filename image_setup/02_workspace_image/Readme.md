@@ -1,7 +1,8 @@
 # Build workspace image
 
-Workspace images contain pre-installed libraries of specific projects (not shared as commonly as the ones installed in the base_images)
+_WARNING: Before you can set up the workspace image, the base image has to be pushed._
 
+Workspace images contain pre-installed libraries of specific projects (not shared as commonly as the ones installed in the base_images)
 
 You need to adapt the Dockerfile to the needs of your project:
 
