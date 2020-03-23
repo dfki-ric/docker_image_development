@@ -8,8 +8,13 @@ set -e
 # add /opt/startscritps to path, you need to do it here, becaude /home/devel is a mounted folder
 echo 'export PATH=${PATH}:/opt/startscripts' | sudo tee -a /home/devel/.bashrc > /dev/null
 
+
+echo
+echo -e "\e[32m workspace init not set up\e[0m"
+echo 
+
     
-    # echo "first start: setting up mare-it-workspace"
+    # echo "first start: setting up workspace"
 
     # mkdir -p /opt/workspace/src
     # cd /opt/workspace/

@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     bash-completion
 
 # add workspace init to container initialization
-ADD setup_workspace.sh /opt/setup_workspace.bash
+ADD setup_workspace.bash /opt/setup_workspace.bash
 RUN chmod 755 /opt/setup_workspace.bash
 
 # opt/init_workspace.sh is run once via dockercommands.sh by calling check_init_workspace.sh
