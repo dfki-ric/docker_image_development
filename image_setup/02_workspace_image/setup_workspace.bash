@@ -10,7 +10,7 @@ echo 'export PATH=${PATH}:/opt/startscripts' | sudo tee -a /home/devel/.bashrc >
 
 
 echo
-echo -e "\e[32m workspace init not set up\e[0m"
+echo -e "\e[33mworkspace init not set up\e[0m"
 echo 
 
     

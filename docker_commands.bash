@@ -82,7 +82,7 @@ generate_container(){
     echo "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME
     echo "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME /opt/check_init_workspace.sh
+    docker exec -ti $CONTAINER_NAME /opt/check_init_workspace.bash
     echo "running $@ in $CONTAINER_NAME"
     docker exec -ti $CONTAINER_NAME $@
 }
