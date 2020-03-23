@@ -2,6 +2,9 @@
 
 # In this file you can add a script that intitializes your workspace
 
+# add /opt/startscritps to path, you need to do it here, becaude /home/devel is a mounted folder
+echo 'export PATH=${PATH}:/opt/startscripts' | sudo tee -a /home/devel/.bashrc > /dev/null
+
     
     # echo "first start: setting up mare-it-workspace"
 
