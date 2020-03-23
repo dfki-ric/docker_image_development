@@ -1,0 +1,4 @@
+#!/bin/bash
+
+complete -W "$(for scripts in $(ls startscripts); do printf $scripts' '; done)/bin/bash" ./exec_in_devel.bash
+complete -W "$(for scripts in $(ls startscripts); do printf $scripts' '; done)/bin/bash" ./exec_in_release.bash
