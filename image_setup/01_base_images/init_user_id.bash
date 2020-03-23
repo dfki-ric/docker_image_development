@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # this scrit will be called by .bashrc
 
 # on initialization check if the UID of the rosuser user has to be changed:
