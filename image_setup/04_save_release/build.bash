@@ -8,7 +8,7 @@ IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 
 echo "saving ${IMAGE_NAME} to ${PROJECT_NAME}_image_${DATE}.tar.gz"
 
-#docker save ${IMAGE_NAME} | gzip > ${PROJECT_NAME}_image_${DATE}.tar.gz
+docker save ${IMAGE_NAME} | gzip > ${PROJECT_NAME}_image_${DATE}.tar.gz
 
 
 #build a scripts zip:
