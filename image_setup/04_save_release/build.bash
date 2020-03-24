@@ -20,7 +20,8 @@ cp ../../../docker_commands.bash ./
 cp ../../../settings.bash ./
 cp ../../../exec_in_release.bash ./
 cp ../../../stop_release_container.bash ./
-echo "complete -W "$(for scripts in $(ls ../../../startscripts); do printf $scripts' '; done)/bin/bash" ./exec_in_release.bash" > autocomplete.me
+echo "complete -W \"$(ls ../../../startscripts | xargs) /bin/bash\" ./exec_in_release.bash" > autocomplete.me
+
 cp ../Readme_scripts.md ./Readme.md
 
 cd ..
