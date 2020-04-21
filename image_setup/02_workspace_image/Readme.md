@@ -43,7 +43,7 @@ RUN echo 'echo -e "\n\e[32mplease run /opt/setup_workspace.sh to initialize the 
  </tr>
  <tr>
     <td>1.</td>
-    <td>describe the steps to setup your workspace (e.g. using buildconf)</td>
+    <td>describe the steps to setup your workspace<br></br> (e.g. using buildconf)</td>
     <td> => </td>
     <td> edit setup_workspace.bash </td>
  </tr>
