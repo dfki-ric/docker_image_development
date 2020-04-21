@@ -1,7 +1,6 @@
 
-
-echo "The base image has to be pushed to the registry bebore the workspace image is build"
-read -r -p "Are you sure? [y/N] " response
+echo "If you have re-build the base image, it has to be pushed to the registry bebore the workspace image is build"
+read -r -p "Are you sure to build now? [y/N] " response
 if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
     echo "no"
