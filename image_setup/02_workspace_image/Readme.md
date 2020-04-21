@@ -43,24 +43,30 @@ RUN echo 'echo -e "\n\e[32mplease run /opt/setup_workspace.sh to initialize the 
  </tr>
  <tr>
     <td>1.</td>
+    <td>describe the steps to setup your workspace (e.g. using buildconf)</td>
+    <td> => </td>
+    <td> edit setup_workspace.bash </td>
+ </tr>
+ <tr>
+    <td>2.</td>
     <td>build image</td>
     <td> => </td>
     <td> bash build.sh </td>
  </tr>
   <tr>
-    <td>2.</td>
+    <td>3.</td>
     <td>start container</td>
     <td> => </td>
     <td> bash ./exec_in_devel /bin/bash </td>
  </tr>
  <tr>
-    <td>3.</td>
+    <td>4.</td>
     <td>setup workspace</td>
     <td> => </td>
     <td> either manually or using bash /opt/setup_workspace.bash</td>
  </tr>
  <tr>
-    <td>4.</td>
+    <td>5.</td>
     <td>list osdeps</td>
     <td> => </td>
     <td> ROS:<br></br>
@@ -72,13 +78,13 @@ RUN echo 'echo -e "\n\e[32mplease run /opt/setup_workspace.sh to initialize the 
          </td>
  </tr>
  <tr>
-    <td>5.</td>
+    <td>6.</td>
     <td>add osdeps to Dockerfile</td>
     <td> => </td>
     <td>copy/paste output from previous step into your Dockerfile</td>
  </tr>
  <tr>
-    <td>6.</td>
+    <td>7.</td>
     <td>rebuild your image to include osdeps</td>
     <td> => </td>
     <td> bash build.sh </td>
