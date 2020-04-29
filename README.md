@@ -1,8 +1,11 @@
 # Docker Development 
 
+
 These scripts are helping to set up a docker-based development and release workflow.
 
-In case the images are already build and available in your registry, jump to the Running section
+Please install Docker according to the [README_Docker.md](README_Docker.md)
+
+**In case someone else already build workspace images and they available in your registry, please jump to the Development section**
 
 They are based on different docker image setup steps, which can be omitted for other workspaces when a local registry is set up and ther iamge is already available
 
@@ -12,25 +15,14 @@ They are based on different docker image setup steps, which can be omitted for o
 * build a workspace image (shared for project) with a mounted workspace, hoem and startscript folders
    * if already in your registry, omit this step
    * readme in _image_setup/02_workspace_image_
-* develop your code
-* build a release image containing the workspace
-   * readme in _image_setup/03_release_image_
-* build archives with image and scritps to deploy to others
-   * readme in _image_setup/04_save_release_
 
-# Running 
-
-Before you run a container, check and edit the settings.bash to configure your images
+# Development 
 
 * git clone this repo to your system, rename the repo name locally
    * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
 
-## 3D Acceleration
+Before you run a container, check and edit the settings.bash to configure your images
 
-The images support 3D acceleration, when you have a nvidia card installed.
-If you don't have it installed or an nvidia card the images will still work.
-
-Install nvidia-docker2: Follow the instructions [here](https://github.com/NVIDIA/nvidia-docker).
 
 
 ## Start Container
@@ -65,6 +57,21 @@ or
 ```./exec_in_devel.sh bash```
 
 
+# Release Docker images with the results
+
+* build a release image containing the workspace
+   * readme in _image_setup/03_release_image_
+* build archives with image and scritps to deploy to others
+   * readme in _image_setup/04_save_release_
+
+
+# Upgrade Image
+
+Upgrades are detected automatically, only the workspace and home folders are preserved.
+Programs manually installed using apt are lost.
+
+You can docker pull images manually by executing ```update_workspace_images.bash```
+
 # Start Your own Project and Images
 
 In case you want to setup your own workspace image, please fork this repository into your group using the git web interface.
@@ -85,39 +92,5 @@ This way, changes and updates can be tracked and updated more easily in both dir
 
 Now others can clone this repository and directly call ```./exec_in_release.sh /bin/bash```.
 Docker will pull the release image automatically.
-
-
-
-# Upgrade Image
-
-Upgrades are detected automatically, only the workspace and home folders are preserved.
-Programs manually installed using apt are lost.
-
-You can docker pull images manually by executing ```update_workspace_images.bash```
-
-# Docker Quick Guide
-
-Docker separates between images and containers.
-
-## Images
-
-Images are fixed states from which runtime containers can be started from.
-
-They are generated using so called Dockerfiles
-
-## Containers
-
-A container derives from an image and is created by running an image.
-Once a container is "run" (a.k.a. created), it can be started again.
-Local changes are preseved in the container until the container is deleted
-
-## Docker Setup
-
-* Add your user to the docker group
-
-`sudo usermod -aG docker $USER` (https://docs.docker.com/install/linux/linux-postinstall/)
-
-* Log out and log back in so that your group membership is re-evaluated.
-
 
 
