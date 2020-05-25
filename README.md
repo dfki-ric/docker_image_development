@@ -29,25 +29,34 @@ Before you run a container, check and edit the settings.bash to configure your i
 As prerequiste for the installation of an Autoproj environment you will need to set up your git credentials, there are at least two options for this.
 
 ### Option 1) Using ssh keys
-Copy your .ssh folder to the home folder mounted in the host
 
+**Important** If you use ssh keys in your Docker containers, make sure that any image you produce is not including the keys -also not any of the intermediate images. The images might reach other people and these people would have access to your key. Note that the releases that are produced by these scripts copy in the image the default mounted volumes. 
+
+1. Mount an additional volumen containing your ssh key
+
+To use a mounted ssh key, please add the mount instructions in the [settings.bash](https://git.hb.dfki.de/dfki-dockerfiles/docker_development/-/blob/master/settings.bash) file. Don't copy or link your personal ssh key to any of the default mounted volumes.
+
+Updated expression in [settings.bash](https://git.hb.dfki.de/dfki-dockerfiles/docker_development/-/blob/master/settings.bash) for mounting the folder `<host_folder_containing_ssh>` as volume in the container at `<mounted_ssh_folder_in_container>`:
 ```
-cp -r ~/.ssh <global_path_in_host_to_set_the_mount_volume>/.ssh
+export ADDITIONAL_DOCKER_RUN_ARGS=" \
+        --dns-search=dfki.uni-bremen.de \
+        -v <host_folder_container_ssh>:<mounted_ssh_folder_in_container> \
+        "
 ```
 
-Then, in the container, you will have to add that key to the container's ssh-agent
+Then, in the container, you will have to add that key to the container's ssh-agent.
 
-1. Log in your container
+2. Log in your container
 
 ```
 sh use_devel_container <container_name> 
 ```
 
-2. Add the key that you copied from the host to the container's ssh-agent
+3. Add the key that you mounted from the host to the container's ssh-agent
 
 ```
 eval "$(ssh-agent -s)"
-ssh-add /home/devel/.ssh/id_rsa
+ssh-add <mounted_ssh_folder_in_container>/id_rsa
 ```
 
 ### Option 2) set a git password cache and use https as git protocol
