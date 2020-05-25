@@ -24,6 +24,51 @@ They are based on different docker image setup steps, which can be omitted for o
 Before you run a container, check and edit the settings.bash to configure your images
 
 
+## Set up authentication on the container
+
+As prerequiste for the installation of an Autoproj environment you will need to set up your git credentials, there are at least two options for this.
+
+### Option 1) Using ssh keys
+
+**Important** If you use ssh keys in your Docker containers, make sure that any image you produce is not including the keys -also not any of the intermediate images. The images might reach other people and these people would have access to your key. Note that the releases that are produced by these scripts copy in the image the default mounted volumes. 
+
+1. Mount an additional volumen containing your ssh key
+
+To use a mounted ssh key, please add the mount instructions in the [settings.bash](https://git.hb.dfki.de/dfki-dockerfiles/docker_development/-/blob/master/settings.bash) file. Don't copy or link your personal ssh key to any of the default mounted volumes.
+
+Updated expression in [settings.bash](https://git.hb.dfki.de/dfki-dockerfiles/docker_development/-/blob/master/settings.bash) for mounting the folder `<host_folder_containing_ssh>` as volume in the container at `<mounted_ssh_folder_in_container>`:
+```
+export ADDITIONAL_DOCKER_RUN_ARGS=" \
+        --dns-search=dfki.uni-bremen.de \
+        -v <host_folder_container_ssh>:<mounted_ssh_folder_in_container> \
+        "
+```
+
+Then, in the container, you will have to add that key to the container's ssh-agent.
+
+2. Log in your container
+
+```
+sh use_devel_container <container_name> 
+```
+
+3. Add the key that you mounted from the host to the container's ssh-agent
+
+```
+eval "$(ssh-agent -s)"
+ssh-add <mounted_ssh_folder_in_container>/id_rsa
+```
+
+### Option 2) set a git password cache and use https as git protocol
+
+The idea of this option is to use https user authentification in combination with the git password cache so that autoproj only asks once for each repository server.
+
+Add these lines to the .bashrc of your container:
+```
+git config --global credential.helper 'cache --timeout=2000'
+git config --global url."https://".insteadOf git://
+```
+
 
 ## Start Container
 
@@ -56,6 +101,43 @@ or
 
 ```./exec_in_devel.sh bash```
 
+## Using iceccd in the container
+
+Note: This has not been thoroughly tested. But feel free to try and provide feedback.
+
+### Step 1 (option a)
+
+Iceccd in the container has problems to find the iceccd server. To solve this, you have to modify the config file  `/etc/icecc/icecc.conf` to set `ICECC_SCHEDULER_HOST`to the address of the scheduler. 
+
+### Step 1 (option b)
+
+When starting your container, use the flag  `--net=host` so that host and container share the same network interfaces.
+
+### Step 2
+
+Stop the iceccd daemon on your host with
+
+```
+sudo service iceccd stop
+```
+
+and restart it in the container
+
+```
+sudo service iceccd restart
+```
+
+It should be possible to have more complex setups for the iceccd in containers/hosts. So that not necessarily the host has to stop using icecc or multiple container can make use of it.
+
+## Using gdb in the container
+
+For gdb to be usable in your container, you can use the flag  `--priviledged` [source](https://hub.docker.com/r/andyneff/hello-world-gdb).
+
+## Programming in a Rock environemnt with Docker and VScode
+
+You can edit code, compile and debug in your container from a host using the remote development package from VScode. Once you have your container created and visual studio with the [remote development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed in your host you can access your containers for development with this extension.
+
+Another useful extension for vscode to work with Rock is the [rock extension](https://marketplace.visualstudio.com/items?itemName=rock-robotics.rock). This tool gives you access to the most common autoproj commands directly from the vscode interface.
 
 # Release Docker images with the results
 
