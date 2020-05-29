@@ -7,8 +7,8 @@ export PROJECT_NAME=docker_development
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
 
 # The default release mode to use if no mode paramater is given to ./exec or ./stop
-export DEFAULT_EXECMODE="devel"
-#export DEFAULT_EXECMODE="release"
+#export DEFAULT_EXECMODE="devel" # devel mode should only be used locally and never pushed in into the repository
+export DEFAULT_EXECMODE="release"
 
 # The base image used when building a workspace image (one of the ones build in base_images)
 # export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:latest # plain image with build_essentials installed
