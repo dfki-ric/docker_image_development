@@ -19,10 +19,9 @@ RUN apt-get update && apt-get install -y \
     wget \
     cmake \
     sudo \
-    build-essential \
     cmake \
-    python \
-    python-dev
+    python3 \
+    python3-dev
 
 
 ADD ${INSTALL_SCRIPT} /opt/install.bash

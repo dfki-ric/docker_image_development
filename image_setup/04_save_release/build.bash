@@ -2,6 +2,11 @@
 
 . ../../settings.bash
 
+if ["$DEFAULT_EXECMODE" = "devel"]; then
+    echo "the $DEFAULT_EXECMODE has to be release in the settings.bash in order to export"
+    exit 1
+fi
+
 export DATE=$(date +%Y_%m_%d-%H_%M)
 
 IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
@@ -19,8 +24,12 @@ cd ${PROJECT_NAME}_scripts_${DATE}
 cp ../../../docker_commands.bash ./
 cp ../../../settings.bash ./
 cp ../../../exec_in_release.bash ./
-cp ../../../stop_release_container.bash ./
+cp ../../../exec.bash ./
+cp ../../../stop.bash ./
 echo "complete -W \"$(ls ../../../startscripts | xargs) /bin/bash\" ./exec_in_release.bash" > autocomplete.me
+
+echo "complete -W \"devel release $(ls ../../../startscripts | xargs) /bin/bash\" ./exec.bash" >> autocomplete.me
+echo "complete -W \"devel release\" ./stop.bash" >> autocomplete.me
 
 cp ../Readme_scripts.md ./Readme.md
 
