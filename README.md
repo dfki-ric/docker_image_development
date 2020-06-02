@@ -1,105 +1,85 @@
 # Docker Development 
 
-
 These scripts are helping to set up a docker-based development and release workflow.
 
-Please install Docker according to the [README_Docker.md](README_Docker.md)
+**Requisite:** Please install Docker according to the [README_Docker.md](README_Docker.md)!
 
-**In case someone else already build workspace images and they available in your registry, please jump to the Development section**
+The docker development is based on different docker image setup steps, some of which can be omitted when a local registry is set up and the required image is already available.
 
-They are based on different docker image setup steps, which can be omitted for other workspaces when a local registry is set up and ther iamge is already available
+In order to check for available images you can browse the DFKI [internal registry](https://d-reg.hb.dfki.de/repositories) (Login required).
+
+## 01 Base Image
+**In case the required base image is already available in your registry, please jump to the 02 Workspace Image section.**
 
 * build a base image for Rock or ROS (shared for all)
-   * if already in your registry, omit this step
    * readme in _image_setup/01_base_image_
-* build a workspace image (shared for project) with a mounted workspace, hoem and startscript folders
-   * if already in your registry, omit this step
-   * readme in _image_setup/02_workspace_image_
 
-# Development 
+## 02 Workspace Image
 
-* git clone this repo to your system, rename the repo name locally
+### Build Workspace Image
+**In case the required workspace image is available in your registry. Refer to the "Use Existing Workspace Image" subsection.**
+* fork this repo to your projects namespace or into a new group using the git web interface.
+   * This way, changes and updates can be tracked and updated more easily in both directions.
+* clone this repo to your system
    * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
+* build a project specific workspace image with a mounted workspace, home and startscript folder
+   * readme in _image_setup/02_workspace_image_
+   * before you run a container, check and edit the settings.bash to configure your images!
+   * refer to the suggested development workflow in the readme in _image_setup/02_workspace_image_
+* git push the changes to your fork of this repository
+* docker push the image to the registry```docker push <image_repository:tag>```
 
-Before you run a container, check and edit the settings.bash to configure your images
+### Use Existing Workspace Image
+**In case the required workspace image is already available in your registry it will automatically be pulled.**
+* git clone your project specific fork to your system
+   * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
+* build the project specific workspace image (automatically pulled from registry & generate mounted workspace, home and startscript folder)
+   * readme in _image_setup/02_workspace_image_
+   * execute /opt/setup_workspace.bash to setup the workspace locally
+
+## 03 Release Image
+**In case the required release image is already available in your registry it will automatically be pulled.**
+* build a release image containing the workspace
+   * readme in _image_setup/03_release_image_
+* docker push the image to the registry```docker push <image_repository:tag>```
 
 
-## Set up authentication on the container
+## 04 Distribute Image
+* build archives with image and scripts to deploy to others
+   * readme in _image_setup/04_save_release_
 
-As prerequiste for the installation of an Autoproj environment you will need to set up your git credentials, there are at least two options for this.
+<br></br>
 
-### Option 1) Using ssh keys
-
-**Important** If you use ssh keys in your Docker containers, make sure that any image you produce is not including the keys -also not any of the intermediate images. The images might reach other people and these people would have access to your key. Note that the releases that are produced by these scripts copy in the image the default mounted volumes. 
-
-1. Mount an additional volumen containing your ssh key
-
-To use a mounted ssh key, please add the mount instructions in the [settings.bash](https://git.hb.dfki.de/dfki-dockerfiles/docker_development/-/blob/master/settings.bash) file. Don't copy or link your personal ssh key to any of the default mounted volumes.
-
-Updated expression in [settings.bash](https://git.hb.dfki.de/dfki-dockerfiles/docker_development/-/blob/master/settings.bash) for mounting the folder `<host_folder_containing_ssh>` as volume in the container at `<mounted_ssh_folder_in_container>`:
-```
-export ADDITIONAL_DOCKER_RUN_ARGS=" \
-        --dns-search=dfki.uni-bremen.de \
-        -v <host_folder_container_ssh>:<mounted_ssh_folder_in_container> \
-        "
-```
-
-Then, in the container, you will have to add that key to the container's ssh-agent.
-
-2. Log in your container
-
-```
-sh use_devel_container <container_name> 
-```
-
-3. Add the key that you mounted from the host to the container's ssh-agent
-
-```
-eval "$(ssh-agent -s)"
-ssh-add <mounted_ssh_folder_in_container>/id_rsa
-```
-
-### Option 2) set a git password cache and use https as git protocol
-
-The idea of this option is to use https user authentification in combination with the git password cache so that autoproj only asks once for each repository server.
-
-Add these lines to the .bashrc of your container:
-```
-git config --global credential.helper 'cache --timeout=2000'
-git config --global url."https://".insteadOf git://
-```
-
+# Working with the Images
 
 ## Start Container
 
-You can start the workspace in devel or release mode:
+You can start the workspace in devel or release mode. Default is set in your setting.bash and can be overwritten by passing devel/release as argument.
 
-* call ```./exec_in_devel.sh /bin/bash``` 
-* or   ```./exec_in_release.sh /bin/bash``` 
+* call ```./exec.bash /bin/bash```
+* or ```./exec.bash devel /bin/bash```
+* or ```./exec.bash release /bin/bash```
+ 
   * In case a release image is available in your registry, it will be automatically pulled and launched
 
 Now you can run programs as you like
 
 Or you execute a startscript from the startscripts folder (they are in the path) and also available in the release
 
-```./exec_in_devel.sh bash```
+```./exec.bash devel/release bash```
 
-```./exec_in_devel.sh hello_world```
+```./exec.bash devel/release hello_world```
 
-This can be used to execute specific executables from your workspace
+This can be used to execute specific executables from your workspace. Source the autocomplete.me script to enable autocompletion for the ./exec.bash script.
 
 
 ## Attach More Bashes or Start More Programs
 
-Each subsequent call to exec\_in\_devel is using the same container
+Each subsequent call to exec.bash is using the same container
 
-You can attach more bashes to the container using the exec\_in\_ command again
+You can attach more bashes to the container using the exec.bash command again
 
-```./exec_in_devel.sh /bin/bash```
-
-or 
-
-```./exec_in_devel.sh bash```
+```./exec.bash /bin/bash```
 
 ## Using iceccd in the container
 
@@ -139,40 +119,9 @@ You can edit code, compile and debug in your container from a host using the rem
 
 Another useful extension for vscode to work with Rock is the [rock extension](https://marketplace.visualstudio.com/items?itemName=rock-robotics.rock). This tool gives you access to the most common autoproj commands directly from the vscode interface.
 
-# Release Docker images with the results
-
-* build a release image containing the workspace
-   * readme in _image_setup/03_release_image_
-* build archives with image and scritps to deploy to others
-   * readme in _image_setup/04_save_release_
-
-
-# Upgrade Image
+## Upgrade Image
 
 Upgrades are detected automatically, only the workspace and home folders are preserved.
 Programs manually installed using apt are lost.
 
 You can docker pull images manually by executing ```update_workspace_images.bash```
-
-# Start Your own Project and Images
-
-In case you want to setup your own workspace image, please fork this repository into your group using the git web interface.
-This way, changes and updates can be tracked and updated more easily in both directions.
-
-* fork this repository to the new group
-* git clone it to your system, rename the repo name locally
-   * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
-* Edit the settings.bash with your project paramaters, the base iamges are most probably in the registry
-* Edit the image_setup/02_workspace_image/Dockerfile to install your workspace dependencies
-* If you want, edit/fill the setup_workspace script
-* build the workspace image
-   * docker push the image ```docker push <image_repository:tag>```
-* start setting up/building the workspace ```./exec_in_devel.sh /bin/bash```
-* build the release image
-   * docker push the image ```docker push <image_repository:tag>```
-* git push the changes to your fork of this repository
-
-Now others can clone this repository and directly call ```./exec_in_release.sh /bin/bash```.
-Docker will pull the release image automatically.
-
-
