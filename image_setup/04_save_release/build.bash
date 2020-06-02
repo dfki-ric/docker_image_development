@@ -23,13 +23,11 @@ mkdir -p ${PROJECT_NAME}_scripts_${DATE}
 cd ${PROJECT_NAME}_scripts_${DATE}
 cp ../../../docker_commands.bash ./
 cp ../../../settings.bash ./
-cp ../../../exec_in_release.bash ./
 cp ../../../exec.bash ./
 cp ../../../stop.bash ./
-echo "complete -W \"$(ls ../../../startscripts | xargs) /bin/bash\" ./exec_in_release.bash" > autocomplete.me
 
-echo "complete -W \"devel release $(ls ../../../startscripts | xargs) /bin/bash\" ./exec.bash" >> autocomplete.me
-echo "complete -W \"devel release\" ./stop.bash" >> autocomplete.me
+echo "complete -W \"$(ls ../../../startscripts | xargs) /bin/bash\" ./exec.bash" >> autocomplete.me
+
 
 cp ../Readme_scripts.md ./Readme.md
 
