@@ -21,9 +21,10 @@ RUN apt-get update && apt-get install -y \
     sudo \
     cmake \
     python3 \
-    python3-dev
+    python3-dev \
+    locales
 
-
+RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
 ADD ${INSTALL_SCRIPT} /opt/install.bash
 RUN chmod 755 /opt/install.bash
 RUN /opt/install.bash
