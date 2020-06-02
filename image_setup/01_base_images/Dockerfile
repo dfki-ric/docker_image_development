@@ -19,12 +19,12 @@ RUN apt-get update && apt-get install -y \
     wget \
     cmake \
     sudo \
-    build-essential \
     cmake \
-    python \
-    python-dev
+    python3 \
+    python3-dev \
+    locales
 
-
+RUN locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8
 ADD ${INSTALL_SCRIPT} /opt/install.bash
 RUN chmod 755 /opt/install.bash
 RUN /opt/install.bash

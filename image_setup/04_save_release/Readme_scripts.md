@@ -4,8 +4,8 @@
 
 # running
 
-`bash exec_in_release.bash bash` - run a bash inside the container
-`bash exec_in_release.bash hello_world` - a hello_world program
+`bash exec.bash bash` - run a bash inside the container
+`bash exec.bash hello_world` - a hello_world program
 
 # 3D acceleration
 
