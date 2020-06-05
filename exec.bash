@@ -16,8 +16,13 @@ if [ "$1" = "release" ]; then
     echo "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="release"
     shift
-
 fi
+
+if [ -z "$1" ]; then
+    echo "No run argument given. Using /bin/bash as default"
+    set -- "/bin/bash"
+fi
+
 
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
