@@ -57,7 +57,7 @@ CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-$EXECMODE-$FOLDER_MD5"}
 CONTAINER_ID_FILENAME=$EXECMODE-container_id.txt
 
 echo
-echo -e "\e[32musing $IMAGE_NAME\e[0m"
+echo -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"
 echo
 
 
