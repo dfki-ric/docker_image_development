@@ -73,3 +73,10 @@ if [ ! -z $NEW_ID ]; then
     echo -e "Remove created container with ID:\n    \e[4m$NEW_ID\e[0m"
     docker container rm $NEW_ID 2>&1 > /dev/null
 fi
+
+echo
+echo "If you don't need the release image anymore, you may delete it:"
+echo "docker rmi $IMAGE_NAME"
+echo
+
+
