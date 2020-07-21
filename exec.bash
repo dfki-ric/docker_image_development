@@ -18,6 +18,12 @@ if [ "$1" = "release" ]; then
     shift
 fi
 
+if [ "$1" = "base" ]; then
+    echo "overriding default execmode $DEFAULT_EXECMODE to: base"
+    EXECMODE="base"
+    shift
+fi
+
 if [ -z "$1" ]; then
     echo "No run argument given. Using /bin/bash as default"
     set -- "/bin/bash"
@@ -40,6 +46,10 @@ fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+fi
+if [ "$EXECMODE" == "base" ]; then
+    # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
+    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 fi
 
 #this flag defines if an interactive container (console inputs) is created ot not
