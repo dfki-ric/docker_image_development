@@ -29,6 +29,11 @@ export WORKSPACE_RELEASE_IMAGE=${PROJECT_NAME}/docker_development:release
 # like open ports, additinal mounts etc.
 # When you change this, you need to recreate the container
 # best way ist to delete the devel-container_id.txt and release-container_id
+# often used params:
+# --dns-search=dfki.uni-bremen.de
+# --net=host
+# --privileged
+# -v /dev/input/:/dev/input
 export ADDITIONAL_DOCKER_RUN_ARGS=" \
         --dns-search=dfki.uni-bremen.de \
         "
