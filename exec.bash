@@ -40,7 +40,6 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $HOST_WORKSPACE/startscripts:/opt/startscripts \
         -v $HOST_WORKSPACE/workspace/:/opt/workspace \
         -v $HOST_WORKSPACE/home/:/home/devel \
-        -v $HOST_WORKSPACE/image_setup/02_workspace_image/setup_workspace.bash:/opt/setup_workspace.bash
         "
 fi
 if [ "$EXECMODE" == "release" ]; then
@@ -52,7 +51,7 @@ if [ "$EXECMODE" == "base" ]; then
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
     HOST_WORKSPACE=$(pwd)
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
-        -v $HOST_WORKSPACE/image_setup/02_workspace_image/setup_workspace.bash:/opt/setup_workspace.bash
+        -v $HOST_WORKSPACE/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash
         "
 fi
 
