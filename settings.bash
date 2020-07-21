@@ -14,9 +14,9 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 
 # The base image used when building a workspace image (one of the ones build in base_images)
 
-# export WORKSPACE_BASE_IMAGE=docker_development/rock_master_18.04:latest # image with rock core dependencies installed
-# export WORKSPACE_BASE_IMAGE=docker_development/ros_melodic_18.04:latest # image with basic ros installed
-export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:latest # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=docker_development/rock_master_18.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=docker_development/ros_melodic_18.04:base # image with basic ros installed
+export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:base # plain image with build_essentials installed
 
 
 # The Name of the Workspace image to use
