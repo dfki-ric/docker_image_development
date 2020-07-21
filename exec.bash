@@ -40,8 +40,8 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $HOST_WORKSPACE/startscripts:/opt/startscripts \
         -v $HOST_WORKSPACE/workspace/:/opt/workspace \
         -v $HOST_WORKSPACE/home/:/home/devel \
+        -v $HOST_WORKSPACE/image_setup/02_workspace_image/setup_workspace.bash:/opt/setup_workspace.bash
         "
-                
 fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
@@ -50,6 +50,10 @@ fi
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
+    HOST_WORKSPACE=$(pwd)
+    ADDITIONAL_DOCKER_MOUNT_ARGS=" \
+        -v $HOST_WORKSPACE/image_setup/02_workspace_image/setup_workspace.bash:/opt/setup_workspace.bash
+        "
 fi
 
 #this flag defines if an interactive container (console inputs) is created ot not
