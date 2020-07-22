@@ -1,4 +1,4 @@
-# Build workspace image
+# Build devel image
 
 _WARNING: Before you can set up the workspace image, the base image has to be pushed._
 

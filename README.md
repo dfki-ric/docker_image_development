@@ -11,34 +11,35 @@ In order to check for available images you can browse the DFKI [internal registr
 # Running
 
 When the default execmode is set correctly, you can omit the mode (devel,release) after `./exec.bash`.
-When no command is given, exec.bash defaults to /bin/bash
+
+When no command is given after that, exec.bash defaults to /bin/bash
 
 * Clone this repository
-* Optional: Login to the docker registry containing the images (if not on dockerhub, or no registry available)
+* Login to the docker registry containing the images (if not on dockerhub and registry available)
 
 ## When a release image is available:
 
 * call `$> ./exec.bash release STARTSCRIPT`
- * STARTSCRIPT here is a script from the image, with a high probability of also being in the startscritps folder of this repo
- * The image will be pulled automatically
+  * STARTSCRIPT here is a script from the image, with a high probability of also being in the startscritps folder of this repo
+  * The image will be pulled automatically
 * Optional: call `$> source autocomplete.me` to have code completion after ./exec.bash
- * This will use the completion with the scripts in this repo, new scripts might nor be available inside the image
-  * Possibly reset this repo to the date of the release image to improve this situation
+  * This will use the completion with the scripts in this repo, new scripts might nor be available inside the image
+    * Possibly reset this repo to the date of the release image to improve this situation
 
 ## When no release image is available:
 
-In case you got a release as tar.gz file, load it locally using the instructions provided with the file.
+In case you got a release as tar.gz file, you can load the release locally using the instructions provided with the file.
 
 ### Use a devel image:
 
 In case you have to create a release image you can use a "devel image".
 
 * call `$> ./exec.bash devel`
- * follow the instructions on first start (most probably: call /opt/setup_workspace.bash)
- * this creates a mounted home and workspace folder in this folder
-   * they are mounted as the users home and /opt/workspace folders in the container
-   * you can edit files by using your host system and compile using the console created with `$> ./exec.bash devel`
-     * TIP: in case you are using VSCode also check out the "Remote - Containers" extension
+  * follow the instructions on first start (most probably: call /opt/setup_workspace.bash)
+  * this creates a mounted home and workspace folder in this folder
+    * they are mounted as the users home and /opt/workspace folders in the container
+    * you can edit files by using your host system and compile using the console created with `$> ./exec.bash devel`
+      * TIP: in case you are using VSCode also check out the "Remote - Containers" extension
    
 To create a release image, have a look at the [release image Readme](image_setup/03_release_image/Readme.md)!
 
@@ -50,27 +51,27 @@ You are the one initially creating the images for your project.
 
 ### Create a devel image
 
-   * fork this repo to your projects namespace or into a new group using the git web interface.
-     * This way, changes and updates can be tracked and updated more easily in both directions.
-   * clone your fork to your system into your desired folder
-     * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT_FOLDER
-   
-   * edit the settings.bash 
-     * set a new project name
-     * select the base image to use
-     * set your registry (empty if none)
+* fork this repo to your projects namespace or into a new group using the git web interface.
+  * This way, changes and updates can be tracked and updated more easily in both directions.
+* clone your fork to your system into your desired folder
+  * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT_FOLDER
 
-  * edit the image_setup/02_devel_image/setup_workspace.bash and make it work
-    * in the docker container is is mounted as /opt/setup_workspace.bash
-    * call `$> ./exec.bash base`
-     * call `bash /opt/setup_workspace.bash` to test your workspace setup (clone repos, etc.) until it works
-  * edit the image_setup/02_devel_image/Dockerfile
-   * Add all additionally installed packages to the apt-get line
-   * Add possibly needed commands needed to make your code run in this container
+* edit the settings.bash 
+  * set a new project name
+  * select the base image to use
+  * set your registry (empty if none)
+
+* edit the image_setup/02_devel_image/setup_workspace.bash and make it work
+  * in the docker container is is mounted as /opt/setup_workspace.bash
+  * call `$> ./exec.bash base`
+  * call `bash /opt/setup_workspace.bash` to test your workspace setup (clone repos, etc.) until it works
+* edit the image_setup/02_devel_image/Dockerfile
+* Add all additionally installed packages to the apt-get line
+* Add possibly needed commands needed to make your code run in this container
   
 To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md)!
 
-Change the default devel in settings.bash to release and push this repo
+* Change the default devel in settings.bash to release and push this repo
 
 ## When no base images are available:
 
