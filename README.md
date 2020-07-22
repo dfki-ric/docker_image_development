@@ -10,12 +10,18 @@ In order to check for available images you can browse the DFKI [internal registr
 
 # Running
 
-When the default execmode is set correctly, you can omit the mode (devel,release) after `./exec.bash`.
-
-When no command is given after that, exec.bash defaults to /bin/bash
-
 * Clone this repository
 * Login to the docker registry containing the images (if not on dockerhub and registry available)
+  * See [README_Docker.md](README_Docker.md)
+
+In order to initialize, run or attach to containers you will be using the `./exec.bash` script.
+You can use either base, devel or release as argument in order to determine which image you want to base your container on.
+Per default the exec.bash script will drop into a /bin/bash shell with the default mode set in the settings.bash if no other arguments are given.
+
+In order to pull images you need to be logged in at the docker registry.
+
+When the default execmode is set correctly in the settings.basg sctipt, you can omit the mode (devel,release) after `./exec.bash`.
+
 
 ## When a release image is available:
 
@@ -62,16 +68,17 @@ You are the one initially creating the images for your project.
   * set your registry (empty if none)
 
 * edit the image_setup/02_devel_image/setup_workspace.bash and make it work
-  * in the docker container is is mounted as /opt/setup_workspace.bash
+  * in the docker container it is mounted as /opt/setup_workspace.bash
   * call `$> ./exec.bash base`
   * call `bash /opt/setup_workspace.bash` to test your workspace setup (clone repos, etc.) until it works
 * edit the image_setup/02_devel_image/Dockerfile
-* Add all additionally installed packages to the apt-get line
-* Add possibly needed commands needed to make your code run in this container
+  * Add all additionally installed packages to the apt-get line
+    * for rock and ros there are helper scripts to determine the os dependencies of the workspace in the image\_setup/02\_devel_image\ folder. Copy them to your workspace if you want to use them.
+  * Add possibly needed commands needed to make your code run in this container
   
 To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md).
 
-* Change the default devel in settings.bash to release and push this repo
+* Change the default execmode in settings.bash to devel and push this repo
 
 ## When no base images are available:
 
@@ -86,10 +93,11 @@ Also see the [base image Readme](image_setup/01_base_images/Readme.md).
 
 
 # Distribute a release image Image
-* build archives with image and scripts to deploy to others
-   * readme in _image_setup/04_save_release_
 
-<br></br>
+You can build archives with image and scripts in order to deploy to targets that don not have access to your registry
+
+See the [save release Readme](image_setup/04_save_release/Readme.md).
+
 
 
 
@@ -99,7 +107,11 @@ Each subsequent call to exec.bash is using the same container
 
 You can attach more bashes to the container using the exec.bash command again
 
-```./exec.bash /bin/bash```
+```./exec.bash```
+
+```./exec.bash devel```
+
+etc.
 
 ## Updating an image from registry
 
