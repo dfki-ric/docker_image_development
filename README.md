@@ -73,7 +73,7 @@ You are the one initially creating the images for your project.
   * call `bash /opt/setup_workspace.bash` to test your workspace setup (clone repos, etc.) until it works
 * edit the image_setup/02_devel_image/Dockerfile
   * Add all additionally installed packages to the apt-get line
-    * for rock and ros there are helper scripts to determine the os dependencies of the workspace in the image\_setup/02\_devel_image\ folder. Copy them to your workspace if you want to use them.
+    * For rock and ros there are helper scripts to determine the os dependencies of the workspace in the image\_setup/02\_devel_image folder. Copy them to your workspace folder if you want to use them from the container.
   * Add possibly needed commands needed to make your code run in this container
   
 To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md).
