@@ -31,4 +31,4 @@ fi
 
 
 echo "pulling image ${IMAGE}"
-#docker pull $IMAGE
+docker pull $IMAGE
