@@ -69,7 +69,7 @@ You are the one initially creating the images for your project.
 * Add all additionally installed packages to the apt-get line
 * Add possibly needed commands needed to make your code run in this container
   
-To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md)!
+To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md).
 
 * Change the default devel in settings.bash to release and push this repo
 
@@ -81,8 +81,7 @@ You are the one initally creating the images for your registry, or you don't hav
 * call the build scritps you need base images for
 * if you have a registry, push them
 
-Also see the [base image Readme](image_setup/01_base_images/Readme.md)!
-
+Also see the [base image Readme](image_setup/01_base_images/Readme.md).
 
 
 
@@ -118,7 +117,7 @@ THe same happens when you update the image by pulling
 
 # Special Topics
 
-## Changing a release
+## Changing a release without devel folders
 In case you need to change parts of an existing release, you can:
 
 * extract a release to a devel workspace using the script in the tools folder
