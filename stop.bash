@@ -6,6 +6,10 @@ FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
 
 EXECMODE=$DEFAULT_EXECMODE
 
+if [ "$1" = "base" ]; then
+    EXECMODE="base"
+    shift
+fi
 if [ "$1" = "devel" ]; then
     EXECMODE="devel"
     shift
@@ -13,7 +17,6 @@ fi
 if [ "$1" = "release" ]; then
     EXECMODE="release"
     shift
-
 fi
 
 #use current folder name + $EXECMODE + path md5 as container name

@@ -1,5 +1,5 @@
 
-echo "If you have re-build the base image, it has to be pushed to the registry bebore the workspace image is build"
+echo "This will pull the most recent base image from the registry and overwrite your local base image"
 read -r -p "Are you sure to build now? [y/N] " response
 if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
 then

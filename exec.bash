@@ -18,16 +18,35 @@ if [ "$1" = "release" ]; then
     shift
 fi
 
+if [ "$1" = "base" ]; then
+    echo "overriding default execmode $DEFAULT_EXECMODE to: base"
+    EXECMODE="base"
+    shift
+fi
+
 if [ -z "$1" ]; then
     echo "No run argument given. Using /bin/bash as default"
     set -- "/bin/bash"
 fi
 
+if [ "$EXECMODE" == "base" ]; then
+    # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
+    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
+    HOST_WORKSPACE=$(pwd)
+    mkdir -p $HOST_WORKSPACE/workspace
+    mkdir -p $HOST_WORKSPACE/home
+    ADDITIONAL_DOCKER_MOUNT_ARGS=" \
+        -v $HOST_WORKSPACE/workspace/:/opt/workspace \
+        -v $HOST_WORKSPACE/home/:/home/devel \
+        -v $HOST_WORKSPACE/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash
+        "
+fi
 
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
     HOST_WORKSPACE=$(pwd)
+    #in case the devel image is pulled, we need the create the folders here
     mkdir -p $HOST_WORKSPACE/workspace
     mkdir -p $HOST_WORKSPACE/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
@@ -35,7 +54,6 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $HOST_WORKSPACE/workspace/:/opt/workspace \
         -v $HOST_WORKSPACE/home/:/home/devel \
         "
-                
 fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
@@ -44,6 +62,7 @@ fi
 
 #this flag defines if an interactive container (console inputs) is created ot not
 #if env already set, use external set value
+#you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
 
 

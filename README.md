@@ -8,69 +8,97 @@ The docker development is based on different docker image setup steps, some of w
 
 In order to check for available images you can browse the DFKI [internal registry](https://d-reg.hb.dfki.de/repositories) (Login required).
 
-## 01 Base Image
-**In case the required base image is already available in your registry, please jump to the 02 Workspace Image section.**
+# Running
 
-* build a base image for Rock or ROS (shared for all)
-   * readme in _image_setup/01_base_image_
+* Clone this repository
+* Login to the docker registry containing the images (if not on dockerhub and registry available)
+  * See [README_Docker.md](README_Docker.md)
 
-## 02 Workspace Image
+In order to initialize, run or attach to containers you will be using the `./exec.bash` script.
+You can use either base, devel or release as argument in order to determine which image you want to base your container on.
+Per default the exec.bash script will drop into a /bin/bash shell with the default mode set in the settings.bash if no other arguments are given.
 
-### Build Workspace Image
-**In case the required workspace image is available in your registry. Refer to the "Use Existing Workspace Image" subsection.**
+In order to pull images you need to be logged in at the docker registry.
+
+When the default execmode is set correctly in the settings.basg sctipt, you can omit the mode (devel,release) after `./exec.bash`.
+
+
+## When a release image is available:
+
+* call `$> ./exec.bash release STARTSCRIPT`
+  * STARTSCRIPT here is a script from the image, with a high probability of also being in the startscritps folder of this repo
+  * The image will be pulled automatically
+* Optional: call `$> source autocomplete.me` to have code completion after ./exec.bash
+  * This will use the completion with the scripts in this repo, new scripts might nor be available inside the image
+    * Possibly reset this repo to the date of the release image to improve this situation
+
+## When no release image is available:
+
+In case you got a release as tar.gz file, you can load the release locally using the instructions provided with the file.
+
+### Use a devel image:
+
+In case you have to create a release image you can use a "devel image".
+
+* call `$> ./exec.bash devel`
+  * follow the instructions on first start (most probably: call /opt/setup_workspace.bash)
+  * this creates a mounted home and workspace folder in this folder
+    * they are mounted as the users home and /opt/workspace folders in the container
+    * you can edit files by using your host system and compile using the console created with `$> ./exec.bash devel`
+      * TIP: in case you are using VSCode also check out the "Remote - Containers" extension
+   
+To create a release image, have a look at the [release image Readme](image_setup/03_release_image/Readme.md)!
+
+Change the default execmode in settings.bash to release and push this repo
+
+## When no devel image is available:
+
+You are the one initially creating the images for your project.
+
+### Create a devel image
+
 * fork this repo to your projects namespace or into a new group using the git web interface.
-   * This way, changes and updates can be tracked and updated more easily in both directions.
-* clone this repo to your system
-   * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
-* build a project specific workspace image with a mounted workspace, home and startscript folder
-   * readme in _image_setup/02_workspace_image_
-   * before you run a container, check and edit the settings.bash to configure your images!
-   * refer to the suggested development workflow in the readme in _image_setup/02_workspace_image_
-* git push the changes to your fork of this repository
-* docker push the image to the registry```docker push <image_repository:tag>```
+  * This way, changes and updates can be tracked and updated more easily in both directions.
+* clone your fork to your system into your desired folder
+  * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT_FOLDER
 
-### Use Existing Workspace Image
-**In case the required workspace image is already available in your registry it will automatically be pulled.**
-* git clone your project specific fork to your system
-   * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT
-* build the project specific workspace image (automatically pulled from registry & generate mounted workspace, home and startscript folder)
-   * readme in _image_setup/02_workspace_image_
-   * execute /opt/setup_workspace.bash to setup the workspace locally
+* edit the settings.bash 
+  * set a new project name
+  * select the base image to use
+  * set your registry (empty if none)
 
-## 03 Release Image
-**In case the required release image is already available in your registry it will automatically be pulled.**
-* build a release image containing the workspace
-   * readme in _image_setup/03_release_image_
-* docker push the image to the registry```docker push <image_repository:tag>```
+* edit the image_setup/02_devel_image/setup_workspace.bash and make it work
+  * in the docker container it is mounted as /opt/setup_workspace.bash
+  * call `$> ./exec.bash base`
+  * call `bash /opt/setup_workspace.bash` to test your workspace setup (clone repos, etc.) until it works
+* edit the image_setup/02_devel_image/Dockerfile
+  * Add all additionally installed packages to the apt-get line
+    * For rock and ros there are helper scripts to determine the os dependencies of the workspace in the image\_setup/02\_devel_image folder. Copy them to your workspace folder if you want to use them from the container.
+  * Add possibly needed commands needed to make your code run in this container
+  
+To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md).
+
+* Change the default execmode in settings.bash to devel and push this repo
+
+## When no base images are available:
+
+You are the one initally creating the images for your registry, or you don't have one
+
+* go to the image_setup/01_base_images folder
+* call the build scritps you need base images for
+* if you have a registry, push them
+
+Also see the [base image Readme](image_setup/01_base_images/Readme.md).
 
 
-## 04 Distribute Image
-* build archives with image and scripts to deploy to others
-   * readme in _image_setup/04_save_release_
 
-<br></br>
+# Distribute a release image Image
 
-# Working with the Images
+You can build archives with image and scripts in order to deploy to targets that don not have access to your registry
 
-## Start Container
+See the [save release Readme](image_setup/04_save_release/Readme.md).
 
-You can start the workspace in devel or release mode. Default is set in your setting.bash and can be overwritten by passing devel/release as argument.
 
-* call ```./exec.bash /bin/bash```
-* or ```./exec.bash devel /bin/bash```
-* or ```./exec.bash release /bin/bash```
- 
-  * In case a release image is available in your registry, it will be automatically pulled and launched
-
-Now you can run programs as you like
-
-Or you execute a startscript from the startscripts folder (they are in the path) and also available in the release
-
-```./exec.bash devel/release bash```
-
-```./exec.bash devel/release hello_world```
-
-This can be used to execute specific executables from your workspace. Source the autocomplete.me script to enable autocompletion for the ./exec.bash script.
 
 
 ## Attach More Bashes or Start More Programs
@@ -79,7 +107,40 @@ Each subsequent call to exec.bash is using the same container
 
 You can attach more bashes to the container using the exec.bash command again
 
-```./exec.bash /bin/bash```
+```./exec.bash```
+
+```./exec.bash devel```
+
+etc.
+
+## Updating an image from registry
+
+You can cd into the tools folder andf call `update_image.bash` this updated the image of the current default exec mode.
+Call `update_image.bash [base|devel|release]` to update other images
+
+## Refreshing the container
+
+This should not be needed, but is somtimes requires for testing.
+The easiest way is to delete the accorting *-container_id.txt file.
+The container will be re-created on the next call of exec.
+
+THe same happens when you update the image by pulling
+
+
+# Special Topics
+
+## Changing a release without devel folders
+In case you need to change parts of an existing release, you can:
+
+* extract a release to a devel workspace using the script in the tools folder
+   * You need to generate a devel image or have access to it in the registry
+   * change the default execmode or use `./exec.bash devel`
+   * use the devel mode to do the changes
+   * build a new release
+* Edit the code within the container
+  *  Changes are lost when the container is deleted/refreshed or "docker commit"the changes
+
+
 
 ## Using iceccd in the container
 
@@ -109,19 +170,8 @@ sudo service iceccd restart
 
 It should be possible to have more complex setups for the iceccd in containers/hosts. So that not necessarily the host has to stop using icecc or multiple container can make use of it.
 
-## Using gdb in the container
-
-For gdb to be usable in your container, you can use the flag  `--priviledged` [source](https://hub.docker.com/r/andyneff/hello-world-gdb).
-
 ## Programming in a Rock environemnt with Docker and VScode
 
 You can edit code, compile and debug in your container from a host using the remote development package from VScode. Once you have your container created and visual studio with the [remote development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed in your host you can access your containers for development with this extension.
 
 Another useful extension for vscode to work with Rock is the [rock extension](https://marketplace.visualstudio.com/items?itemName=rock-robotics.rock). This tool gives you access to the most common autoproj commands directly from the vscode interface.
-
-## Upgrade Image
-
-Upgrades are detected automatically, only the workspace and home folders are preserved.
-Programs manually installed using apt are lost.
-
-You can docker pull images manually by executing ```update_workspace_images.bash```
