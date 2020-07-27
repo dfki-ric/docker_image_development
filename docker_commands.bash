@@ -16,7 +16,7 @@ fi
 GPUS_SETTINGS_FILE="has_gpu_support.txt"
 if [ ! -f $GPUS_SETTINGS_FILE ]; then
     touch $GPUS_SETTINGS_FILE
-    docker run --gpus=all hello-world > /dev/null
+    docker run --gpus=all --rm hello-world > /dev/null
     echo $? > $GPUS_SETTINGS_FILE
 fi
 HAS_GPU_SUPPORT=$(cat $GPUS_SETTINGS_FILE)
