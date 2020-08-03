@@ -28,6 +28,9 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
+
+ENV SHELL /bin/bash
+
 ADD ${INSTALL_SCRIPT} /opt/install.bash
 RUN chmod 755 /opt/install.bash
 RUN /opt/install.bash
