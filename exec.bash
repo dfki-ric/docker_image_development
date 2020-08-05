@@ -60,6 +60,13 @@ if [ "$EXECMODE" == "release" ]; then
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 fi
 
+if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
+    echo
+    echo pulling image: $IMAGE_NAME
+    echo
+    docker pull $IMAGE_NAME
+fi
+
 #this flag defines if an interactive container (console inputs) is created ot not
 #if env already set, use external set value
 #you can use this if your console does not support inputs (e.g. a jenkins build job)

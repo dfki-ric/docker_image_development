@@ -7,8 +7,9 @@ export TAG=$(date +%Y_%m_%d-%H_%M)
 export HOST=$(hostname)
 export DEVEL_IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
 
-#do not pull for release, use the local image
-#docker pull $BASE_IMAGE_NAME
+if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
+    #do not pull for release, use the local image, as the release should be based on the exact same devel image
+fi
 
 RELEASE_IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 echo "Buidling release image: ${RELEASE_IMAGE_NAME}_$TAG by $USER on $HOST Date: $DATE"
