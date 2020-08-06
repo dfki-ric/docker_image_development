@@ -1,0 +1,12 @@
+home/.ssh/
+home/.ddd/
+
+#vscode remopte-container plugin
+home/.vscode-server/
+home/.cache/vscode-cpptools/
+
+#ros specifics
+home/.gazebo/
+home/.ignition/
+home/.ros/
+home/.rviz/
