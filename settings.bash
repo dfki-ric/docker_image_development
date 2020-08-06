@@ -6,6 +6,9 @@ export PROJECT_NAME=docker_development
 # URL path to your docker registry, leave blank if you don't have one
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
 
+#should exec and build scripts auto-pull updated images from the registry?
+export DOCKER_REGISTRY_AUTOPULL=false
+
 # The default release mode to use if no mode paramater is given to ./exec or ./stop
 # The checked in version should reflect the image status and be the highest availale image (base - devel - release)
 export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
