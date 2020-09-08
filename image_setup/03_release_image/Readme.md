@@ -1,9 +1,7 @@
 # Build Release Image
 
-When you need to save your workspace state, you can create a release image.
+Release images are created from a fully initialized devel image by copying the mounted host directories into the container. 
 
-You don't need to edit the Dockerfile, all it does is to copy the previously mounted folders into the image.
+In order to achieve this, ou just execute the `build.sh` located here and push the newly generated image to your registry as desired.
 
-Just execute the build.sh and push the images
-
-
+There is no need to edit the Dockerfile here. The script just copies the folders that were mounted by the devel container into the newly created image.
