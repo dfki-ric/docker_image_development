@@ -31,10 +31,3 @@ fi
 if [ ! -f /initialized_uid ]; then
     touch "/initialized_uid"
 fi
-
-#git config --global user.email VR-Lab-devel@dfki.de
-#git config --global user.name "devel"
-#git config --global  credential.helper 'cache'
-#cd /opt/devel
-#source /opt/ros/melodic/setup.sh
- 

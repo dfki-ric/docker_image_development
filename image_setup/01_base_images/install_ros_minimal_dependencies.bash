@@ -22,6 +22,6 @@ apt-get update && apt-get install -y \
     python-catkin-tools
 
 
-rosdep init && rosdep update
+#rosdep init && rosdep update
 
 

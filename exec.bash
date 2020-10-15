@@ -3,7 +3,7 @@
 xhost +local:root
 
 . ./docker_commands.bash
-. ./settings.bash
+
 
 EXECMODE=$DEFAULT_EXECMODE
 
@@ -31,7 +31,7 @@ fi
 
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
+    IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
     HOST_WORKSPACE=$(pwd)
     mkdir -p $HOST_WORKSPACE/workspace
     mkdir -p $HOST_WORKSPACE/home
@@ -44,7 +44,7 @@ fi
 
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
+    IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
     HOST_WORKSPACE=$(pwd)
     #in case the devel image is pulled, we need the create the folders here
     mkdir -p $HOST_WORKSPACE/workspace
@@ -57,7 +57,7 @@ if [ "$EXECMODE" = "devel" ]; then
 fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+    IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
