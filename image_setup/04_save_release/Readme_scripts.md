@@ -1,23 +1,26 @@
-# Load image into docker
+## Preparation
 
-`docker load < dockerimage.tar.gz`
+You need to install Docker and (optional) Nvidia hardware graphics acceleration for Docker. See separate Readme_Docker.md file.
 
-# running
+## Load Image Into Docker
 
-`bash exec.bash bash` - run a bash inside the container
-`bash exec.bash hello_world` - a hello_world program
+Load the provided Docker image, to enable containers to run the functionality this package provides:
 
-# 3D acceleration
+    docker load < <provided image.tar.gz file>
 
-When you have nvidia-docker running, the image supports 3d acceleration
+## Run Provided Commands in Docker Container
 
-To enable 3d acceleration, install it based on htis instructions:
+Unpack the provided scripts archive.
 
-https://github.com/NVIDIA/nvidia-docker
+Run commands:
 
-IMPORTANT: The install howto of nvidia-docker also states that you need docker 19.03 from docker.com
-as long this version is not in the ubuntu sources
+ * `./exec.bash` : Attach a new shell (bash) to the container
+ * `./exec.bash hello_world` : An example entry for a custom start script
+ * TODO: provide project-specific documentation for users of the package
 
-IMPORTANT: In order to allpy new settings (like 3d Acceleration), the container and saved settings have to be reset: `rm -rf has_gpu_support.txt release-container_id.txt`
+You can activate autocompletion hints for `./exec.bash` scripts arguments by running
+
+    $ source autocomplete.me
+    $ ./exec.bash [double-tap tab key]
 
 

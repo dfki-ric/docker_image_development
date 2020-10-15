@@ -1,8 +1,9 @@
 #!/bin/bash
 
-IMAGE_NAME=d-reg.hb.dfki.de/docker_development/plain_20.04
+. ../../settings.bash
+export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}docker_development/plain_20.04
 
-export BASE_IMAGE=ubuntu:20.04
+export BASE_IMAGE=nvidia/opengl:1.0-glvnd-devel-ubuntu20.04
 export INSTALL_SCRIPT=install_plain_dependencies.bash
 
 docker pull $BASE_IMAGE

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-IMAGE_NAME=d-reg.hb.dfki.de/docker_development/rock_master_18.04
+. ../../settings.bash
+export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}docker_development/rock_master_18.04
 
 export BASE_IMAGE=nvidia/opengl:1.0-glvnd-devel-ubuntu18.04
 export INSTALL_SCRIPT=install_rock_dependencies.bash

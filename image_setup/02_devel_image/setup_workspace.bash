@@ -6,7 +6,7 @@
 set -e
 
 echo
-echo -e "\e[33mworkspace init not set up\e[0m"
+echo -e "\e[33mworkspace init not set up, please inititialize it manually\e[0m"
 echo 
 
 
@@ -15,7 +15,7 @@ echo
 # ROCK BUILDCONF EXAMPLE
 #
 #if [ ! -d /opt/workspace/rock_ws ]; then
-#    echo -e "\e[32m[INFO] First start: setting up the mantis workspace.\e[0m"
+#    echo -e "\e[32m[INFO] First start: setting up the workspace.\e[0m"
 #
 #    # init workspace dir
 #    mkdir -p /opt/workspace/rock_ws
@@ -28,7 +28,7 @@ echo
 #
 #    # setup ws using autoproj
 #    wget rock-robotics.org/autoproj_bootstrap
-#    ruby autoproj_bootstrap git https://git.hb.dfki.de/mantis/buildconf.git branch=master
+#    ruby autoproj_bootstrap git <BUILDCONF_URL> branch=master
 #    source env.sh
 #    aup
 #    amake
@@ -57,7 +57,7 @@ echo
 #    git config --global user.name "Image Builder"
 #    git config --global user.email "image@builder.me"
 #    git config --global credential.helper cache
-#    ruby autoproj_bootstrap git https://git.hb.dfki.de/mare-it/buildconf
+#    ruby autoproj_bootstrap git <BUILDCONF_URL> branch=master
 #    . env.sh
 #    aup
 #    cd /opt/workspace

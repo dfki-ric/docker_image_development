@@ -1,33 +1,38 @@
 #!/bin/bash
 
+. ./settings.bash
+
 DNSIP=$(nmcli dev show | grep 'IP4.DNS' | grep "\[1\]" | egrep -oe "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}" | head -n 1)
 
-#detect if nvidia runtime is available
-RUNTIMES=$(docker info | grep "Runtimes:")
-if [[ $RUNTIMES == *"nvidia"* ]]; then
-    echo "has nvidia runtime"
-    RUNTIME_ARG="--runtime=nvidia"
-else
-    echo "has no nvidia runtime, hardware acceleration not available"
-    RUNTIME_ARG=""
-fi
-
-#detect if gpus command is supoiorted and working from docker 19.03
-GPUS_SETTINGS_FILE="has_gpu_support.txt"
-if [ ! -f $GPUS_SETTINGS_FILE ]; then
-    touch $GPUS_SETTINGS_FILE
-    docker run --gpus=all --rm hello-world > /dev/null
-    echo $? > $GPUS_SETTINGS_FILE
-fi
-HAS_GPU_SUPPORT=$(cat $GPUS_SETTINGS_FILE)
-
-if [[ $HAS_GPU_SUPPORT = "0" ]]; then
-    echo "supports gpu setting, hardware acceleration enabled"
-    RUNTIME_ARG="--gpus all"
-fi
-
-
 init_docker(){
+
+    #detect if nvidia runtime is available
+    RUNTIMES=$(docker info | grep "Runtimes:")
+    if [[ $RUNTIMES == *"nvidia"* ]]; then
+        echo "has nvidia runtime"
+        RUNTIME_ARG="--runtime=nvidia"
+    else
+        echo "deprecated nvidia-docker2 hardware acceleration not available, testing newer docker --gpu setting"
+        RUNTIME_ARG=""
+    fi
+
+    #detect if gpus command is supported and working from docker 19.03
+    GPUS_SETTINGS_FILE="has_gpu_support.txt"
+    if [ ! -f $GPUS_SETTINGS_FILE ]; then
+        touch $GPUS_SETTINGS_FILE
+        docker run --gpus=all --rm $IMAGE_NAME > /dev/null
+        GPU_SUPPORTED=$?
+        echo "this file contains the gegerated result of testing the docker --gpu setting, 0=enabled, 1=disabled" > $GPUS_SETTINGS_FILE
+        echo $GPU_SUPPORTED >> $GPUS_SETTINGS_FILE        
+    fi
+    HAS_GPU_SUPPORT=$(tail -n1 $GPUS_SETTINGS_FILE)
+
+    if [[ $HAS_GPU_SUPPORT = "0" ]]; then
+        echo "docker supports --gpu setting, hardware acceleration enabled"
+        RUNTIME_ARG="--gpus all"
+    else
+        echo "hardware acceleration disabled"
+    fi
 
     if [ "$1" = "noninteractive" ]; then
         INTERACTIVE="false"
@@ -76,7 +81,7 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nontheless when called later without command
-    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS $IMAGE_NAME
+    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS $IMAGE_NAME || exit 1
     # default container exists after initial run
 
     echo "docker start $CONTAINER_NAME"
