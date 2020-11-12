@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
-export PROJECT_NAME=docker_development
+export PROJECT_NAME=docker_image_development
 
 # path to your docker registry, leave blank if you don't have one
-# e.g. my.registry.com
-export DOCKER_REGISTRY=
+# e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
+export DOCKER_REGISTRY=ghcr.io/dfki-ric
 
-# in case you are not using a single registry, you can but images in different one
+# in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
 export BASE_REGISTRY=$DOCKER_REGISTRY
 export DEVEL_REGISTRY=$DOCKER_REGISTRY
@@ -23,18 +23,18 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 # export DEFAULT_EXECMODE="release" # use the release as default
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
-# export WORKSPACE_BASE_IMAGE=docker_development/rock_master_18.04:base # image with rock core dependencies installed
-# export WORKSPACE_BASE_IMAGE=docker_development/ros_melodic_18.04:base # image with basic ros installed
-# export WORKSPACE_BASE_IMAGE=docker_development/plain_20.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=docker_image_development/rock_master_18.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=docker_image_development/ros_melodic_18.04:base # image with basic ros installed
+# export WORKSPACE_BASE_IMAGE=docker_image_development/plain_20.04:base # plain image with build_essentials installed
+export WORKSPACE_BASE_IMAGE=docker_image_development/plain_18.04:base # plain image with build_essentials installed
 
 
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
-# e.g MY_PROJECT/docker_development:devel
+# e.g MY_PROJECT/docker_image_development:devel
 # under normal circumstances you should not need to change these
-export WORKSPACE_DEVEL_IMAGE=${PROJECT_NAME}/docker_development:devel
-export WORKSPACE_RELEASE_IMAGE=${PROJECT_NAME}/docker_development:release
+export WORKSPACE_DEVEL_IMAGE=${PROJECT_NAME}/docker_image_development:devel
+export WORKSPACE_RELEASE_IMAGE=${PROJECT_NAME}/docker_image_development:release
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
