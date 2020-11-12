@@ -1,4 +1,4 @@
-# Docker Development 
+# Docker Image Development 
 
 This is a collection of scripts that enables a development process using docker images.
 
