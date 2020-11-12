@@ -3,8 +3,9 @@
 # set a project name, no empty spaces or special characters allowed
 export PROJECT_NAME=docker_development
 
-# URL path to your docker registry, leave blank if you don't have one
-export DOCKER_REGISTRY=d-reg.hb.dfki.de
+# path to your docker registry, leave blank if you don't have one
+# e.g. my.registry.com
+export DOCKER_REGISTRY=
 
 # in case you are not using a single registry, you can but images in different one
 # e.g. store base images on hub.docker.com and others in a local registry
