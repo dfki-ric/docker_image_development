@@ -33,8 +33,8 @@ export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with
 # you should add a workspace name folder and a image name
 # e.g MY_PROJECT/docker_image_development:devel
 # under normal circumstances you should not need to change these
-export WORKSPACE_DEVEL_IMAGE=${PROJECT_NAME}/docker_image_development:devel
-export WORKSPACE_RELEASE_IMAGE=${PROJECT_NAME}/docker_image_development:release
+export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
+export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
