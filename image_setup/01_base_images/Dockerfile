@@ -3,6 +3,7 @@ ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
 ARG INSTALL_SCRIPT
+ARG INSTALL_ARGS
 
 
 LABEL version="0.1"
@@ -33,7 +34,7 @@ ENV SHELL /bin/bash
 
 ADD ${INSTALL_SCRIPT} /opt/install.bash
 RUN chmod 755 /opt/install.bash
-RUN /opt/install.bash
+RUN /opt/install.bash ${INSTALL_ARGS}
 
 
 ADD init_user_id.bash /opt/init_user_id.bash
