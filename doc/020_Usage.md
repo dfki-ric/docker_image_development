@@ -16,7 +16,7 @@ You can use either `base`, `devel` or `release` as argument in order to determin
 Normally the exec.bash script will drop into a /bin/bash shell with the default mode set in the settings.bash if no other arguments are given.
 Each subsequent call to `./exec.bash` is opening a new console attached to the same running container.
 
-If the requested image is not yet available locally, it will be pulled from the docker registry (you need to be logged in to the registry at that time).
+If the requested image is not yet available locally, it will be pulled from the docker registry. Docker hub is the default registry. For certain images or other registries you might need to login at this point (`docker login <registry>`).
 
 
 ### Run Commands or Start Scripts in the Docker Container

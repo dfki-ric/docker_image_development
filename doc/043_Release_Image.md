@@ -2,7 +2,7 @@
 
 ### Run From a Release Image via Docker Registry
 
-Make sure you have access to the Docker registry if you don't already have pulled the image (VPN, Login).
+Make sure you have access to the Docker registry if you haven't already pulled the image (might require docker login and potentially a VPN connection).
 Make sure that you use the exec mode `release`.
 
 Just follow the generic instructions given in the [docker_usage](doc/020_Usage.md) for attaching to a container and running commands in it.
