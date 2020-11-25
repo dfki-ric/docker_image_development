@@ -4,8 +4,6 @@
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update && apt-get install -y \
- ruby \
- ruby-dev \
  autoconf \
  automake \
  avahi-daemon \
@@ -50,5 +48,7 @@ apt-get update && apt-get install -y \
  qt4-designer \
  qt4-qmake \
  rake \
+ ruby \
  ruby-activesupport \
+ ruby-dev \
  ruby-thor
