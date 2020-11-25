@@ -80,7 +80,7 @@ generate_container(){
     echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
 
     #initial run exits no matter what due to entrypoint (user id settings)
-    #/bin/bash will be default nontheless when called later without command
+    #/bin/bash will be default nonetheless when called later without command
     docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS $IMAGE_NAME || exit 1
     # default container exists after initial run
 

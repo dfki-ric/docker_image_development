@@ -1,6 +1,6 @@
 ## Base Images
 
-Normally, base images are already existing in a docker registry, so you only have to re-generate them if they need to be updated.
+Normally, base images are already existing on docker hub, so you only have to re-generate them if they need to be updated.
 
 These images provide basic common functionality for docker development:
 

@@ -28,7 +28,7 @@ IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 if [ "$(docker image inspect $IMAGE_NAME 2> /dev/null)" == "[]" ]; then
     echo -e "Could not find the requested release image:\n    \e[4m$IMAGE_NAME\e[0m"
     echo -e "Trying to pull image from registry: $DOCKER_REGISTRY"
-    docker login $DOCKER_REGISTRY || (echo -e "\n[HINT] Ensure VPN connection in order to contact registry!"; exit 1)
+#    docker login $DOCKER_REGISTRY || (echo -e "\n[HINT] Ensure VPN connection in order to contact registry!"; exit 1)
     docker pull $IMAGE_NAME
     if [ "$?" -ne "0" ]; then
         echo -e "\e[33mPulling docker image from registry failed!\e[0m"

@@ -8,7 +8,7 @@ The devel images contain project specific libraries and can be pushed to the reg
 ### Run From a Devel Image
 
 Just follow the instructions given in [docker usage](doc/020_Usage.md) for using a container and running commands in it.
-Make sure you have access to the Docker registry if you haven't already pulled the image (VPN, docker login).
+Make sure you have access to the Docker registry if you haven't already pulled the image (might require docker login and potentially a VPN connection).
 Make sure that you use the exec mode `devel` (in your settings.bash or as argument to exec.bash).
 
 The devel image is pulled with only the dependencies of the workspace installed.
