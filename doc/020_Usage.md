@@ -46,7 +46,7 @@ IMPORTANT: In order to apply new settings (like 3d acceleration, or new ADDITION
 
 ### Advanced
 
-For more advanced topics, see the [advanced topics readme](doc/030_Advanced_Topics.md).
+For more advanced topics, see the [advanced topics readme](030_Advanced_Topics.md).
 
 # Image setup
 
@@ -56,23 +56,23 @@ In case you don't have a registry or your registry does not contain the image, y
 
 Base images contain the basic dependencies for several projects.
 
-If you need to create them, please look at the [base image readme](doc/041_Base_Image.md).
+If you need to create them, please look at the [base image readme](041_Base_Image.md).
 
 ## Devel Images
 
 Devel images should contain project specific dependencies.
 
-If you are a developer using docker_development, please have a look at the [devel image readme](doc/042_Devel_Image.md).
+If you are a developer using docker_development, please have a look at the [devel image readme](042_Devel_Image.md).
 
 ## Release Images
 
 Release images are ready to run, if you already have one, just start it using `./exec.bash` with the correct parameters (see "General Usage").
 
-Please have a look at the [release image readme](doc/043_Release_Image.md).
+Please have a look at the [release image readme](043_Release_Image.md).
 
 ## Exported Images
 
 Release Images can be exported as .tar.gz file and a run sripts .tar.gz file which can be imported an run on another PC.
 
-See [export image readme](doc/044_Export_Image.md).
+See [export image readme](044_Export_Image.md).
 
