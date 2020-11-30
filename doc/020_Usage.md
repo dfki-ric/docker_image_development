@@ -2,7 +2,7 @@
 
 ## Preparation
 
-Please install Docker according to the [docker readme](doc/010_Setup_Docker.md).
+Please install Docker according to the [docker readme](010_Setup_Docker.md).
 
 ## General Usage
 
