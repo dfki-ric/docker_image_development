@@ -14,16 +14,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # general requirements
 RUN apt-get update && apt-get install -y \
-    build-essential \
     apt-utils \
+    build-essential \
+    cmake \
     git \
-    wget \
-    cmake \
-    sudo \
-    cmake \
+    locales \
     python3 \
     python3-dev \
-    locales
+    sudo \
+    wget 
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8  
