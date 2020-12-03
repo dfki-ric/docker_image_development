@@ -47,3 +47,9 @@ export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 # --privileged
 # -v /dev/input/:/dev/input
 export ADDITIONAL_DOCKER_RUN_ARGS=""
+
+# set desired processor architecture for image build
+# available architectures on docker hub: https://github.com/docker-library/official-images#architectures-other-than-amd64
+# default: x86_64
+# supported alternatives: arm64v8
+export ARCH="arm64v8"

@@ -22,7 +22,7 @@ init_docker(){
         touch $GPUS_SETTINGS_FILE
         docker run --gpus=all --rm $IMAGE_NAME > /dev/null
         GPU_SUPPORTED=$?
-        echo "this file contains the gegerated result of testing the docker --gpu setting, 0=enabled, 1=disabled" > $GPUS_SETTINGS_FILE
+        echo "this file contains the generated result of testing the docker --gpu setting, 0=enabled, 1=disabled" > $GPUS_SETTINGS_FILE
         echo $GPU_SUPPORTED >> $GPUS_SETTINGS_FILE        
     fi
     HAS_GPU_SUPPORT=$(tail -n1 $GPUS_SETTINGS_FILE)

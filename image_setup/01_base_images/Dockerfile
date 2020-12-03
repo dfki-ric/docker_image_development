@@ -38,13 +38,13 @@ RUN /opt/install.bash ${INSTALL_ARGS}
 
 ADD init_user_id.bash /opt/init_user_id.bash
 
-# create user (usermod -u UID username will be used later to maybe adapt UID on fitst start).
+# create user (usermod -u UID username will be used later to maybe adapt UID on first start).
 # using salted password: openssl passwd -1 -salt xyz  yourpass    # pw UserRos
 # RUN useradd -m -U -p '$1$xyz$pzVfEx0ZWLPizymvlx2P70' -G sudo,users rosuser
 RUN groupadd devel-group
 RUN useradd --shell /bin/bash -c "development user" -m -G devel-group devel
 
-# set user sudoers previlege for start script (w/o password), the /opt/init_user_id.bash script
+# set user sudoers privilege for start script (w/o password), the /opt/init_user_id.bash script
 # is using NUID and NGID environment variables, but ist executed by the user using sudo, so these vars have to be kept
 RUN echo "devel ALL=(ALL) NOPASSWD: ALL \
     \nDefaults        env_keep += \"NUID\" \
