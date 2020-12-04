@@ -9,6 +9,9 @@ if [ $ARCH == "x86_64" ]; then
 elif [ $ARCH == "arm64v8" ]; then
     export BASE_IMAGE=arm64v8/ubuntu:bionic
     echo "Building for arm64v8 processor. Using $BASE_IMAGE as base image."
+elif [ $ARCH == "arm32v7" ]; then
+    export BASE_IMAGE=arm32v7/ubuntu:bionic
+    echo "Building for arm32v7 processor. Using $BASE_IMAGE as base image."
 else
     echo -e "[ERROR] The processor architecture you selected ($ARCH) is not supported." && exit 1
 fi

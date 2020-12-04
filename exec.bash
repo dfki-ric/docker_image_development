@@ -32,6 +32,7 @@ fi
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
+    [ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
     HOST_WORKSPACE=$(pwd)
     mkdir -p $HOST_WORKSPACE/workspace
     mkdir -p $HOST_WORKSPACE/home
@@ -45,6 +46,7 @@ fi
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
+    [ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
     HOST_WORKSPACE=$(pwd)
     #in case the devel image is pulled, we need the create the folders here
     mkdir -p $HOST_WORKSPACE/workspace
@@ -58,6 +60,7 @@ fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+    [ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
