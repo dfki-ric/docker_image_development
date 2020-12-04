@@ -12,10 +12,11 @@ export DATE=$(date +%Y_%m_%d-%H_%M)
 PROJECT_NAME_NO_SUBFOLDER=${PROJECT_NAME//\//_}
 
 IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+[ "$ARCH" != "x86_64" ] && IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
 SCRIPTFOLDER=${PROJECT_NAME_NO_SUBFOLDER}_scripts_${DATE}
 
 mkdir -p $SCRIPTFOLDER
-#build a scripts zip:
+# build a scripts zip:
 echo "creating scripts archive: $SCRIPTFOLDER.tar.gz"
 cp ../../docker_commands.bash ./$SCRIPTFOLDER/
 cp ../../settings.bash ./$SCRIPTFOLDER/
