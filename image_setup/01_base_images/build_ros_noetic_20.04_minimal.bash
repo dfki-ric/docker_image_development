@@ -14,8 +14,9 @@ else
 fi
 
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/ros_noetic_20.04_minimal
-[ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
 export INSTALL_SCRIPT=install_ros_minimal_dependencies.bash
+[ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
+[ "$ARCH" != "x86_64" ] && export INSTALL_SCRIPT=$ARCH/$INSTALL_SCRIPT
 export INSTALL_ARGS=noetic
 
 docker pull $BASE_IMAGE

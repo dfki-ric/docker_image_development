@@ -11,8 +11,9 @@ else
 fi
 
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/ros_melodic_18.04
-[ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
 export INSTALL_SCRIPT=install_ros_dependencies.bash
+[ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
+[ "$ARCH" != "x86_64" ] && export INSTALL_SCRIPT=$ARCH/$INSTALL_SCRIPT
 
 docker pull $BASE_IMAGE
 docker build --no-cache -f Dockerfile -t $IMAGE_NAME:base --build-arg BASE_IMAGE --build-arg INSTALL_SCRIPT .
