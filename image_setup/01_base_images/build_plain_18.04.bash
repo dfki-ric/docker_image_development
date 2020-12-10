@@ -6,12 +6,9 @@
 if [ $ARCH == "x86_64" ]; then
     export BASE_IMAGE=nvidia/opengl:1.0-glvnd-devel-ubuntu18.04
     echo "Building for x86_64 processor. Using $BASE_IMAGE as base image."
-elif [ $ARCH == "arm64v8" ]; then
-    export BASE_IMAGE=arm64v8/ubuntu:bionic
-    echo "Building for arm64v8 processor. Using $BASE_IMAGE as base image."
-elif [ $ARCH == "arm32v7" ]; then
-    export BASE_IMAGE=arm32v7/ubuntu:bionic
-    echo "Building for arm32v7 processor. Using $BASE_IMAGE as base image."
+elif [ $ARCH == "arm64v8" ] || [ $ARCH == "arm32v7" ]; then
+    export BASE_IMAGE=$ARCH/ubuntu:bionic
+    echo "Building for $ARCH processor. Using $BASE_IMAGE as base image."
 else
     echo -e "[ERROR] The processor architecture you selected ($ARCH) is not supported." && exit 1
 fi
