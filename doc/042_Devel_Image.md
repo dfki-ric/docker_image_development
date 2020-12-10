@@ -58,7 +58,7 @@ Afterwards you edit the `settings.bash` in order to
   * select the base image to use,
   * set your registry (empty if none).
 
-Now you can make the first attempt to build the new image, using `bash build.sh`. Without changes to the Dockerfile, this will be equal to the base image.
+Now you can make the first attempt to build the new image, using `bash build.bash`. Without changes to the Dockerfile, this will be equal to the base image.
 This is useful to see if the general process is working, and to proceed initializing the workspace within the newly generated container (try to run `bash exec.bash` too).
 
 
