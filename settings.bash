@@ -28,11 +28,11 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 export ARCH="arm64v8"
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
-# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}rock_master_18.04:base # image with rock core dependencies installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}ros_melodic_18.04:base # image with basic ros melodic installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+$ARCH/}rock_master_18.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+$ARCH/}ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+$ARCH/}ros_noetic_20.04:base # image with basic ros noetic installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}plain_20.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}plain_18.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+$ARCH/}plain_20.04:base # plain image with build_essentials installed
+export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+$ARCH/}plain_18.04:base # plain image with build_essentials installed
 
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
