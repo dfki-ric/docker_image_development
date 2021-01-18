@@ -32,7 +32,6 @@ fi
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
-    [ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
     HOST_WORKSPACE=$(pwd)
     mkdir -p $HOST_WORKSPACE/workspace
     mkdir -p $HOST_WORKSPACE/home
@@ -46,7 +45,6 @@ fi
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
-    [ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
     HOST_WORKSPACE=$(pwd)
     #in case the devel image is pulled, we need the create the folders here
     mkdir -p $HOST_WORKSPACE/workspace
@@ -60,7 +58,6 @@ fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
-    [ "$ARCH" != "x86_64" ] && export IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
@@ -101,7 +98,7 @@ DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
                 -u devel \
-                --dns $DNSIP \
+                ${DNSIP:+--dns $DNSIP} \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \

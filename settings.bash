@@ -22,20 +22,24 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 # export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
 # export DEFAULT_EXECMODE="release" # use the release as default
 
-### The base image used when building a workspace image (one of the ones build in base_images)
-# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
+# set desired processor architecture for image build
+# available architectures on docker hub: https://github.com/docker-library/official-images#architectures-other-than-amd64
+# default: "" => x86_64
+export ARCH="arm64v8"
 
+### The base image used when building a workspace image (one of the ones build in base_images)
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}rock_master_18.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}ros_melodic_18.04:base # image with basic ros melodic installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+$ARCH/}ros_noetic_20.04:base # image with basic ros noetic installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}plain_20.04:base # plain image with build_essentials installed
+export WORKSPACE_BASE_IMAGE=developmentimage/${ARCH:+ARCH/}plain_18.04:base # plain image with build_essentials installed
 
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
 # e.g MY_PROJECT/docker_image_development:devel
 # under normal circumstances you should not need to change these
-export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
-export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
+export WORKSPACE_DEVEL_IMAGE=developmentimage/${ARCH:+$ARCH/}${PROJECT_NAME}:devel
+export WORKSPACE_RELEASE_IMAGE=developmentimage/${ARCH:+$ARCH/}${PROJECT_NAME}:release
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
@@ -47,9 +51,3 @@ export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 # --privileged
 # -v /dev/input/:/dev/input
 export ADDITIONAL_DOCKER_RUN_ARGS=""
-
-# set desired processor architecture for image build
-# available architectures on docker hub: https://github.com/docker-library/official-images#architectures-other-than-amd64
-# default: x86_64
-# partially supported alternatives: arm32v7, arm64v8
-export ARCH="arm32v7"

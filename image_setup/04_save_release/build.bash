@@ -12,7 +12,6 @@ export DATE=$(date +%Y_%m_%d-%H_%M)
 PROJECT_NAME_NO_SUBFOLDER=${PROJECT_NAME//\//_}
 
 IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
-[ "$ARCH" != "x86_64" ] && IMAGE_NAME=$(dirname $IMAGE_NAME)/$ARCH/$(basename $IMAGE_NAME)
 SCRIPTFOLDER=${PROJECT_NAME_NO_SUBFOLDER}_scripts_${DATE}
 
 mkdir -p $SCRIPTFOLDER
@@ -31,5 +30,3 @@ rm -rf $SCRIPTFOLDER
 
 echo "saving ${IMAGE_NAME} to ${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz"
 docker save ${IMAGE_NAME} | gzip > ${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
-
-
