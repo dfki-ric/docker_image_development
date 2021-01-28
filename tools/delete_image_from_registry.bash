@@ -3,7 +3,7 @@
 # $> docker exec registry bin/registry garbage-collect --dry-run /etc/docker/registry/config.yml
 
 #https://stackoverflow.com/questions/25436742/how-to-delete-images-from-a-private-docker-registry
-if [$# -ne 4]; then
+if [ $# -ne 4 ]; then
  echo "illegal number of parameters"
  echo use: RegistryUsername registryURL imagename tag
 fi
@@ -12,14 +12,13 @@ USER=$1
 REGISTRY=$2
 NAME=$3
 TAG=$4
-read -sp 'registry password:' PASSWD 
+read -spr 'registry password:' PASSWD 
 
 echo
 
 # get digest value:
 DIGEST=$(curl -v --silent -u ${USER}:${PASSWD} -H 'Accept: application/vnd.docker.distribution.manifest.v2+json' -X GET https://${REGISTRY}/v2/${NAME}/manifests/${TAG} 2>&1 | grep docker-content-digest | awk '{print ($3)}')
 
-set -x
 echo deleting $DIGEST
 
 #actually delete
