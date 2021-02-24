@@ -12,7 +12,7 @@ USER=$1
 REGISTRY=$2
 NAME=$3
 TAG=$4
-read -spr 'registry password:' PASSWD 
+read -rsp 'registry password:' PASSWD 
 
 echo
 
