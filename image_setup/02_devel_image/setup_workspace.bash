@@ -14,7 +14,7 @@ echo
 
 # ROCK BUILDCONF EXAMPLE
 #
-#if [ ! -d /opt/workspace/rock_ws ]; then
+#if [ ! -f /opt/workspace/env.sh ]; then
 #    echo -e "\e[32m[INFO] First start: setting up the workspace.\e[0m"
 #
 #    # go to workspace dir
