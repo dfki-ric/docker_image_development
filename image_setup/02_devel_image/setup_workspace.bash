@@ -17,9 +17,8 @@ echo
 #if [ ! -d /opt/workspace/rock_ws ]; then
 #    echo -e "\e[32m[INFO] First start: setting up the workspace.\e[0m"
 #
-#    # init workspace dir
-#    mkdir -p /opt/workspace/rock_ws
-#    cd /opt/workspace/rock_ws
+#    # go to workspace dir
+#    cd /opt/workspace/
 #
 #    # set git config
 #    git config --global user.name "Image Builder"
