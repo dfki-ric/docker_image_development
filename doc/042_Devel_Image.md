@@ -69,8 +69,8 @@ The Dockerfile is intended to contain any OS dependencies the workspace has (tha
 
 Especially if you are not sure which packages need to be installed at this point, it might make sense to start with the next step, to prepare the workspace. Then you can complete the dependencies in the Dockerfile, using the helper scripts for dependency enumeration.
 
-You can start `bash /opt/write_osdeps.bash` scripts help to determine which workspace-specific packages are required by the workspace.
-The script detects Rock and ROS workspaces and list all OS dependencies depending on the packages' provided metadata about dependencies is available.
+You can start `bash /opt/write_osdeps.bash` to determine which workspace-specific packages are required by the workspace.
+The script detects Rock and ROS workspaces and list all OS dependencies depending on the packages' provided that the metadata about dependencies is available.
 The workspace dependencies are written into the `image_setup/02_devel_image/workspace_os_dependencies.txt` and install upon buildding the docker image.
 Install instructions for packages that are not workspace dependencies (or in the metadata) sould be directly added into the dockerfile
 
