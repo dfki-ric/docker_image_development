@@ -1,4 +1,8 @@
 #!/bin/bash
+
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export PATH=$ROOT_DIR${PATH:+:${PATH}}
+
 complete -W  "$(ls startscripts | xargs) /bin/bash" ./deprecated_exec_in_devel.bash
 complete -W  "$(ls startscripts | xargs) /bin/bash" ./deprecated_exec_in_release.bash
 
