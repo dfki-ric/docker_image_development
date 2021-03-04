@@ -42,8 +42,7 @@ if [ "$EXECMODE" == "base" ]; then
         -v $HOST_WORKSPACE/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $HOST_WORKSPACE/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
         -v $HOST_WORKSPACE/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash
-        
+        -v $HOST_WORKSPACE/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 
@@ -61,7 +60,7 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $HOST_WORKSPACE/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $HOST_WORKSPACE/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
         -v $HOST_WORKSPACE/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash
+        -v $HOST_WORKSPACE/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 if [ "$EXECMODE" == "release" ]; then
