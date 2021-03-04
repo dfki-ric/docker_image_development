@@ -27,7 +27,7 @@ export -f list_ros_osdeps
 find -type d -name autoproj -execdir bash -c 'list_autoproj_osdeps' \;
 
 # search for folder with a ".rosinstall" file and add dependencies to file"
-find -name .rosinstall -execdir bash -c 'list_ros_osdeps' \;
+find src/ -name .rosinstall -execdir bash -c 'list_ros_osdeps' \;
 
 echo
 if cmp -s "/opt/installed_workspace_os_dependencies.txt" "/opt/workspace_os_dependencies.txt"; then
