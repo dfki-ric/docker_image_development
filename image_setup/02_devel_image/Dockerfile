@@ -22,9 +22,12 @@ ADD setup_workspace.bash /opt/setup_workspace.bash
 RUN chmod 755 /opt/setup_workspace.bash
 
 # add the dependency list to the image
-ADD workspace_os_dependencies.txt /opt/workspace_os_dependencies.txt
+ADD workspace_os_dependencies.txt /opt/installed_workspace_os_dependencies.txt
 # install dependencies from the list
-RUN cat /opt/workspace_os_dependencies.txt | xargs sudo apt install -y
+RUN grep -vE '^#' /opt/installed_workspace_os_dependencies.txt | xargs sudo apt install -y
+
+#add /opt/ to PATH to be able to run the hook scripts y ./exec
+ENV PATH="/opt/:${PATH}"
 
 # opt/init_workspace.sh is run once via dockercommands.sh by calling check_init_workspace.sh
 RUN echo "echo" >> /opt/init_workspace.bash
