@@ -1,6 +1,13 @@
 #!/bin/bash
 
+set -e
+
 cd /opt/workspace
+if [ -z $(find -type d -name autoproj) ] && [ -z $(find -type d -name src) ]; then
+    echo "Neither autoproj nor ros workspace detected."
+    [ -z "$(ls -A)" ] && echo "Your workspace directory is empty!"
+    exit 1
+fi    
 
 # overwrite old file and add disclaimer
 echo "# DO NOT EDIT (generated)" > /opt/workspace_os_dependencies.txt
@@ -19,7 +26,7 @@ list_ros_osdeps () {
     bash /opt/list_ros_osdeps.bash >> /opt/workspace_os_dependencies.txt
 }
 
-# make function available for bash uised in find
+# make function available for bash used in find
 export -f list_autoproj_osdeps
 export -f list_ros_osdeps
 
@@ -36,3 +43,4 @@ else
     echo "Found new OS dependencies, please update the devel image"
 fi
 echo
+TEST
