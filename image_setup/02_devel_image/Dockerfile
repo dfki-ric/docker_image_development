@@ -9,10 +9,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     bash-completion
 
-# setup locale to avoid ASCII conflicts
-RUN locale-gen en_US.UTF-8
-ENV LANG="en_US.UTF-8"
-
 # make sure SHELL variable is set. Crucial for base/scripts! => moved to setup_workspace.bash
 ## REMOVE THIS ONCE rock-core PR 173 is merged
 ENV SHELL="/bin/bash"
