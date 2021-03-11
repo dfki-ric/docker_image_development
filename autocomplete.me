@@ -3,5 +3,5 @@
 complete -W  "$(ls startscripts | xargs) /bin/bash" ./deprecated_exec_in_devel.bash
 complete -W  "$(ls startscripts | xargs) /bin/bash" ./deprecated_exec_in_release.bash
 
-complete -W "devel release $(ls startscripts | xargs) /bin/bash /opt/write_os_deps.bash" ./exec.bash
+complete -W "devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
 complete -W "devel release" ./stop.bash
