@@ -3,7 +3,7 @@
 set -e
 
 cd /opt/workspace
-if [ -z $(find -type d -name autoproj) ] && [ -z $(find -type d -name src) ]; then
+if [ -z "$(find -type d -name autoproj)" ] && [ -z "$(find -type d -name src)" ]; then
     echo "Neither autoproj nor ros workspace detected."
     [ -z "$(ls -A)" ] && echo "Your workspace directory is empty!"
     exit 1
@@ -43,4 +43,3 @@ else
     echo "Found new OS dependencies, please update the devel image"
 fi
 echo
-TEST
