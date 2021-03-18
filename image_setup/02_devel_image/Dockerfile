@@ -6,7 +6,18 @@ FROM ${BASE_IMAGE_NAME}
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-    bash-completion
+    bash-completion \
+    libboost-python-dev \
+    libdw-dev \
+    libgoogle-glog-dev \
+    libjsoncpp-dev \
+    libtinyxml-dev \
+    libtool \
+    libyaml-cpp-dev \
+    python3-msgpack \
+    python3-nose \
+    python3-pexpect \
+    python3-yaml
 
 # add workspace init to container initialization
 ADD setup_workspace.bash /opt/setup_workspace.bash
