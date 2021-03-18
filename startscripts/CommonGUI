@@ -3,15 +3,25 @@
 cd /opt/workspace
 . env.sh
 
-if [ -z "$1" ]; then
+XML=$1
+
+function print_info {
     echo
-    echo "please add the xml file name to use as parameter"
-    echo "options are:"
+    echo "[ERROR] Please provide a valid xml file name as parameter!"
+    echo "        Default layout => CommonConfig"
+    echo "        Other available options are:"
     echo
     ls /opt/workspace/ndlcom/RobotConfig/xml/
     echo 
+    echo
     exit 1
+}
+
+# check argument and add suffix, if not yet provided
+if [ -z "$XML" ]; then
+    print_info
+elif [ "${XML##*.}" != "xml" ]; then
+    XML=$XML.xml
 fi
 
-CommonGUI --xml-file=/opt/workspace/install/share/RobotConfig/xml/$1
-
+CommonGUI --xml-file=/opt/workspace/install/share/RobotConfig/xml/$XML || print_info
