@@ -14,9 +14,23 @@ In order to check for available images you can browse the DFKI [internal registr
 * Login to the docker registry containing the images (if not on dockerhub and registry available)
   * See [README_Docker.md](README_Docker.md)
 
+## For the lazy
+
+0. Install docker, login to registry to pull existing image (see above)
+
+1. Clone repo
+
+2. Execute `./exec.bash` to start CommonGUI with CommonConfig
+
+3. Done.
+
+For starting with another xml config execute: ./exec.bash CommonGUI <Config>
+
+## In general
+
 In order to initialize, run or attach to containers you will be using the `./exec.bash` script.
 You can use either base, devel or release as argument in order to determine which image you want to base your container on.
-Per default the exec.bash script will drop into a /bin/bash shell with the default mode set in the settings.bash if no other arguments are given.
+Per default the exec.bash script will drop into the CommonGUI with CommonConfig.xml with the default mode set in the settings.bash if no other arguments are given.
 
 In order to pull images you need to be logged in at the docker registry.
 
