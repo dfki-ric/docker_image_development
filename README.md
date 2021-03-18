@@ -24,7 +24,13 @@ In order to check for available images you can browse the DFKI [internal registr
 
 3. Done.
 
-For starting with another xml config execute: ./exec.bash CommonGUI <Config>
+HINTS:
+
+* For starting with another xml config execute: ./exec.bash CommonGUI <Config>
+
+* To see, which configs are available execute: ./exec.bash CommonGUI
+
+* In order to get tab completion for exec.bash source autocomplete.me
 
 ## In general
 
