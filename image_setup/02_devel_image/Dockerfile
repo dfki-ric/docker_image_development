@@ -7,14 +7,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     bash-completion \
+    cmake \
     libdb5.3++-dev \
+    libeigen3-dev \
     libffi-dev \
+    libfontconfig-dev \
+    liblzma-dev \
     libxml++2.6-dev \
     libxml2-utils \
     python-yaml \
     ruby-nokogiri \
-    xmlstarlet \
-    libfontconfig-dev
+    xmlstarlet
 
 # add workspace init to container initialization
 ADD setup_workspace.bash /opt/setup_workspace.bash
