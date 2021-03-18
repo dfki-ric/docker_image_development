@@ -6,7 +6,15 @@ FROM ${BASE_IMAGE_NAME}
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-    bash-completion
+    bash-completion \
+    libdb5.3++-dev \
+    libffi-dev \
+    libxml++2.6-dev \
+    libxml2-utils \
+    python-yaml \
+    ruby-nokogiri \
+    xmlstarlet \
+    libfontconfig-dev
 
 # add workspace init to container initialization
 ADD setup_workspace.bash /opt/setup_workspace.bash

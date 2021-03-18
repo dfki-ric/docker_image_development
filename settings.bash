@@ -1,23 +1,23 @@
 #!/bin/bash
 
 #set a project name
-export PROJECT_NAME=docker_development
+export PROJECT_NAME=commongui
 
 # URL path to your docker registry, leave blank if you don't have one
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
 
 # The default release mode to use if no mode paramater is given to ./exec or ./stop
 # The checked in version should reflect the image status and be the highest availale image (base - devel - release)
-export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
-#export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
+#export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
+export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
 #export DEFAULT_EXECMODE="release" # use the release as default
 
 # The base image used when building a workspace image (one of the ones build in base_images)
 
-# export WORKSPACE_BASE_IMAGE=docker_development/rock_master_18.04:base # image with rock core dependencies installed
+export WORKSPACE_BASE_IMAGE=docker_development/rock_master_18.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=docker_development/ros_melodic_18.04:base # image with basic ros installed
 #export WORKSPACE_BASE_IMAGE=docker_development/plain_20.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:base # plain image with build_essentials installed
+#export WORKSPACE_BASE_IMAGE=docker_development/plain_18.04:base # plain image with build_essentials installed
 
 
 # The Name of the Workspace image to use
@@ -37,5 +37,8 @@ export WORKSPACE_RELEASE_IMAGE=${PROJECT_NAME}/docker_development:release
 # -v /dev/input/:/dev/input
 export ADDITIONAL_DOCKER_RUN_ARGS=" \
         --dns-search=dfki.uni-bremen.de \
+        --privileged \
+        --net=host \
+        -v /dev:/dev \
         "
 

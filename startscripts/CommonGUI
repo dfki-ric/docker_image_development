@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd /opt/workspace
+. env.sh
+
+if [ -z "$1" ]; then
+    echo
+    echo "please add the xml file name to use as parameter"
+    echo "options are:"
+    echo
+    ls /opt/workspace/ndlcom/RobotConfig/xml/
+    echo 
+    exit 1
+fi
+
+CommonGUI --xml-file=/opt/workspace/install/share/RobotConfig/xml/$1
+
