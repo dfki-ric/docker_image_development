@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd /opt/workspace
+source env.sh
+export BASE_LOG_LEVEL="ERROR"
+rock-bundle-sel crex_ant
+rock-launch -b simulation.cnd
+
