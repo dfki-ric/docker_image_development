@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /opt/workspace
+source env.sh
+export BASE_LOG_LEVEL="ERROR"
+sudo bash /opt/workspace/bundles/crex_ant/scripts/omninames_delete.sh
