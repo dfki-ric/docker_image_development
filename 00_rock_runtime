@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /opt/workspace
+source env.sh
+export BASE_LOG_LEVEL="ERROR"
+#sudo bash /opt/workspace/bundles/sherpa_tt_robdekon/scripts/omninames_delete.sh
+rock-bundle-sel crex_ant
+rock-runtime
