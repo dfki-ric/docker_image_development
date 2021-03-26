@@ -28,10 +28,6 @@ apt-get update && apt-get install -y \
  libopencv-dev \
  libopenscenegraph-dev \
  libpoco-dev \
- libqt4-dev \
- libqt4-opengl-dev \
- libqtwebkit-dev \
- libqwt5-qt4-dev \
  libsigc++-2.0-0v5 \
  libsigc++-2.0-dev \
  libsysfs-dev \
@@ -42,11 +38,9 @@ apt-get update && apt-get install -y \
  omniidl \
  omniorb-nameserver \
  pkg-config \
- python-msgpack \
- python-nose \
- python-pexpect \
- qt4-designer \
- qt4-qmake \
+ python3-msgpack \
+ python3-nose \
+ python3-pexpect \
  rake \
  ruby \
  ruby-activesupport \
