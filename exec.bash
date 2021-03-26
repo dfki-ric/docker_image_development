@@ -2,11 +2,12 @@
 
 xhost +local:root
 
-. ./docker_commands.bash
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. $ROOT_DIR/docker_commands.bash
 
 
+### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
-
 if [ "$1" = "devel" ]; then
     echo "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="devel"
@@ -24,43 +25,43 @@ if [ "$1" = "base" ]; then
     shift
 fi
 
+# set default argument
 if [ -z "$1" ]; then
     echo "No run argument given. Using /bin/bash as default"
     set -- "/bin/bash"
 fi
 
+### START EXECUTION
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
-    HOST_WORKSPACE=$(pwd)
-    mkdir -p $HOST_WORKSPACE/workspace
-    mkdir -p $HOST_WORKSPACE/home
+    mkdir -p $ROOT_DIR/workspace
+    mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
-        -v $HOST_WORKSPACE/workspace/:/opt/workspace \
-        -v $HOST_WORKSPACE/home/:/home/devel \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
+        -v $ROOT_DIR/workspace/:/opt/workspace \
+        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
-    HOST_WORKSPACE=$(pwd)
     #in case the devel image is pulled, we need the create the folders here
-    mkdir -p $HOST_WORKSPACE/workspace
-    mkdir -p $HOST_WORKSPACE/home
+    mkdir -p $ROOT_DIR/workspace
+    mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
-        -v $HOST_WORKSPACE/startscripts:/opt/startscripts \
-        -v $HOST_WORKSPACE/workspace/:/opt/workspace \
-        -v $HOST_WORKSPACE/home/:/home/devel \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
+        -v $ROOT_DIR/startscripts:/opt/startscripts \
+        -v $ROOT_DIR/workspace/:/opt/workspace \
+        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 if [ "$EXECMODE" == "release" ]; then
@@ -83,12 +84,12 @@ INTERACTIVE=${INTERACTIVE:="true"}
 
 #get a md5 for the current folder used as container name suffix
 #(several checkouts  of this repo possible withtou interfering)
-FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
+FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
 #use current folder name + devel + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)
-CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-$EXECMODE-$FOLDER_MD5"}
-CONTAINER_ID_FILENAME=$EXECMODE-container_id.txt
+CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
+CONTAINER_ID_FILENAME=$ROOT_DIR/$EXECMODE-container_id.txt
 
 echo
 echo -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"

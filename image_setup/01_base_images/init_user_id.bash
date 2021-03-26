@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this scrit will be called by .bashrc
+# this script will be called by .bashrc
 
 # on initialization check if the UID of the rosuser user has to be changed:
 if [ "$NUID" -a ! -f /initialized_uid ]; then
