@@ -9,7 +9,7 @@ export DOCKER_REGISTRY=
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
-export BASE_REGISTRY=$DOCKER_REGISTRY
+export BASE_REGISTRY=
 export DEVEL_REGISTRY=$DOCKER_REGISTRY
 export RELEASE_REGISTRY=$DOCKER_REGISTRY
 
