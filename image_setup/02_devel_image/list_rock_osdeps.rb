@@ -16,7 +16,8 @@ resolved = os_package_installer.resolve_and_partition_osdep_packages(
     all_osdeps, all_osdeps)
 
 resolved.each do |pkg_manager, packages|
-    puts "#{pkg_manager.class}:"
-    puts packages.to_a.sort.join(" \\ \n ")
-    puts
+    if "#{pkg_manager.class}" == 'Autoproj::PackageManagers::AptDpkgManager' then
+        puts packages.to_a.sort.join(" \n ")
+        puts
+    end
 end

@@ -5,9 +5,6 @@
 # stop on errors
 set -e
 
-echo
-echo -e "\e[33mworkspace init not set up, please inititialize it manually\e[0m"
-echo 
 
 
 # In this file you can add a script that intitializes your workspace
