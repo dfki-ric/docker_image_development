@@ -61,12 +61,12 @@ This software is stable and maintained by the authors.
 
 To search for bugs or report them, please use GitHubs issue tracker at:
 
-http://github.com/dfki-ric/docker_development
+http://github.com/dfki-ric/docker_image_development
 
 
 ## Referencing
 
-Please reference the github page: http://github.com/dfki-ric/docker_development
+Please reference the github page: http://github.com/dfki-ric/docker_image_development
 
 ## Releases
 

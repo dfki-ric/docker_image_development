@@ -1,5 +1,7 @@
 home
 workspace
+base-container_id.txt
 devel-container_id.txt
 release-container_id.txt
 has_gpu_support.txt
+*.tar.gz

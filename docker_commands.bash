@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. ./settings.bash
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+. $ROOT_DIR/settings.bash
 
 DNSIP=$(nmcli dev show | grep 'IP4.DNS' | grep "\[1\]" | egrep -oe "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}" | head -n 1)
 
@@ -17,7 +18,7 @@ init_docker(){
     fi
 
     #detect if gpus command is supported and working from docker 19.03
-    GPUS_SETTINGS_FILE="has_gpu_support.txt"
+    GPUS_SETTINGS_FILE="$ROOT_DIR/has_gpu_support.txt"
     if [ ! -f $GPUS_SETTINGS_FILE ]; then
         touch $GPUS_SETTINGS_FILE
         docker run --gpus=all --rm $IMAGE_NAME > /dev/null
@@ -42,8 +43,8 @@ init_docker(){
 
     # check if a container from previous runs exist
     if [ "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
-        #check if the local image is newer that the one the container was crested with
-        #generate_container saves the curretn id to a file
+        #check if the local image is newer that the one the container was created with
+        #generate_container saves the current id to a file
         echo "found existing container"
         if [ "$CURRENT_IMAGE_ID" = "$CONTAINER_IMAGE_ID" ]; then
             echo "using existent container"
