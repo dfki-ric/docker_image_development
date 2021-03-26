@@ -40,7 +40,11 @@ if [ "$EXECMODE" == "base" ]; then
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
         -v $ROOT_DIR/workspace/:/opt/workspace \
         -v $ROOT_DIR/home/:/home/devel \
-        -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash
+        -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 
@@ -54,6 +58,10 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $ROOT_DIR/startscripts:/opt/startscripts \
         -v $ROOT_DIR/workspace/:/opt/workspace \
         -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 if [ "$EXECMODE" == "release" ]; then
