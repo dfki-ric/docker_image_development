@@ -54,9 +54,10 @@ apt-get update && apt-get install -y \
  libsdformat6-dev \
  libtinyxml-dev \
  libyaml-cpp-dev \
+ apt-transport-https \
  libqt4-dev \
  libqt4-opengl-dev \
  libqtwebkit-dev \
- qt4-designer\
+ qt4-designer \
  qt4-qmake
 
