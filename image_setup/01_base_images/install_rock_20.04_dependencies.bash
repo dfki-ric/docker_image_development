@@ -7,8 +7,8 @@ apt-get update && apt-get install -y software-properties-common
 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 63BBCC76C6D55B7DF2D65B2A78CB407D3E3D8F94
 add-apt-repository -y ppa:rock-core/qt4
 
-
 apt-get update && apt-get install -y \
+ apt-transport-https \
  autoconf \
  automake \
  avahi-daemon \
@@ -33,13 +33,19 @@ apt-get update && apt-get install -y \
  libopencv-dev \
  libopenscenegraph-dev \
  libpoco-dev \
+ libqt4-dev \
+ libqt4-opengl-dev \
+ libqtwebkit-dev \
+ libsdformat6-dev \
  libsigc++-2.0-0v5 \
  libsigc++-2.0-dev \
  libsysfs-dev \
+ libtinyxml-dev \
  libusb-dev \
  libv4l-dev \
  libxml-xpath-perl \
  libxml2-dev \
+ libyaml-cpp-dev \
  omniidl \
  omniorb-nameserver \
  pkg-config \
@@ -51,13 +57,5 @@ apt-get update && apt-get install -y \
  ruby-activesupport \
  ruby-dev \
  ruby-thor \
- libsdformat6-dev \
- libtinyxml-dev \
- libyaml-cpp-dev \
- apt-transport-https \
- libqt4-dev \
- libqt4-opengl-dev \
- libqtwebkit-dev \
  qt4-designer \
  qt4-qmake
-

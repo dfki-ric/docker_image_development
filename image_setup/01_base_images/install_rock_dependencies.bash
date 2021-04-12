@@ -51,4 +51,7 @@ apt-get update && apt-get install -y \
  ruby \
  ruby-activesupport \
  ruby-dev \
- ruby-thor
+ ruby-thor \
+ libsdformat6-dev \
+ libtinyxml-dev \
+ libyaml-cpp-dev
