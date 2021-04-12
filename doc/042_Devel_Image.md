@@ -41,7 +41,7 @@ The general steps are:
 * Fork this repository for your project.
 * Select the desired base image (Ubuntu, Rock, Ros etc).
 * Add the installation of OS dependencies to the Dockerfile to add them to the environment.
-* Add workspace initialization scripts/howto, e.g. `/opt/setup_workspace_script.bash`
+* Add workspace initialization scripts/howto, e.g. `/opt/setup_workspace.bash`
 
 The suggested workflow and related topics are explained in detail in the following sections.
 
@@ -54,13 +54,13 @@ Then clone your fork to your system into the desired folder.
 
 Afterwards you edit the `settings.bash` in order to
   * set a new project name,
-  * make sure the default exec mode is specified `devel`,
+  * make sure the default exec mode is specified `base`,
   * select the base image to use,
   * set your registry (empty if none).
 
-Now you can make the first attempt to build the new image, using `bash build.bash`. Without changes to the Dockerfile, this will be equal to the base image.
-This is useful to see if the general process is working, and to proceed initializing the workspace within the newly generated container (try to run `bash exec.bash` too).
-
+Noe you can use ./exec to launch your container based on the base image and edit the workspace script (image_setup/02_devel_image/setup_workspace.bash or /opt/setup_workspace.bash in the container) until it works.
+You may need to run this script to test your workspace setup (clone repos, etc.) repeatedly until it works.
+You may need to clean up the workspace (i.e., the mounted directories) manually in between those runs, in order to simulate a fresh setup.
 
 #### Installation of Workspace Dependencies in the Dockerfile
 
@@ -76,6 +76,8 @@ Install instructions for packages that are not workspace dependencies (or in the
 
 __The later release image is not based on the devel container, it is based on the image. Any tools or dependencies not installed via the Dockerfile of the devel image will not be available in the release.__
 
+Now you can make the first attempt to build the new image, using `bash build.bash` in `image_setup/02_devel_image/`.
+
 Adding the installation of the packages to the Dockerfile of the devel image also adds the feature that they don't have to be re-installed every time the container is re-created. This might happen, when you clean up docker e.g. with `docker system prune` and your container is not running. When all dependencies are added to the image (Dockerfile), nothing has to be re-installed once you re-create the container after such a cleanup.
 
 When the devel container is started for the first time, the script `/opt/init_workspace.bash` is automatically executed within the container.
@@ -85,7 +87,6 @@ It is executed each time the container is created. It is recommended to make it 
 RUN echo 'echo -e "\n\e[32mplease run /opt/setup_workspace.bash to initialize the workspace\e[0m\n"' >> /opt/init_workspace.bash
 ```
 
-
 #### Post-Installation Steps via setup_workspace.bash
 
 For the devel image the `setup_workspace.bash` script is copied to **/opt/setup_workspace.bash** within the container. It is intended to contain all the steps to initialize the actual workspace, i.e., clone the required repositories via `autoproj_bootstrap` and `aup` or via `wstool`.
@@ -94,7 +95,9 @@ It is recommended to not include building/compiling the workspace (e.g., via `am
 This decoupling is intended to make it easier to spot the source of problems in the process. As it can take rather a long time overall, and if not decoupled it might not be obviously at which point the error occurred.
 
 You may need to run this script to test your workspace setup (clone repos, etc.) repeatedly until it works.
+
 You may need to clean up the workspace (i.e., the mounted directories) manually in between those runs, in order to simulate a fresh setup.
+
 Keep in mind that when using the devel image, the setup script is copied into the image during build, rather than being mounted as is the case for base images.
 If your workspace does not require a lot of OS dependencies, i.e., the workspace setup is rather quick, than you might consider developing the setup_workspace.bash script using the base image.
 To speed up the debugging process by using workspace related libraries you may use the devel image, where they are pre-installed (if listed in the Dockerfile).
