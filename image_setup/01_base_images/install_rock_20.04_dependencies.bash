@@ -3,6 +3,10 @@
 #requirements for rock-core
 export DEBIAN_FRONTEND=noninteractive
 
+apt-get update && apt-get install -y software-properties-common
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 63BBCC76C6D55B7DF2D65B2A78CB407D3E3D8F94
+add-apt-repository -y ppa:rock-core/qt4
+
 apt-get update && apt-get install -y \
  autoconf \
  automake \
@@ -48,4 +52,10 @@ apt-get update && apt-get install -y \
  ruby-thor \
  libsdformat6-dev \
  libtinyxml-dev \
- libyaml-cpp-dev
+ libyaml-cpp-dev \
+ apt-transport-https \
+ libqt4-dev \
+ libqt4-opengl-dev \
+ libqtwebkit-dev \
+ qt4-designer \
+ qt4-qmake
