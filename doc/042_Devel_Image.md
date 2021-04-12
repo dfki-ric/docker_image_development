@@ -89,6 +89,10 @@ For the devel image the `setup_workspace.bash` script is copied to **/opt/setup_
 It is recommended to not include building/compiling the workspace (e.g., via `amake` or `catkin build`) in this script, but again rather print instructions for the required follow-up steps for the finalization of the container setup that are then to be executed manually.
 This decoupling is intended to make it easier to spot the source of problems in the process. As it can take rather a long time overall, and if not decoupled it might not be obviously at which point the error occurred.
 
+You may need to run this script to test your workspace setup (clone repos, etc.) repeatedly until it works.
+
+You may need to clean up the workspace (i.e., the mounted directories) manually in between those runs, in order to simulate a fresh setup.
+
 Keep in mind that when using the devel image, the setup script is copied into the image during build, rather than being mounted as is the case for base images.
 If your workspace does not require a lot of OS dependencies, i.e., the workspace setup is rather quick, than you might consider developing the setup_workspace.bash script using the base image.
 To speed up the debugging process by using workspace related libraries you may use the devel image, where they are pre-installed (if listed in the Dockerfile).
