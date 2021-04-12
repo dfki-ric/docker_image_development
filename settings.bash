@@ -9,7 +9,7 @@ export DOCKER_REGISTRY=
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
-export BASE_REGISTRY=$DOCKER_REGISTRY
+export BASE_REGISTRY=
 export DEVEL_REGISTRY=$DOCKER_REGISTRY
 export RELEASE_REGISTRY=$DOCKER_REGISTRY
 
@@ -24,6 +24,7 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed

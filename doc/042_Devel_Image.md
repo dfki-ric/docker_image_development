@@ -68,15 +68,20 @@ Go to `docker_development/image_setup/02_devel_image` and add installation comma
 The Dockerfile is intended to contain any OS dependencies the workspace has (that are not already provided by the base image).
 
 Especially if you are not sure which packages need to be installed at this point, it might make sense to start with the next step, to prepare the workspace. Then you can complete the dependencies in the Dockerfile, using the helper scripts for dependency enumeration.
-The `list_*_osdeps.*` scripts help to determine which workspace-specific packages are required by the workspace.
-These are available for Rock and ROS workspaces and list all OS dependencies depending on the packages' provided metadata. They can be found in the `image_setup/02_devel_image` folder and the output format allows easy copy/pasting into the Dockerfile.
+
+You can start `bash /opt/write_osdeps.bash` to determine which workspace-specific packages are required by the workspace.
+The script detects Rock and ROS workspaces and list all OS dependencies depending on the packages, provided that metadata about dependencies is available.
+The workspace dependencies are written into the `image_setup/02_devel_image/workspace_os_dependencies.txt` and installed upon building a new devel image.
+Install instructions for packages that are not workspace dependencies (or in the metadata) sould be directly added into the Dockerfile
 
 __The later release image is not based on the devel container, it is based on the image. Any tools or dependencies not installed via the Dockerfile of the devel image will not be available in the release.__
 
 Now you can make the first attempt to build the new image, using `bash build.bash` in `image_setup/02_devel_image/`.
 
-When the devel container is started for the first time, the script `/opt/init_workspace.bash` is executed within the container.
-You can use it to initialize the workspace, but it is executed each time a new image is available. It is recommended to make it print instructions for necessary post-initialization steps to this script, e.g., add a hint to run `/opt/setup_workspace.bash` after initialization:
+Adding the installation of the packages to the Dockerfile of the devel image also adds the feature that they don't have to be re-installed every time the container is re-created. This might happen, when you clean up docker e.g. with `docker system prune` and your container is not running. When all dependencies are added to the image (Dockerfile), nothing has to be re-installed once you re-create the container after such a cleanup.
+
+When the devel container is started for the first time, the script `/opt/init_workspace.bash` is automatically executed within the container.
+It is executed each time the container is created. It is recommended to make it print instructions for necessary post-initialization steps to this script, e.g., add a hint to run `/opt/setup_workspace.bash` after initialization:
 
 ```
 RUN echo 'echo -e "\n\e[32mplease run /opt/setup_workspace.bash to initialize the workspace\e[0m\n"' >> /opt/init_workspace.bash

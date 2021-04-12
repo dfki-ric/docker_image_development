@@ -1,6 +1,6 @@
 #!/bin/bash
-complete -W  "$(ls startscripts | xargs) /bin/bash" ./deprecated_exec_in_devel.bash
-complete -W  "$(ls startscripts | xargs) /bin/bash" ./deprecated_exec_in_release.bash
 
-complete -W "devel release $(ls startscripts | xargs) /bin/bash" ./exec.bash
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+export PATH=$ROOT_DIR${PATH:+:${PATH}}
+complete -W "devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
 complete -W "devel release" ./stop.bash

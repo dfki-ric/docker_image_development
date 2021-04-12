@@ -5,21 +5,17 @@
 # stop on errors
 set -e
 
-echo
-echo -e "\e[33mworkspace init not set up, please inititialize it manually\e[0m"
-echo 
 
 
 # In this file you can add a script that intitializes your workspace
 
 # ROCK BUILDCONF EXAMPLE
 #
-#if [ ! -d /opt/workspace/rock_ws ]; then
+#if [ ! -f /opt/workspace/env.sh ]; then
 #    echo -e "\e[32m[INFO] First start: setting up the workspace.\e[0m"
 #
-#    # init workspace dir
-#    mkdir -p /opt/workspace/rock_ws
-#    cd /opt/workspace/rock_ws
+#    # go to workspace dir
+#    cd /opt/workspace/
 #
 #    # set git config
 #    git config --global user.name "Image Builder"
