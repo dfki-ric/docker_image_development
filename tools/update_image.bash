@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. ../settings.bash
-
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
+. $ROOT_DIR/settings.bash
 
 IMAGE=""
 EXECMODE=$DEFAULT_EXECMODE
@@ -19,13 +19,13 @@ if [ "$1" = "release" ]; then
     shift
 fi
 if [ "$EXECMODE" = "base" ]; then
-    IMAGE=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
+    IMAGE=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 fi
 if [ "$EXECMODE" = "devel" ]; then
-    IMAGE=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
+    IMAGE=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
 fi
 if [ "$EXECMODE" = "release" ]; then
-    IMAGE=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+    IMAGE=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 fi
 
 
