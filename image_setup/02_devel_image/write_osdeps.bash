@@ -3,7 +3,7 @@
 set -e
 
 cd /opt/workspace
-if [ -z "$(find -type d -name autoproj)" ] && [ -z "$(find -type d -name src)" ]; then
+if [ -z "$(find -maxdepth 1 -type d -name autoproj)" ] && [ -z "$(find -maxdepth 1 -type d -name src)" ]; then
     echo "Neither autoproj nor ros workspace detected."
     [ -z "$(ls -A)" ] && echo "Your workspace directory is empty!"
     exit 1
@@ -31,10 +31,14 @@ export -f list_autoproj_osdeps
 export -f list_ros_osdeps
 
 # search for folder with an "autoproj" folder (autoproj buildconf) and add dependencies to file"
-find -type d -name autoproj -execdir bash -c 'list_autoproj_osdeps' \;
+if [ ! -z "$(find -maxdepth 1 -type d -name autoproj)" ]; then
+    find -type d -name autoproj -execdir bash -c 'list_autoproj_osdeps' \;
+fi
 
 # search for folder with a ".rosinstall" file and add dependencies to file"
-find src/ -name .rosinstall -execdir bash -c 'list_ros_osdeps' \;
+if [ ! -z "$(find -maxdepth 1 -type d -name src)" ]; then
+    find src/ -name .rosinstall -execdir bash -c 'list_ros_osdeps' \;
+fi
 
 echo
 if cmp -s "/opt/installed_workspace_os_dependencies.txt" "/opt/workspace_os_dependencies.txt"; then

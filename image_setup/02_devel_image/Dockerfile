@@ -9,14 +9,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     bash-completion \
     cmake \
+    git \
     libdb5.3++-dev \
     libeigen3-dev \
     libffi-dev \
-    libfontconfig-dev \
     liblzma-dev \
+    libqtgui4 \
+    libqwt5-qt4-dev \
     libxml++2.6-dev \
     libxml2-utils \
     python-yaml \
+    ruby \
     ruby-nokogiri \
     xmlstarlet
 
