@@ -1,80 +1,41 @@
-# Docker Image Development 
+# CommonGUI to Go
 
-This is a collection of scripts that enables a development process using docker images.
+This is a collection of scripts that facilitate working with docker images and containers. This repo is adapted to quickly retrieve and use a running commonGUI.
 
-**Requisite:** Please install Docker according to the [README_Docker.md](README_Docker.md)!
+**Attention** Changes inside the container do not persist and are gone as soon as a new container is created. If you want any updates to persist, use the devel images with locally mounted directories to develop and generate a new release image from your changes. Please refer to the [usage documentation](doc/020_Usage.md) for further infos.
 
-The docker development is based on different docker image setup steps, some of which can be omitted when a local registry is set up and the required image is already available.
+## Preperation:
+
+##### 1. install docker
+Please install Docker according to the [010_Setup_Docker.md](doc/010_Setup_Docker.md) or by executing the [install_docker.bash](tools/install_docker.bash) script.
+
+##### 2. login to registry
+The docker development is based on different docker image setup steps. For this repo a release image with an installed commonGUI is available on the internal docker registry. Please login with your DFKI credentials as follows (requires VPN connection):
+
+```bash
+    docker login d-reg.hb.dfki.de
+```
 
 In order to check for available images you can browse the DFKI [internal registry](https://d-reg.hb.dfki.de/repositories) (Login required).
 
-# Running
+## Get GUI
 
-* Clone this repository
-* Login to the docker registry containing the images (if not on dockerhub and registry available)
-  * See [README_Docker.md](README_Docker.md)
+```bash
+    # create working directory
+    mkdir -p ~/docker/commonGUI && cd ~/docker/commonGUI
+    # clone repo
+    git clone https://git.hb.dfki.de/ndlcom/docker_image-commongui.git .
+    # generate container and start commonGUI with CommonConfig
+    ./commonGUI.bash
+```
 
-## For the lazy
+##### HINTS:
 
-0. Install docker, login to registry to pull existing image (see above)
+* For starting with another xml config execute (suffix may be omitted): `./commonGUI.bash CommonGUI <Config>`
 
-1. Clone repo
+* To see, which configs are available execute: `./commonGUI.bash CommonGUI`
 
-2. Execute `./commonGUI.bash` to start CommonGUI with CommonConfig
-
-3. Done.
-
-HINTS:
-
-* For starting with another xml config execute: ./commonGUI.bash CommonGUI <Config>
-
-* To see, which configs are available execute: ./commonGUI.bash CommonGUI
-
-* In order to get tab completion for commonGUI.bash source autocomplete.me
-
-## In general
-
-In order to initialize, run or attach to containers you will be using the `./exec.bash` script.
-You can use either base, devel or release as argument in order to determine which image you want to base your container on.
-Per default the exec.bash script will drop into a /bin/bash shell with the default mode set in the settings.bash if no other arguments are given.
-
-The goal is to prepare docker _images_ that encapsulate a component's or a project's dependencies so that work is being done in a consistent, reproducible environment, i.e., to prevent that code not only builds or runs on the developer's machine and fails elsewhere.
-In order to achieve this, the **devel image** is created to contain all dependencies for the workspace preinstalled. The devel image mounts local directories into the container so they can be modified by editors on the host machine, while they are compiled and run in the container.
-
-Devel images are usually based on **base images**, that encapsulate dependencies shared by many projects.
-The build process will automatically try to pull required images from a docker registry.
-If the image is already available locally, it doesn't need to be pulled again.
-
-Another goal of this approach is to be able to preserve a working version of a component, a project or a demo and possibly ship it to external partners.
-In order to achieve this, the **release image** can be created, which contains the devel image plus the additional workspace files and run scripts required to operate the product.
-
-## When a release image is available:
-
-* call `$> ./exec.bash release STARTSCRIPT`
-  * STARTSCRIPT here is a script from the image, with a high probability of also being in the startscritps folder of this repo
-  * The image will be pulled automatically
-* Optional: call `$> source autocomplete.me` to have code completion after ./exec.bash
-  * This will use the completion with the scripts in this repo, new scripts might nor be available inside the image
-    * Possibly reset this repo to the date of the release image to improve this situation
-
-## When no release image is available:
-
-## Getting Started
-
-Please read the [usage howto](doc/020_Usage.md)
-
-## Requirements / Dependencies
-
-You need docker installed and usable for your user.
-If 3D accelleration is needed, nvidia-docker can be utilized.
-
-Please read the [docker howto](doc/010_Setup_Docker.md)
-
-## Installation
-
-Just fork/clone this repository.
-
-A fork can be used to store your settings and share them with the developers of your project.
+* In order to get tab completion for commonGUI.bash: `source autocomplete.me`
 
 ## Documentation
 
@@ -113,7 +74,7 @@ See [LICENSE](LICENSE) file.
 
 ## Maintainer / Authors / Contributers
 
-Maintainer: Steffen Planthaber
+Maintainer: Steffen Planthaber, Leon Danter
 
 Authors:
 
