@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /opt/workspace
-. env.sh
+. env.sh || { echo -e "\n[ERROR] Could not source env.sh. Is the workspace initialized?\n" && exit 1; }
 
 XML=$1
 

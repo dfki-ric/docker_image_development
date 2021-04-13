@@ -25,8 +25,9 @@ if [ "$1" = "base" ]; then
 fi
 
 if [ -z "$1" ]; then
-    echo -e "\nNo run argument given!\n    Using /bin/bash"
-    set -- "/bin/bash"
+    echo -e "\nNo run argument given!\n    Use \e[1m\e[1m$> ./exec.bash CommonGUI <xml-file>\e[0m"
+    set -- "CommonGUI CommonConfig.xml"
+#    set -- "/bin/bash"
 fi
 
 if [ "$EXECMODE" == "base" ]; then

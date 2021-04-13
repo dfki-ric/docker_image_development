@@ -20,17 +20,17 @@ In order to check for available images you can browse the DFKI [internal registr
 
 1. Clone repo
 
-2. Execute `./exec.bash` to start CommonGUI with CommonConfig
+2. Execute `./commonGUI.bash` to start CommonGUI with CommonConfig
 
 3. Done.
 
 HINTS:
 
-* For starting with another xml config execute: ./exec.bash CommonGUI <Config>
+* For starting with another xml config execute: ./commonGUI.bash CommonGUI <Config>
 
-* To see, which configs are available execute: ./exec.bash CommonGUI
+* To see, which configs are available execute: ./commonGUI.bash CommonGUI
 
-* In order to get tab completion for exec.bash source autocomplete.me
+* In order to get tab completion for commonGUI.bash source autocomplete.me
 
 ## In general
 
