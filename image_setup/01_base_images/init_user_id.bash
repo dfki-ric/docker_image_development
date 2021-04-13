@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# this scrit will be called by .bashrc
+# this script will be called by .bashrc
 
 # on initialization check if the UID of the rosuser user has to be changed:
 if [ "$NUID" -a ! -f /initialized_uid ]; then
@@ -31,10 +31,3 @@ fi
 if [ ! -f /initialized_uid ]; then
     touch "/initialized_uid"
 fi
-
-#git config --global user.email VR-Lab-devel@dfki.de
-#git config --global user.name "devel"
-#git config --global  credential.helper 'cache'
-#cd /opt/devel
-#source /opt/ros/melodic/setup.sh
- 

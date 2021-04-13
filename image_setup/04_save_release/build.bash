@@ -9,31 +9,26 @@ fi
 
 export DATE=$(date +%Y_%m_%d-%H_%M)
 
-IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+PROJECT_NAME_NO_SUBFOLDER=${PROJECT_NAME//\//_}
 
-echo "saving ${IMAGE_NAME} to ${PROJECT_NAME}_image_${DATE}.tar.gz"
+IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+SCRIPTFOLDER=${PROJECT_NAME_NO_SUBFOLDER}_scripts_${DATE}
 
-docker save ${IMAGE_NAME} | gzip > ${PROJECT_NAME}_image_${DATE}.tar.gz
-
-
+mkdir -p $SCRIPTFOLDER
 #build a scripts zip:
-echo creating scripts archive
+echo "creating scripts archive: $SCRIPTFOLDER.tar.gz"
+cp ../../docker_commands.bash ./$SCRIPTFOLDER/
+cp ../../settings.bash ./$SCRIPTFOLDER/
+cp ../../exec.bash ./$SCRIPTFOLDER/
+cp ../../stop.bash ./$SCRIPTFOLDER/
+cp ../../doc/010_Setup_Docker.md ./$SCRIPTFOLDER/Readme_Docker.md
+cp ./Readme_scripts.md ./$SCRIPTFOLDER/Readme.md
+echo "complete -W \"$(ls ../../startscripts | xargs) /bin/bash\" ./exec.bash" >> $SCRIPTFOLDER/autocomplete.me
+tar czf $SCRIPTFOLDER.tar.gz $SCRIPTFOLDER
+rm -rf $SCRIPTFOLDER
 
-mkdir -p ${PROJECT_NAME}_scripts_${DATE}
-cd ${PROJECT_NAME}_scripts_${DATE}
-cp ../../../docker_commands.bash ./
-cp ../../../settings.bash ./
-cp ../../../exec.bash ./
-cp ../../../stop.bash ./
 
-echo "complete -W \"$(ls ../../../startscripts | xargs) /bin/bash\" ./exec.bash" >> autocomplete.me
-
-
-cp ../Readme_scripts.md ./Readme.md
-
-cd ..
-tar czf ${PROJECT_NAME}_scripts_${DATE}.tar.gz ${PROJECT_NAME}_scripts_${DATE}
-
-rm -rf ${PROJECT_NAME}_scripts_${DATE}
+echo "saving ${IMAGE_NAME} to ${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz"
+docker save ${IMAGE_NAME} | gzip > ${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
 
 

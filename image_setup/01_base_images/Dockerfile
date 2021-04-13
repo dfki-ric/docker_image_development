@@ -3,6 +3,7 @@ ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
 ARG INSTALL_SCRIPT
+ARG INSTALL_ARGS
 
 
 LABEL version="0.1"
@@ -13,25 +14,26 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # general requirements
 RUN apt-get update && apt-get install -y \
-    build-essential \
     apt-utils \
+    bash-completion \
+    build-essential \
+    cmake \
     git \
-    wget \
-    cmake \
-    sudo \
-    cmake \
+    locales \
+    nano \
+    psmisc \
     python3 \
     python3-dev \
-    locales
+    sudo \
+    vim-tiny \
+    wget
 
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
-ADD ${INSTALL_SCRIPT} /opt/install.bash
-RUN chmod 755 /opt/install.bash
-RUN /opt/install.bash
 
+ENV SHELL /bin/bash
 
 ADD init_user_id.bash /opt/init_user_id.bash
 
@@ -65,3 +67,6 @@ ENV PATH="/opt/startscripts:${PATH}"
 ENTRYPOINT ["/opt/entrypoint.bash"]
 CMD ["/bin/bash"]
 
+ADD ${INSTALL_SCRIPT} /opt/install.bash
+RUN chmod 755 /opt/install.bash
+RUN /opt/install.bash ${INSTALL_ARGS}

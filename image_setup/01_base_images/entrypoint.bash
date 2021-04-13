@@ -13,7 +13,6 @@ if [ ! -f /initialized_container ]; then
 
     echo
     echo -e "\e[33mdevel user id set, logging out automatically\e[0m"
-    echo "If you want to use this container directly, name it, start it and use docker exec -ti"
     echo
 
     #entrypoit is only executed on docker run, exit here

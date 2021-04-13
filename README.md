@@ -1,6 +1,6 @@
-# Docker Development 
+# Docker Image Development 
 
-These scripts are helping to set up a docker-based development and release workflow.
+This is a collection of scripts that enables a development process using docker images.
 
 **Requisite:** Please install Docker according to the [README_Docker.md](README_Docker.md)!
 
@@ -36,12 +36,17 @@ HINTS:
 
 In order to initialize, run or attach to containers you will be using the `./exec.bash` script.
 You can use either base, devel or release as argument in order to determine which image you want to base your container on.
-Per default the exec.bash script will drop into the CommonGUI with CommonConfig.xml with the default mode set in the settings.bash if no other arguments are given.
+Per default the exec.bash script will drop into a /bin/bash shell with the default mode set in the settings.bash if no other arguments are given.
 
-In order to pull images you need to be logged in at the docker registry.
+The goal is to prepare docker _images_ that encapsulate a component's or a project's dependencies so that work is being done in a consistent, reproducible environment, i.e., to prevent that code not only builds or runs on the developer's machine and fails elsewhere.
+In order to achieve this, the **devel image** is created to contain all dependencies for the workspace preinstalled. The devel image mounts local directories into the container so they can be modified by editors on the host machine, while they are compiled and run in the container.
 
-When the default execmode is set correctly in the settings.basg sctipt, you can omit the mode (devel,release) after `./exec.bash`.
+Devel images are usually based on **base images**, that encapsulate dependencies shared by many projects.
+The build process will automatically try to pull required images from a docker registry.
+If the image is already available locally, it doesn't need to be pulled again.
 
+Another goal of this approach is to be able to preserve a working version of a component, a project or a demo and possibly ship it to external partners.
+In order to achieve this, the **release image** can be created, which contains the devel image plus the additional workspace files and run scripts required to operate the product.
 
 ## When a release image is available:
 
@@ -54,144 +59,75 @@ When the default execmode is set correctly in the settings.basg sctipt, you can 
 
 ## When no release image is available:
 
-In case you got a release as tar.gz file, you can load the release locally using the instructions provided with the file.
+## Getting Started
 
-### Use a devel image:
+Please read the [usage howto](doc/020_Usage.md)
 
-In case you have to create a release image you can use a "devel image".
+## Requirements / Dependencies
 
-* call `$> ./exec.bash devel`
-  * follow the instructions on first start (most probably: call /opt/setup_workspace.bash)
-  * this creates a mounted home and workspace folder in this folder
-    * they are mounted as the users home and /opt/workspace folders in the container
-    * you can edit files by using your host system and compile using the console created with `$> ./exec.bash devel`
-      * TIP: in case you are using VSCode also check out the "Remote - Containers" extension
-   
-To create a release image, have a look at the [release image Readme](image_setup/03_release_image/Readme.md)!
+You need docker installed and usable for your user.
+If 3D accelleration is needed, nvidia-docker can be utilized.
 
-Change the default execmode in settings.bash to release and push this repo
+Please read the [docker howto](doc/010_Setup_Docker.md)
 
-## When no devel image is available:
+## Installation
 
-You are the one initially creating the images for your project.
+Just fork/clone this repository.
 
-### Create a devel image
+A fork can be used to store your settings and share them with the developers of your project.
 
-* fork this repo to your projects namespace or into a new group using the git web interface.
-  * This way, changes and updates can be tracked and updated more easily in both directions.
-* clone your fork to your system into your desired folder
-  * git clone https://git.hb.dfki.de/MY_PROJECT/docker_development MY_PROJECT_FOLDER
+## Documentation
 
-* edit the settings.bash 
-  * set a new project name
-  * select the base image to use
-  * set your registry (empty if none)
+The Documentation is available in the doc folder of this repository.
 
-* edit the image_setup/02_devel_image/setup_workspace.bash and make it work
-  * in the docker container it is mounted as /opt/setup_workspace.bash
-  * call `$> ./exec.bash base`
-  * call `bash /opt/setup_workspace.bash` to test your workspace setup (clone repos, etc.) until it works
-* edit the image_setup/02_devel_image/Dockerfile
-  * Add all additionally installed packages to the apt-get line
-    * For rock and ros there are helper scripts to determine the os dependencies of the workspace in the image\_setup/02\_devel_image folder. Copy them to your workspace folder if you want to use them from the container.
-  * Add possibly needed commands needed to make your code run in this container
-  
-To create a devel image, have a look at the [devel image Readme](image_setup/02_devel_image/Readme.md).
+## Current State
 
-* Change the default execmode in settings.bash to devel and push this repo
+This software is stable and maintained by the authors.
 
-## When no base images are available:
+## Bug Reports
 
-You are the one initally creating the images for your registry, or you don't have one
+To search for bugs or report them, please use GitHubs issue tracker at:
 
-* go to the image_setup/01_base_images folder
-* call the build scritps you need base images for
-* if you have a registry, push them
+http://github.com/dfki-ric/docker_image_development
 
 Also see the [base image Readme](image_setup/01_base_images/Readme.md).
 
+## Referencing
 
+Please reference the github page: http://github.com/dfki-ric/docker_image_development
 
-# Distribute a release image Image
+## Releases
 
-You can build archives with image and scripts in order to deploy to targets that don not have access to your registry
+We use semantic versioning: See [VERSION](VERSION) file
 
-See the [save release Readme](image_setup/04_save_release/Readme.md).
+### Semantic Versioning
 
+Semantic versioning is used.
 
+(The major version number will be incremented when the API changes in a backwards incompatible way, the minor
+version will be incremented when new functionality is added in a backwards compatible manner, and the patch version is incremented for bugfixes, documentation, etc.)
 
+## License
 
-## Attach More Bashes or Start More Programs
+See [LICENSE](LICENSE) file.
 
-Each subsequent call to exec.bash is using the same container
+## Maintainer / Authors / Contributers
 
-You can attach more bashes to the container using the exec.bash command again
+Maintainer: Steffen Planthaber
 
-```./exec.bash```
+Authors:
 
-```./exec.bash devel```
+* Steffen Planthaber
+* Leon Danter
 
-etc.
+Contributors:
 
-## Updating an image from registry
+* Elmar Berghöfer
+* Fabian Maas
+* Tom Creutz
+* Raul Dominguez
+* Bojan Kocev
+* Christian Koch
+* Leif Christensen
 
-You can cd into the tools folder andf call `update_image.bash` this updated the image of the current default exec mode.
-Call `update_image.bash [base|devel|release]` to update other images
-
-## Refreshing the container
-
-This should not be needed, but is somtimes requires for testing.
-The easiest way is to delete the accorting *-container_id.txt file.
-The container will be re-created on the next call of exec.
-
-THe same happens when you update the image by pulling
-
-
-# Special Topics
-
-## Changing a release without devel folders
-In case you need to change parts of an existing release, you can:
-
-* extract a release to a devel workspace using the script in the tools folder
-   * You need to generate a devel image or have access to it in the registry
-   * change the default execmode or use `./exec.bash devel`
-   * use the devel mode to do the changes
-   * build a new release
-* Edit the code within the container
-  *  Changes are lost when the container is deleted/refreshed or "docker commit"the changes
-
-
-
-## Using iceccd in the container
-
-Note: This has not been thoroughly tested. But feel free to try and provide feedback.
-
-### Step 1 (option a)
-
-Iceccd in the container has problems to find the iceccd server. To solve this, you have to modify the config file  `/etc/icecc/icecc.conf` to set `ICECC_SCHEDULER_HOST`to the address of the scheduler. 
-
-### Step 1 (option b)
-
-When starting your container, use the flag  `--net=host` so that host and container share the same network interfaces.
-
-### Step 2
-
-Stop the iceccd daemon on your host with
-
-```
-sudo service iceccd stop
-```
-
-and restart it in the container
-
-```
-sudo service iceccd restart
-```
-
-It should be possible to have more complex setups for the iceccd in containers/hosts. So that not necessarily the host has to stop using icecc or multiple container can make use of it.
-
-## Programming in a Rock environemnt with Docker and VScode
-
-You can edit code, compile and debug in your container from a host using the remote development package from VScode. Once you have your container created and visual studio with the [remote development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed in your host you can access your containers for development with this extension.
-
-Another useful extension for vscode to work with Rock is the [rock extension](https://marketplace.visualstudio.com/items?itemName=rock-robotics.rock). This tool gives you access to the most common autoproj commands directly from the vscode interface.
+Copyright 2020, DFKI GmbH / Robotics Innovation Center, University of Bremen / Robotics Research Group
