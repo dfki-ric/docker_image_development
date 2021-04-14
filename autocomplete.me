@@ -3,5 +3,5 @@
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export PATH=$ROOT_DIR${PATH:+:${PATH}}
 complete -W "devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
-complete -W "devel release $(./exec.bash "ls /opt/workspace/ndlcom/RobotConfig/xml" 2>/dev/null | grep '\.xml' | tr -d '\r')" ./commonGUI.bash
+complete -W "devel release --help $(./exec.bash "ls /opt/workspace/ndlcom/RobotConfig/xml" 2>/dev/null | grep '\.xml' | tr -d '\r')" ./commonGUI.bash
 complete -W "devel release" ./stop.bash
