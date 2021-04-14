@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     libeigen3-dev \
     libffi-dev \
     liblzma-dev \
-    libqtgui4 \
     libqwt5-qt4-dev \
     libxml++2.6-dev \
     libxml2-utils \
