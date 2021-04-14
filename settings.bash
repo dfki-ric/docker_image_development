@@ -48,3 +48,7 @@ export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 # --privileged
 # -v /dev/input/:/dev/input
 export ADDITIONAL_DOCKER_RUN_ARGS=""
+
+# Make the exec script to talk more for debugging/docker setup purposes.
+# This may also be stated in the command line: $> VERBOSE=true ./exec.bash 
+# export VERBOSE=true

@@ -5,3 +5,4 @@ devel-container_id.txt
 release-container_id.txt
 has_gpu_support.txt
 *.tar.gz
+/image_setup/04_save_release/autocomplete.me
