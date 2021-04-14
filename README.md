@@ -31,7 +31,7 @@ In order to check for available images you can browse the DFKI [internal registr
 
 ##### HINTS:
 
-* For starting with another xml config execute: `./commonGUI.bash <Config>` (suffix may be omitted)
+* For starting with another xml config execute: `./commonGUI.bash <Config>` (xml suffix may be omitted)
 
 * To see, which configs are available execute: `./commonGUI.bash --help`
 
