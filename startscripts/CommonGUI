@@ -7,9 +7,12 @@ XML=$1
 
 function print_info {
     echo
-    echo "[ERROR] Please provide a valid xml file name as parameter!"
-    echo "        Default layout => CommonConfig"
-    echo "        Other available options are:"
+    if [ "$1" == "error" ]; then
+        echo -e "\e[31mERROR:\e[0m Invalid xml config!"
+        echo
+    fi
+    echo -e "Usage:  \e[1m\e[1m./commonGUI.bash <xml-file>\e[0m\n"
+    echo "Available options:"
     echo
     ls /opt/workspace/ndlcom/RobotConfig/xml/
     echo 
@@ -18,10 +21,10 @@ function print_info {
 }
 
 # check argument and add suffix, if not yet provided
-if [ -z "$XML" ]; then
+if [ -z "$XML" ] || [ "$XML" == "--help" ]; then
     print_info
 elif [ "${XML##*.}" != "xml" ]; then
     XML=$XML.xml
 fi
 
-CommonGUI --xml-file=/opt/workspace/install/share/RobotConfig/xml/$XML || print_info
+CommonGUI --xml-file=/opt/workspace/install/share/RobotConfig/xml/$XML || print_info "error"
