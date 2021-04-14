@@ -37,6 +37,8 @@ In order to check for available images you can browse the DFKI [internal registr
 
 * In order to get tab completion for commonGUI.bash: `source autocomplete.me`
 
+* If you want to get into the container to look at the workspace and change things manually execute: `./exec.bash`. Keep in mind that changes in the container will vanish as soon as a new container is generated.
+
 ## Documentation
 
 The Documentation is available in the doc folder of this repository.
