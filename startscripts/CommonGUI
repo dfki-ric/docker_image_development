@@ -12,10 +12,10 @@ function print_info {
         echo
     fi
     echo -e "Usage:  \e[1m\e[1m./commonGUI.bash <xml-file>\e[0m\n"
-    echo "Available options:"
+    echo -e "Available options:\n\e[2m  => source autocomplete.me\n     to enable tab completion\e[0m"
     echo
     ls /opt/workspace/ndlcom/RobotConfig/xml/
-    echo 
+    echo
     echo
     exit 1
 }
