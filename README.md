@@ -31,13 +31,13 @@ In order to check for available images you can browse the DFKI [internal registr
 
 ##### HINTS:
 
-* For starting with another xml config execute (suffix may be omitted): `./commonGUI.bash CommonGUI <Config>`
+* For starting with another xml config execute: `./commonGUI.bash <Config>` (suffix may be omitted)
 
-* To see, which configs are available execute: `./commonGUI.bash CommonGUI`
+* To see, which configs are available execute: `./commonGUI.bash --help`
 
-* In order to get tab completion for commonGUI.bash: `source autocomplete.me`
+* In order to enable tab completion: `source autocomplete.me`
 
-* If you want to get into the container to look at the workspace and change things manually execute: `./exec.bash`. Keep in mind that changes in the container will vanish as soon as a new container is generated.
+* If you want to get into the container to look at the workspace and change things manually execute: `./exec.bash`. Keep in mind that changes in the container will vanish as soon as a new container is generated. Refer to the [usage documentation](doc/020_Usage.md) for detailed infos.
 
 ## Documentation
 
