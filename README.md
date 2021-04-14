@@ -37,6 +37,10 @@ In order to check for available images you can browse the DFKI [internal registr
 
 * In order to enable tab completion: `source autocomplete.me`
 
+* Execute `./stop.bash` in order to stop the container
+
+* Remove the _*-container_id.txt_ file to generate a new container upon next start of _exec.bash_ or _commonGUI.bash_
+
 * If you want to get into the container to look at the workspace and change things manually execute: `./exec.bash`. Keep in mind that changes in the container will vanish as soon as a new container is generated. Refer to the [usage documentation](doc/020_Usage.md) for detailed infos.
 
 ## Documentation
