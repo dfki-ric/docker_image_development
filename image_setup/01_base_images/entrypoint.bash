@@ -8,8 +8,8 @@
 # in clase of legacy scripts using new base images, set it here
 if [ -z "$PRINT_INFO" ]; then
     # we expect that in info is neither "echo" or ":", nothing has been set
-    echo "Your docker_image_development scripts are outdated, please update (merge) from https://github.com/dfki-ric/docker_image_development"
-    echo "WARNING: Verbosity levels disabled, printing everything (as before)"
+    echo "WARNING: Your docker_image_development scripts are outdated, please update (merge) from https://github.com/dfki-ric/docker_image_development"
+    echo -e "\t* docker_image_developent verbosity levels are disabled, printing everything (as before)"
     export PRINT_DEBUG=echo
     export PRINT_INFO=echo
     export PRINT_WARNING=echo
@@ -24,6 +24,7 @@ if [ ! -f /initialized_container ]; then
     $PRINT_INFO
     #only executed by docker run
     sudo touch /initialized_container
+    # use -E to keep env (for PRINT_* environment)
     sudo -E /bin/bash /opt/init_user_id.bash
     # id script needs exit to apply uid next docker start, so exiting here
     # the exec script expects this to happen and rund start/exec afterwards
