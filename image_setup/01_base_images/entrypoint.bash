@@ -9,7 +9,7 @@
 if [ -z "$PRINT_INFO" ]; then
     # we expect that in info is neither "echo" or ":", nothing has been set
     echo "WARNING: Your docker_image_development scripts are outdated, please update (merge) from https://github.com/dfki-ric/docker_image_development"
-    echo -e "\t* docker_image_developent verbosity levels are disabled, printing everything (as before)"
+    echo -e "\t* docker_image_developent verbosity levels are disabled for ouputs from the image, printing everything (as before)"
     export PRINT_DEBUG=echo
     export PRINT_INFO=echo
     export PRINT_WARNING=echo
