@@ -53,9 +53,9 @@ This software is stable and maintained by the authors.
 
 ## Bug Reports
 
-To search for bugs or report them, please use GitHubs issue tracker at:
+To search for bugs or report them, please use the issue tracker at:
 
-http://github.com/dfki-ric/docker_image_development
+https://git.hb.dfki.de/ndlcom/docker_image-commongui/-/issues
 
 Also see the [base image Readme](image_setup/01_base_images/Readme.md).
 
