@@ -11,25 +11,25 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
 if [ "$1" = "devel" ]; then
-    $PRINT_CMD "overriding default execmode $DEFAULT_EXECMODE to: devel"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="devel"
     shift
 fi
 if [ "$1" = "release" ]; then
-    $PRINT_CMD "overriding default execmode $DEFAULT_EXECMODE to: release"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="release"
     shift
 fi
 
 if [ "$1" = "base" ]; then
-    $PRINT_CMD "overriding default execmode $DEFAULT_EXECMODE to: base"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
     EXECMODE="base"
     shift
 fi
 
 # set default argument
 if [ -z "$1" ]; then
-    $PRINT_CMD "No run argument given. Using /bin/bash as default"
+    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
     set -- "/bin/bash"
 fi
 
@@ -72,9 +72,9 @@ if [ "$EXECMODE" == "release" ]; then
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
-    $PRINT_CMD
-    $PRINT_CMD pulling image: $IMAGE_NAME
-    $PRINT_CMD
+    $PRINT_INFO
+    $PRINT_INFO pulling image: $IMAGE_NAME
+    $PRINT_INFO
     docker pull $IMAGE_NAME
 fi
 
@@ -93,9 +93,9 @@ FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 CONTAINER_ID_FILENAME=$ROOT_DIR/$EXECMODE-container_id.txt
 
-$PRINT_CMD
-$PRINT_CMD -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"
-$PRINT_CMD
+$PRINT_INFO
+$PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"
+$PRINT_INFO
 
 
 
