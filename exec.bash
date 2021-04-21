@@ -1,33 +1,35 @@
 #!/bin/bash
 
-xhost +local:root
+#allow local connections of root (docker daemon) to the current users x server
+xhost +local:root > /dev/null
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 . $ROOT_DIR/docker_commands.bash
 
 
+
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
 if [ "$1" = "devel" ]; then
-    echo "overriding default execmode $DEFAULT_EXECMODE to: devel"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="devel"
     shift
 fi
 if [ "$1" = "release" ]; then
-    echo "overriding default execmode $DEFAULT_EXECMODE to: release"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="release"
     shift
 fi
 
 if [ "$1" = "base" ]; then
-    echo "overriding default execmode $DEFAULT_EXECMODE to: base"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
     EXECMODE="base"
     shift
 fi
 
 # set default argument
 if [ -z "$1" ]; then
-    echo "No run argument given. Using /bin/bash as default"
+    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
     set -- "/bin/bash"
 fi
 
@@ -70,9 +72,9 @@ if [ "$EXECMODE" == "release" ]; then
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
-    echo
-    echo pulling image: $IMAGE_NAME
-    echo
+    $PRINT_INFO
+    $PRINT_INFO pulling image: $IMAGE_NAME
+    $PRINT_INFO
     docker pull $IMAGE_NAME
 fi
 
@@ -91,9 +93,9 @@ FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 CONTAINER_ID_FILENAME=$ROOT_DIR/$EXECMODE-container_id.txt
 
-echo
-echo -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"
-echo
+$PRINT_INFO
+$PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"
+$PRINT_INFO
 
 
 
@@ -115,4 +117,5 @@ DOCKER_RUN_ARGS=" \
 
 init_docker $@
 
-xhost -local:root
+#remove permission for local connections of root (docker daemon) to the current users x server
+xhost -local:root > /dev/null

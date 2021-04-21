@@ -4,18 +4,30 @@
 #TODO: set ros_core URI // from outside in run script??
 #get HOST ip /sbin/ip route|awk '/default/ { print $3 }'
 
+
+# in clase of legacy scripts using new base images, set it here
+if [ -z "$PRINT_INFO" ]; then
+    # we expect that in info is neither "echo" or ":", nothing has been set
+    echo "WARNING: Your docker_image_development scripts are outdated, please update (merge) from https://github.com/dfki-ric/docker_image_development"
+    echo -e "\t* docker_image_developent verbosity levels are disabled for ouputs from the image, printing everything (as before)"
+    export PRINT_DEBUG=echo
+    export PRINT_INFO=echo
+    export PRINT_WARNING=echo
+fi
+
+
 #set the correct UID from host
 if [ ! -f /initialized_container ]; then
+
+    $PRINT_INFO
+    $PRINT_INFO -e "\e[33mSetting the containers devel user id to host user id\e[0m"
+    $PRINT_INFO
     #only executed by docker run
     sudo touch /initialized_container
-    sudo sh /opt/init_user_id.bash
-    #id script needs exit to apply uid nest start
-
-    echo
-    echo -e "\e[33mdevel user id set, logging out automatically\e[0m"
-    echo
-
-    #entrypoit is only executed on docker run, exit here
+    # use -E to keep env (for PRINT_* environment)
+    sudo -E /bin/bash /opt/init_user_id.bash
+    # id script needs exit to apply uid next docker start, so exiting here
+    # the exec script expects this to happen and rund start/exec afterwards
     exit 0
 fi
 
