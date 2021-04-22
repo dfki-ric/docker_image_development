@@ -5,6 +5,8 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 DNSIP=$(nmcli dev show | grep 'IP4.DNS' | grep "\[1\]" | egrep -oe "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}" | head -n 1)
 
+SCRIPTSVERSION=$(cat VERSION | head -n1 | awk -F' ' '{print $1}')
+
 PRINT_WARNING=echo
 PRINT_INFO=echo
 PRINT_DEBUG=:
@@ -105,7 +107,7 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
+    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
@@ -128,7 +130,7 @@ generate_container_nonint(){
     $PRINT_DEBUG "generating new non-interactive container with $@"
     echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
 
-    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME $@
+    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME $@
     
     # default container exists after initial run
     start_container_nonint $@
