@@ -125,7 +125,7 @@ start_container(){
 }
 
 generate_container_nonint(){
-    $PRINT_CMD "generating new non-interactive container : $CONTAINER_NAME"
+    $PRINT_DEBUG "generating new non-interactive container : $CONTAINER_NAME"
     echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
 
     #initial run exits no matter what due to entrypoint (user id settings)
@@ -133,18 +133,18 @@ generate_container_nonint(){
     docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS $IMAGE_NAME || exit 1
     # default container exists after initial run
 
-    $PRINT_CMD "docker start $CONTAINER_NAME"
+    $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME  > /dev/null
-    $PRINT_CMD "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
+    $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
     docker exec -t $CONTAINER_NAME /opt/check_init_workspace.bash
-    $PRINT_CMD "running $@ in $CONTAINER_NAME"
+    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec -t $CONTAINER_NAME $@
 }
 
 #starts container with the param given in first run
 start_container_nonint(){
-    $PRINT_CMD "docker start non-interactive $CONTAINER_NAME"
+    $PRINT_DEBUG "docker start non-interactive $CONTAINER_NAME"
     docker start $CONTAINER_NAME
-    $PRINT_CMD "running $@ in $CONTAINER_NAME"
+    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec $CONTAINER_NAME $@
 }
