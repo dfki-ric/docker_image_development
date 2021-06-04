@@ -24,10 +24,11 @@ export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparin
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
 
 
 # The Name of the Workspace image to use
@@ -47,3 +48,10 @@ export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 # --privileged
 # -v /dev/input/:/dev/input
 export ADDITIONAL_DOCKER_RUN_ARGS="--net=host"
+
+# Make the exec script to talk more for debugging/docker setup purposes.
+# This may also be stated in the command line: $> VERBOSE=true ./exec.bash 
+# export VERBOSE=true
+
+# Make the output as quiet as possible (does not apply to programs started in the container)
+#export SILENT=false

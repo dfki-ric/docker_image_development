@@ -6,32 +6,32 @@ If this version of Docker is not already installed from the standard Ubuntu repo
 
 Then you can install the latest Docker version as described here: https://docs.docker.com/engine/install/ubuntu/
 
-These are the most common steps:
+You can copy paste the following steps or execute them all at once by using the install_docker.bash script in the tools directory:
 
 1. Install curl (if not already done)
 ```bash
-$ sudo apt install curl
+sudo apt install curl
 ```
 1. Install the docker repository key: 
 ```bash
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
 3. Install the repository:
 ```bash
-$ sudo add-apt-repository \
+sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) stable"
 ```
 4. Update repositories and install docker_ce:
 ```bash
-$ sudo apt update
-$ sudo apt install docker-ce
+sudo apt update
+sudo apt install docker-ce
 ```
 5. Add your user to the docker group:
 
 In order to be able to run docker commands without being root, you should add your user to the `docker` group (new login required to take effect).
 ```bash
-$ sudo adduser $(id -un) docker
+sudo adduser $(id -un) docker
 ```
 
 ### NVIDIA Docker (2)
@@ -85,7 +85,7 @@ IMPORTANT: In order to enable 3d acceleration, existing containers have to be re
 
 In order to be able to run docker commands without being root, you should add your user to the `docker` group (requires new login to take effect).
 ```bash
-$ sudo adduser $(id -un) docker
+sudo adduser $(id -un) docker
 ```
 
 In order to make sure that the kernel modules are properly loaded, you should restart your computer. 
@@ -99,7 +99,7 @@ If you want to pull images from a private registry, you have to consider the fol
 
 1. install the docker credential helper:
 ```bash
-$ sudo apt install golang-docker-credential-helpers
+sudo apt install golang-docker-credential-helpers
 ```
 (For ubuntu 16.04 and older this is not a package and has to be grabbed from https://github.com/docker/docker-credential-helpers/releases, install the bin in /usr/bin using the one containing "secretservice" in it's name.)
 
@@ -112,7 +112,7 @@ Open the file ~/.docker/config.json (or create it if it doesn't exist), and put 
 ```
 3. Now login to the registry server:
 ```bash
-$ docker login docker-reg.mydomain.de
+docker login docker-reg.mydomain.de
 ```
 Now you can pull images from the docker registry, e.g. by using docker pull.
 
