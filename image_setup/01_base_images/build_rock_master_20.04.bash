@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#copy scripts VERSION file to put it into the image
+cp ../../VERSION ./
+
 . ../../settings.bash
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/rock_master_20.04
 

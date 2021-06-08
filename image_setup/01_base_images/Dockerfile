@@ -55,6 +55,7 @@ RUN echo "devel ALL=(ALL) NOPASSWD: ALL \
 RUN touch /opt/init_workspace.bash
 ADD check_init_workspace.bash /opt/check_init_workspace.bash 
 
+ADD VERSION /opt/VERSION
 ADD entrypoint.bash /opt/entrypoint.bash
 
 #these scripts must be runnable by users, not only root
