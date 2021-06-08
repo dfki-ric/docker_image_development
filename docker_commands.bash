@@ -127,17 +127,25 @@ start_container(){
 }
 
 generate_container_nonint(){
-    $PRINT_DEBUG "generating new non-interactive container with $@"
+    $PRINT_DEBUG "generating new non-interactive container : $CONTAINER_NAME"
     echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
 
-    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME $@
-    
-    # default container exists after initial run
-    start_container_nonint $@
+    # initial run exits no matter what -> due to entrypoint (user id settings)
+    # /bin/bash will be default nonetheless when called later without command
+    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
+    # default container exists after initial run, so we can start it
+    $PRINT_DEBUG "docker start $CONTAINER_NAME"
+    docker start $CONTAINER_NAME  > /dev/null
+    $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
+    docker exec -t $CONTAINER_NAME /opt/check_init_workspace.bash
+    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
+    docker exec -t $CONTAINER_NAME $@
 }
 
 #starts container with the param given in first run
 start_container_nonint(){
     $PRINT_DEBUG "docker start non-interactive $CONTAINER_NAME"
-    docker start -a $CONTAINER_NAME
+    docker start $CONTAINER_NAME
+    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
+    docker exec $CONTAINER_NAME $@
 }

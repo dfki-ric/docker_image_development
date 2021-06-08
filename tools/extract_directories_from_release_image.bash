@@ -75,6 +75,8 @@ if [ ! -z $NEW_ID ]; then
 fi
 
 echo
+echo "To work with the extracted files, change the DEFAULT_EXECMODE to devel in settings.bash"
+echo
 echo "If you don't need the release image anymore, you may delete it:"
 echo "docker rmi $IMAGE_NAME"
 echo
