@@ -121,7 +121,7 @@ As this DNS though dnsmasq and systemd-resolvd ist host-specific, you shouldn't 
 * restart docker
   * sudo systemctl restart docker
 
-** For these changes to take effect, you have to re-create your containers ** (just delete the *\_image\_id.txt files)
+**For these changes to take effect, you have to re-create your containers** (just delete the *\_image\_id.txt files)
 
 
 ### Restart and convenience 
