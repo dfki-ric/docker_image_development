@@ -18,7 +18,7 @@ git tag -a release_$TAG -m"${RELEASE_IMAGE_NAME}_$TAG"
 # tag the devel image used to create the release (for extracting workspaces later)
 docker tag $DEVEL_IMAGE_NAME ${DEVEL_IMAGE_NAME}_$TAG
 
-docker build --no-cache --build-arg DEVEL_IMAGE_NAME --build-arg USER --build-arg HOST --build-arg DATE -f Dockerfile -t $RELEASE_IMAGE_NAME ../..
+docker build --no-cache --build-arg DEVEL_IMAGE_NAME --build-arg USER --build-arg HOST --build-arg DATE -f Dockerfile -t $RELEASE_IMAGE_NAME --label "release-image-name=$RELEASE_IMAGE_NAME" --label "release-image-created-from=${DEVEL_IMAGE_NAME} - $(docker inspect --format '{{.Id}}' $DEVEL_IMAGE_NAME)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" ../..
 
 echo "tagging $RELEASE_IMAGE_NAME as ${RELEASE_IMAGE_NAME}_$TAG"
 docker tag $RELEASE_IMAGE_NAME ${RELEASE_IMAGE_NAME}_$TAG
