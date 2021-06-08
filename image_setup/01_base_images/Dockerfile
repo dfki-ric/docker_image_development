@@ -5,9 +5,9 @@ FROM ${BASE_IMAGE}
 ARG INSTALL_SCRIPT
 ARG INSTALL_ARGS
 
-
-LABEL version="0.1"
-LABEL description="This image was generated to be a base image for docker_development"
+LABEL description="This image was generated to be a base image for docker_image_development"
+LABEL dockerfile_repo_url="https://github.com/dfki-ric/docker_image_development"
+LABEL maintainer="DFKI RIC"
 
 # To avoid some errors when fetching apt-get updates. # See: https://stackoverflow.com/a/35976127 
 ENV DEBIAN_FRONTEND=noninteractive
