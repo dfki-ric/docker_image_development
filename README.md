@@ -1,3 +1,22 @@
+# ANT Quick Guide
+
+## create an access token for gitlab:
+* edit profile
+* acess tokens
+* select a name
+* check read/write registry
+* copy your token
+* docker login git.hb.dfki.de:5050 -u USER -p TOKEN
+
+## Starting the Simulation
+
+* clone this repo
+* source autocomplete.me for tab-completion
+* call ./exec.bash 00_rock_runtime in the first console
+* call ./exec.bash 01_simulation in the second console
+
+
+
 # Docker Image Development 
 
 This is a collection of scripts that enables a development process using docker images.
