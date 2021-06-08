@@ -3,8 +3,6 @@
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 . $ROOT_DIR/settings.bash
 
-DNSIP=$(nmcli dev show | grep 'IP4.DNS' | grep "\[1\]" | egrep -oe "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}" | head -n 1)
-
 SCRIPTSVERSION=$(cat VERSION | head -n1 | awk -F' ' '{print $1}')
 
 PRINT_WARNING=echo
