@@ -37,9 +37,7 @@ ENV SHELL /bin/bash
 
 ADD init_user_id.bash /opt/init_user_id.bash
 
-# create user (usermod -u UID username will be used later to maybe adapt UID on fitst start).
-# using salted password: openssl passwd -1 -salt xyz  yourpass    # pw UserRos
-# RUN useradd -m -U -p '$1$xyz$pzVfEx0ZWLPizymvlx2P70' -G sudo,users rosuser
+# create devel user (usermod -u UID username will be used later to maybe adapt UID on fitst start).
 RUN groupadd devel-group
 RUN useradd --shell /bin/bash -c "development user" -m -G devel-group devel
 
