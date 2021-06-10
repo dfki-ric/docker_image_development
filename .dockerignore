@@ -25,14 +25,23 @@ workspace/**
 !workspace/tools/metaruby
 !workspace/tools/orocos.rb
 
+# vizkit subsystem
+!workspace/tools/orogen
+!workspace/tools/pocolog
+!workspace/gui/vizkit
+
+
 # binaries
 !workspace/install/** 
 # but not include
 workspace/install/include
 
 # additiional repos that are not installed into the install folder
-!workspace/bundles/**
 !workspace/models/**
+# bundles but not logs
+!workspace/bundles/**
+workspace/bundles/crex_ant/logs
+
 
 
 

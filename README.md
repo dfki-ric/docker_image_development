@@ -15,6 +15,9 @@
 * call ./exec.bash 00_rock_runtime in the first console
 * call ./exec.bash 01_simulation in the second console
 
+If you want to see running tasks/data:
+
+* call ./exec.bash rock-display
 
 
 # Docker Image Development 
