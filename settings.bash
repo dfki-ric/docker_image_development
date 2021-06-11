@@ -36,7 +36,7 @@ export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with
 # e.g MY_PROJECT/docker_image_development:devel
 # under normal circumstances you should not need to change these
 export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
-export WORKSPACE_RELEASE_IMAGE=ant/docker_image_development/ant_dfki:release
+export WORKSPACE_RELEASE_IMAGE=ant/consortium/external/docker_image_development/ant_dfki:release
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
