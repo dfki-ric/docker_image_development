@@ -1,0 +1,5 @@
+#!/bin/bash
+
+git config --global user.email bob@dfki.de
+git config --global user.name "Bob the Builder"
+
