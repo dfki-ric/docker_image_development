@@ -31,12 +31,12 @@ export -f list_autoproj_osdeps
 export -f list_ros_osdeps
 
 # search for folder with an "autoproj" folder (autoproj buildconf) and add dependencies to file"
-if [ ! -z "$(find -maxdepth 1 -type d -name autoproj)" ]; then
+if [ ! -z "$(find -maxdepth 2 -type d -name autoproj)" ]; then
     find -type d -name autoproj -execdir bash -c 'list_autoproj_osdeps' \;
 fi
 
 # search for folder with a ".rosinstall" file and add dependencies to file"
-if [ ! -z "$(find -maxdepth 1 -type d -name src)" ]; then
+if [ ! -z "$(find -maxdepth 2 -type d -name src)" ]; then
     find src/ -name .rosinstall -execdir bash -c 'list_ros_osdeps' \;
 fi
 

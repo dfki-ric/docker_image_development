@@ -9,7 +9,7 @@
 if [ -z "$PRINT_INFO" ]; then
     # we expect that in info is neither "echo" or ":", nothing has been set
     echo
-    echo "WARNING: Your docker_image_development scripts are outdated, please update (merge) from https://github.com/dfki-ric/docker_image_development"
+    echo "WARNING: Your docker_image_development scripts are outdated, please pull your repo or merge a newer version from https://github.com/dfki-ric/docker_image_development"
     echo -e "\t* docker_image_developent verbosity levels are disabled for ouputs from the image, printing everything (as before)"
     echo
     export PRINT_DEBUG=echo
@@ -30,7 +30,7 @@ SCRIPTS_PATCH=$(echo $SCRIPTSVERSION | awk -F'.' '{print $3}')
 # if SCRIPTSVERSION is not set at all, the scripts are too old (but compatible)
 if [ -z "$SCRIPTSVERSION" ]; then
     $PRINT_WARNING
-    $PRINT_WARNING "WARNING: Your docker_image_development scripts are outdated, please update (merge) from https://github.com/dfki-ric/docker_image_development"
+    $PRINT_WARNING "WARNING: Your docker_image_development scripts are outdated, please pull your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
     $PRINT_WARNING -e "\t* docker_image_developent Version checks disabled"
     $PRINT_WARNING
 else
@@ -39,18 +39,18 @@ else
         # check major versions
         if [ "$IMAGE_MAJOR" -gt "$SCRIPTS_MAJOR" ]; then
             echo
-            echo -e "\e[31mError: The image was produced with incompatible scripts\e[0m: Please update your scripts"
+            echo -e "\e[31mError: The image was produced with incompatible scripts\e[0m: Please pull your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
             echo
             exit 0
         else
             if [ "$IMAGE_MINOR" -gt "$SCRIPTS_MINOR" ]; then
                 $PRINT_INFO
-                $PRINT_INFO "The image was produced with a newer minor scripts version: Consider updating your scripts"
+                $PRINT_INFO "The image was produced with a newer minor scripts version: Consider pulling your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
                 $PRINT_INFO
             else
                 if [ "$IMAGE_PATCH" -gt "$SCRIPTS_PATCH" ]; then
                     $PRINT_DEBUG
-                    $PRINT_DEBUG "The image was produced with a newer patch scripts version: Consider updating your scripts"
+                    $PRINT_DEBUG "The image was produced with a newer patch scripts version: Consider pulling your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
                     $PRINT_DEBUG
                 fi
             fi
