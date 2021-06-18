@@ -18,7 +18,6 @@ fi
 if [ "$1" = "release" ]; then
     $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="release"
-    CONTIANER_USER=release
     shift
 fi
 
@@ -70,6 +69,7 @@ fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+    CONTIANER_USER=release
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
