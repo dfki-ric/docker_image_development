@@ -97,6 +97,7 @@ init_docker(){
     fi
 }
 
+DOCKER_EXEC_RETURN_VALUE=1;
 
 #generate container and start command given ad paramater
 generate_container(){
@@ -114,6 +115,7 @@ generate_container(){
     docker exec -ti $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec -ti $CONTAINER_NAME $@
+    DOCKER_EXEC_RETURN_VALUE=$?
 }
 
 #starts container with the param given in first run
@@ -122,6 +124,7 @@ start_container(){
     docker start $CONTAINER_NAME > /dev/null
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec -ti $CONTAINER_NAME $@
+    DOCKER_EXEC_RETURN_VALUE=$?
 }
 
 generate_container_nonint(){
@@ -138,6 +141,7 @@ generate_container_nonint(){
     docker exec -t $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec -t $CONTAINER_NAME $@
+    DOCKER_EXEC_RETURN_VALUE=$?
 }
 
 #starts container with the param given in first run
@@ -146,4 +150,5 @@ start_container_nonint(){
     docker start $CONTAINER_NAME
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec $CONTAINER_NAME $@
+    DOCKER_EXEC_RETURN_VALUE=$?
 }
