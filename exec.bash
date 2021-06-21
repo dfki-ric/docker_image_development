@@ -6,7 +6,7 @@ xhost +local:root > /dev/null
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 . $ROOT_DIR/docker_commands.bash
 
-CONTIANER_USER=devel
+CONTAINER_USER=devel
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
@@ -69,7 +69,7 @@ fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
-    CONTIANER_USER=release
+    CONTAINER_USER=release
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
@@ -109,7 +109,7 @@ CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
-                -u $CONTIANER_USER \
+                -u $CONTAINER_USER \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
