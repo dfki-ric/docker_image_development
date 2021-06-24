@@ -14,6 +14,8 @@ catch_exit_err(){
 # call catch_exit_err on error exit codes
 trap "catch_exit_err" ERR
 
+# put ./exec script inti silent mode
+export SILENT=true
 
 echo ${ROOT_DIR}
 
