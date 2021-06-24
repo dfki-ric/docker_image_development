@@ -119,3 +119,5 @@ init_docker $@
 
 #remove permission for local connections of root (docker daemon) to the current users x server
 xhost -local:root > /dev/null
+
+exit $DOCKER_EXEC_RETURN_VALUE
