@@ -10,7 +10,7 @@ fi
 TARGETPATH="."
 if [ $# -eq 1 ]; then
     TARGETPATH=$1
-    if [ -d "$TARGETPATH" ]; then
+    if [ ! -d "$TARGETPATH" ]; then
         echo "folder not found: $TARGETPATH"
         exit 1
     fi
