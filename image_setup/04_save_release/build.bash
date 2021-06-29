@@ -7,6 +7,15 @@ if [ "$DEFAULT_EXECMODE" = "devel" ]; then
     exit 1
 fi
 
+TARGETPATH="."
+if [ $# -eq 1 ]; then
+    TARGETPATH=$1
+    if [ -d "$TARGETPATH" ]; then
+        echo "folder not found: $TARGETPATH"
+        exit 1
+    fi
+fi
+
 export DATE=$(date +%Y_%m_%d-%H_%M)
 
 PROJECT_NAME_NO_SUBFOLDER=${PROJECT_NAME//\//_}
@@ -24,11 +33,11 @@ cp ../../stop.bash ./$SCRIPTFOLDER/
 cp ../../doc/010_Setup_Docker.md ./$SCRIPTFOLDER/Readme_Docker.md
 cp ./Readme_scripts.md ./$SCRIPTFOLDER/Readme.md
 echo "complete -W \"$(ls ../../startscripts | xargs) /bin/bash\" ./exec.bash" >> $SCRIPTFOLDER/autocomplete.me
-tar czf $SCRIPTFOLDER.tar.gz $SCRIPTFOLDER
+tar czf ${TARGETPATH}/$SCRIPTFOLDER.tar.gz $SCRIPTFOLDER
 rm -rf $SCRIPTFOLDER
 
 
-echo "saving ${IMAGE_NAME} to ${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz"
-docker save ${IMAGE_NAME} | gzip > ${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
+echo "saving ${IMAGE_NAME} to ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz"
+docker save ${IMAGE_NAME} | gzip > ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
 
 
