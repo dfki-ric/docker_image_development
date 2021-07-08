@@ -24,9 +24,16 @@ if [ ! -f /opt/workspace/env.sh ]; then
 
    # setup ws using autoproj
    wget rock-robotics.org/autoproj_bootstrap
-   ruby autoproj_bootstrap git https://git.hb.dfki.de/ant/buildconf branch=master
+   ruby autoproj_bootstrap git https://git.hb.dfki.de/ant/buildconf branch=master --seed-config=/opt/config_seed.yml --no-color --no-interactive
+
+   echo "ignore_packages:" >> /opt/workspace/autoproj/manifest
+   echo "  - simulation/mars/plugins/PythonMars" >> /opt/workspace/autoproj/manifest
+
    source env.sh
-   aup
+   aup --no-color --no-interactive
+   amake base/scripts
+   . env.sh
+   rock-bundle-default crex_ant
    amake
 
    echo -e "\e[32m[INFO] workspace successfully initialized.\e[0m"

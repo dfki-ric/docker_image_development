@@ -19,8 +19,8 @@ export DOCKER_REGISTRY_AUTOPULL=false
 ### The default release mode to use if no mode paramater is given to ./exec.bash or ./stop.bash
 ### The checked in version should reflect the image status and be the highest availale image (base - devel - release)
 # export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
-# export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
-export DEFAULT_EXECMODE="release" # use the release as default
+export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
+# export DEFAULT_EXECMODE="release" # use the release as default
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed

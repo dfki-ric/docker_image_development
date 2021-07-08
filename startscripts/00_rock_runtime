@@ -3,5 +3,5 @@ cd /opt/workspace
 source env.sh
 export BASE_LOG_LEVEL="ERROR"
 sudo bash /opt/workspace/bundles/crex_ant/scripts/omninames_delete.sh
-rock-bundle-sel crex_ant
+rock-bundle-sel ant_crex_launch
 rock-runtime
