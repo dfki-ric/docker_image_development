@@ -5,9 +5,9 @@ FROM ${BASE_IMAGE}
 ARG INSTALL_SCRIPT
 ARG INSTALL_ARGS
 
-
-LABEL version="0.1"
-LABEL description="This image was generated to be a base image for docker_development"
+LABEL description="This image was generated to be a base image for docker_image_development"
+LABEL dockerfile_repo_url="https://github.com/dfki-ric/docker_image_development"
+LABEL maintainer="DFKI RIC"
 
 # To avoid some errors when fetching apt-get updates. # See: https://stackoverflow.com/a/35976127 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -37,9 +37,7 @@ ENV SHELL /bin/bash
 
 ADD init_user_id.bash /opt/init_user_id.bash
 
-# create user (usermod -u UID username will be used later to maybe adapt UID on fitst start).
-# using salted password: openssl passwd -1 -salt xyz  yourpass    # pw UserRos
-# RUN useradd -m -U -p '$1$xyz$pzVfEx0ZWLPizymvlx2P70' -G sudo,users rosuser
+# create devel user (usermod -u UID username will be used later to maybe adapt UID on fitst start).
 RUN groupadd devel-group
 RUN useradd --shell /bin/bash -c "development user" -m -G devel-group devel
 
@@ -55,6 +53,7 @@ RUN echo "devel ALL=(ALL) NOPASSWD: ALL \
 RUN touch /opt/init_workspace.bash
 ADD check_init_workspace.bash /opt/check_init_workspace.bash 
 
+ADD VERSION /opt/VERSION
 ADD entrypoint.bash /opt/entrypoint.bash
 
 #these scripts must be runnable by users, not only root

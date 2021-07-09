@@ -1,1 +1,6 @@
+2.0.0 - use "release" as user inside release containers
+1.2.2 - add metatata to images to allow identification of base images
+1.2.1 - Update DNS handling (remove auto-setting dns via paramater, docker handles it itself)
+1.2.0 - script/base image version handling/comparison
+1.1.0 - better devel image dependency management
 1.0.0 - github release

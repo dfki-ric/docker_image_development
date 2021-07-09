@@ -1,6 +1,9 @@
 home/.ssh/
 home/.ddd/
 
+#exclude location of exported images
+image_setup/04_save_release/
+
 #vscode remopte-container plugin
 home/.vscode-server/
 home/.cache/vscode-cpptools/

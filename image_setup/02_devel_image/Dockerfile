@@ -37,9 +37,10 @@ ADD workspace_os_dependencies.txt /opt/installed_workspace_os_dependencies.txt
 RUN grep -vE '^#' /opt/installed_workspace_os_dependencies.txt | xargs sudo apt install -y
 
 # opt/init_workspace.bash is run once via dockercommands.bash by calling check_init_workspace.bash
-RUN echo "echo" >> /opt/init_workspace.bash
-RUN echo 'echo -e "\e[32mplease run /opt/setup_workspace.bash to initialize the workspace\e[0m"' >> /opt/init_workspace.bash
-RUN echo "echo" >> /opt/init_workspace.bash
+# $PRINT_INFO is set later by the docker run command in docker_commands.bash
+RUN echo '$PRINT_INFO' >> /opt/init_workspace.bash
+RUN echo '$PRINT_INFO -e "\e[32mplease run /opt/setup_workspace.bash to initialize the workspace\e[0m"' >> /opt/init_workspace.bash
+RUN echo '$PRINT_INFO' >> /opt/init_workspace.bash
 
 # If you want to run the setup automatically, you can add it directly to the script
 # it is executed every time the container is re-created
