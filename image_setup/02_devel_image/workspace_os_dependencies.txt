@@ -8,9 +8,7 @@ autoconf
  build-essential 
  castxml 
  cmake 
- cython3 
  freeglut3-dev 
- git-lfs 
  graphviz 
  graphviz-dev 
  libavahi-client-dev 
@@ -65,7 +63,6 @@ autoconf
  python3-distutils 
  python3-msgpack 
  python3-nose 
- python3-numpy 
  python3-pexpect 
  python3-yaml 
  qt4-designer 
