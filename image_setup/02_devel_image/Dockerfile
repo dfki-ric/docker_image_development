@@ -44,7 +44,7 @@ RUN echo "echo" >> /opt/init_workspace.bash
 # If you want to run the setup automatically, you can add it directly to the script
 # it is executed every time the container is re-created
 #RUN echo "/opt/setup_workspace.bash" >> /opt/init_workspace.bash
-
+RUN usermod -aG dialout devel
 
 
 
