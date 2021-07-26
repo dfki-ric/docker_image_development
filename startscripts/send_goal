@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /opt/workspace
+source env.sh
+ruby bundles/crex_navigation/scripts/set_goal.rb 3.0 3.0 0.785398163
