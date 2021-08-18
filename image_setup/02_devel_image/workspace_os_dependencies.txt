@@ -27,18 +27,23 @@ autoconf
  libcgal-dev 
  libdw-dev 
  libeigen3-dev 
+ libffi-dev 
  libflann-dev 
  libgdal-dev 
  libgoogle-glog-dev 
+ libgps-dev 
+ libgsl0-dev 
  libjpeg-dev 
  libjsoncpp-dev 
  libkdtree++-dev 
  liblapack-dev 
+ liblzma-dev 
  libomniorb4-dev 
  libopencv-dev 
  libopenscenegraph-dev 
  libpcl-dev 
  libpoco-dev 
+ libproj-dev 
  libprotobuf-dev 
  libqglviewer-dev-qt4 
  libqt4-dev 
@@ -48,14 +53,21 @@ autoconf
  libsdformat6-dev 
  libsigc++-2.0-0v5 
  libsigc++-2.0-dev 
+ libsqlite3-0 
+ libsqlite3-dev 
  libsuitesparse-dev 
+ libsundials-dev 
  libsysfs-dev 
  libtinyxml-dev 
  libtool 
+ libudev-dev 
+ libusb-1.0-0-dev 
  libusb-dev 
  libv4l-dev 
+ libxml++2.6-dev 
  libxml-xpath-perl 
  libxml2-dev 
+ libxml2-utils 
  libyaml-cpp-dev 
  libyaml-dev 
  libzmq3-dev 
@@ -74,6 +86,7 @@ autoconf
  qt4-designer 
  qt4-qmake 
  rake 
+ ruby-nokogiri 
  ruby-thor 
  zlib1g-dev
 
