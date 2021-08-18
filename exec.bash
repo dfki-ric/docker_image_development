@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #allow local connections of root (docker daemon) to the current users x server
-xhost +local:root > /dev/null
+xhost +local:root > /dev/null | true
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 . $ROOT_DIR/docker_commands.bash
@@ -118,6 +118,6 @@ DOCKER_RUN_ARGS=" \
 init_docker $@
 
 #remove permission for local connections of root (docker daemon) to the current users x server
-xhost -local:root > /dev/null
+xhost -local:root > /dev/null | true
 
 exit $DOCKER_EXEC_RETURN_VALUE
