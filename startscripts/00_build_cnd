@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd /opt/workspace
+source env.sh
+rock-bundle-sel crex_ant_launch
+cd /opt/workspace/bundles/crex_hardware/models
+make
+cd /opt/workspace/bundles/crex_ant_launch/models
+make

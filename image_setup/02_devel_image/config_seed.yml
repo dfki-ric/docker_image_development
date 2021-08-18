@@ -25,3 +25,5 @@ NDLCOM_ROBOTCONFIG: Crex
 USE_OCL: false
 rtt_target: gnulinux
 rtt_corba_implementation: omniorb
+ldgold: false
+ccache: false

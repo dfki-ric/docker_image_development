@@ -7,3 +7,4 @@ echo
 cd /opt/workspace
 source env.sh
 autoproj build
+00_build_cnd
