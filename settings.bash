@@ -47,6 +47,7 @@ export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 # --net=host
 # --privileged
 # -v /dev/input/:/dev/input
+# -v $HOME/.Xauthority:/home/devel/.Xauthority #mount the .Xauthority file, if the GUI shall be forwarded through ssh Xforwarding
 export ADDITIONAL_DOCKER_RUN_ARGS=""
 
 # Make the exec script to talk more for debugging/docker setup purposes.
