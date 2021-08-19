@@ -41,7 +41,7 @@ echo "calling store_git_credentials for $GIT_USER on $GIT_SERVER"
 ./exec.bash devel "/opt/startscripts/ContinuousDeploymentHooks/store_git_credentials ${GIT_USER} ${GIT_ACCESS_TOKEN} ${GIT_SERVER}"
 
 # TODO setup_workspace.bash should be non-interactive
-./exec.bash devel /bin/bash -c "CREDENTIAL_HELPER_MODE=store && /opt/setup_workspace.bash"
+./exec.bash devel /opt/setup_workspace.bash store
 
 if [ "$REBUILD_DEVEL" = "true" ]; then 
     # write osdeps to external file

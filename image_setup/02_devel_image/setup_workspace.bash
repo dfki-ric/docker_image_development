@@ -5,6 +5,11 @@
 # stop on errors
 set -e
 
+if [ ! $1 = "" ]; then
+   echo "overriding git credential helper to ${CREDENTIAL_HELPER_MODE}"
+   CREDENTIAL_HELPER_MODE=$1
+fi
+
 # for Continuous Deployment builds the mode needs to be overridden to be non-interactive
 # if set outside this script, use that value, if unser use cache
 CREDENTIAL_HELPER_MODE=${CREDENTIAL_HELPER_MODE:="cache"}
@@ -22,7 +27,6 @@ if [ ! -f /opt/workspace/env.sh ]; then
    # set git config
    git config --global user.name "Image Builder"
    git config --global user.email "image@builder.me"
-   echo "setting git credential helper to ${CREDENTIAL_HELPER_MODE}"
    git config --global credential.helper ${CREDENTIAL_HELPER_MODE}
    
 
