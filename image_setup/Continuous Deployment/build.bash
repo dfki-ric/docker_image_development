@@ -34,6 +34,7 @@ fi
 # Use git credential.helper store (it is stored in home folder), delete before building release
 # Params have to be set outside of this script by your CI/CD implementation/server
 ./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/init_git
+echo "calling store_git_credentials for $GIT_USER on $GIT_SERVER"
 ./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/store_git_credentials $GIT_USER $GIT_ACCESS_TOKEN $GIT_SERVER
 
 # TODO setup_workspace.bash should be non-interactive
