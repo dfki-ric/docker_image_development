@@ -5,7 +5,9 @@
 # stop on errors
 set -e
 
-
+# for Continuous Deployment builds the mode needs to be overridden to be non-interactive
+# if set outside this script, use that value, if unser use cache
+CREDENTIAL_HELPER_MODE=${CREDENTIAL_HELPER_MODE:="cache"}
 
 # In this file you can add a script that intitializes your workspace
 
@@ -20,7 +22,7 @@ if [ ! -f /opt/workspace/env.sh ]; then
    # set git config
    git config --global user.name "Image Builder"
    git config --global user.email "image@builder.me"
-   git config --global credential.helper cache
+   git config --global credential.helper ${CREDENTIAL_HELPER_MODE}
 
    # setup ws using autoproj
    wget rock-robotics.org/autoproj_bootstrap
