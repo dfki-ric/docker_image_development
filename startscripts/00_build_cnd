@@ -2,8 +2,8 @@
 
 cd /opt/workspace
 source env.sh
-rock-bundle-sel crex_ant_launch
+rock-bundle-sel ant_crex_launch
 cd /opt/workspace/bundles/crex_hardware/models
 make
-cd /opt/workspace/bundles/crex_ant_launch/models
+cd /opt/workspace/bundles/ant_crex_launch/models
 make
