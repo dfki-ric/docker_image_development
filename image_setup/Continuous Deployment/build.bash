@@ -8,6 +8,9 @@ REBUILD_DEVEL=${REBUILD_DEVEL:="false"}
 # exit this scritp on first error
 set -e
 
+#print all commands (don't expand vars)
+set -v
+
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 
 catch_exit_err(){
@@ -38,7 +41,7 @@ echo "calling store_git_credentials for $GIT_USER on $GIT_SERVER"
 ./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/store_git_credentials $GIT_USER $GIT_ACCESS_TOKEN $GIT_SERVER
 
 # TODO setup_workspace.bash should be non-interactive
-./exec.bash devel /opt/setup_workspace.bash || true
+./exec.bash devel /opt/setup_workspace.bash
 
 if [ "$REBUILD_DEVEL" = "true" ]; then 
     # write osdeps to external file
