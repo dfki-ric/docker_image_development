@@ -22,7 +22,9 @@ if [ ! -f /opt/workspace/env.sh ]; then
    # set git config
    git config --global user.name "Image Builder"
    git config --global user.email "image@builder.me"
+   echo "setting git credential helper to ${CREDENTIAL_HELPER_MODE}"
    git config --global credential.helper ${CREDENTIAL_HELPER_MODE}
+   
 
    # setup ws using autoproj
    wget rock-robotics.org/autoproj_bootstrap
