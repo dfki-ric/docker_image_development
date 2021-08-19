@@ -1,6 +1,9 @@
 #/!bin/bash
 
-#parameter 1 can be set to "rebuild_devel" to build a new devel image
+# REBUILD_DEVEL can be set to "rebuild_devel" to build a new devel image
+# if env already set, use external set value
+# you can use this if your console does not support inputs (e.g. a jenkins build job)
+REBUILD_DEVEL=${REBUILD_DEVEL:="false"}
 
 # exit this scritp on first error
 set -e
@@ -21,7 +24,7 @@ export SILENT=true
 echo ${ROOT_DIR}
 cd ${ROOT_DIR}
 
-if [ "$1" = "rebuild_devel" ]; then 
+if [ "$REBUILD_DEVEL" = "true" ]; then 
     # build initial devel image
     cd ${ROOT_DIR}/image_setup/02_devel_image
     bash build.bash
@@ -36,7 +39,7 @@ fi
 # TODO setup_workspace.bash should be non-interactive
 ./exec.bash devel /opt/setup_workspace.bash || true
 
-if [ "$1" = "rebuild_devel" ]; then 
+if [ "$REBUILD_DEVEL" = "true" ]; then 
     # write osdeps to external file
     ./exec.bash devel /opt/write_osdeps.bash
     # build a devel image with dependencies
