@@ -1,5 +1,7 @@
 #/!bin/bash
 
+. ../../settings.bash
+
 # REBUILD_DEVEL can be set to "rebuild_devel" to build a new devel image
 # if env already set, use external set value
 # you can use this if your console does not support inputs (e.g. a jenkins build job)
@@ -61,4 +63,7 @@ fi
 cd ${ROOT_DIR}/image_setup/03_release_image
 bash build.bash
 
-
+RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+CD_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
+docker tag $RELEASE_IMAGE_NAME $CD_IMAGE_NAME
+echo "Tagged CD image: $WORKSPACE_CD_IMAGE"

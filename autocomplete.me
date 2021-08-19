@@ -2,5 +2,5 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export PATH=$ROOT_DIR${PATH:+:${PATH}}
-complete -W "devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
-complete -W "devel release" ./stop.bash
+complete -W "devel release CD $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
+complete -W "devel release CD" ./stop.bash

@@ -6,12 +6,18 @@ if command -v xhost > /dev/null; then
 fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-. $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/docker_commands.bash
 
 CONTAINER_USER=devel
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
+
+if [ "$1" = "base" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
+    EXECMODE="base"
+    shift
+fi
 if [ "$1" = "devel" ]; then
     $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="devel"
@@ -22,12 +28,14 @@ if [ "$1" = "release" ]; then
     EXECMODE="release"
     shift
 fi
-
-if [ "$1" = "base" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
-    EXECMODE="base"
+if [ "$1" = "CD" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: cd"
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
+    EXECMODE="release"
     shift
 fi
+
 
 # set default argument
 if [ -z "$1" ]; then
