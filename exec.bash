@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #allow local connections of root (docker daemon) to the current users x server
-if command -v xhost
+if command -v xhost > /dev/null; then
     xhost +local:root > /dev/null
 fi
 
@@ -120,8 +120,8 @@ DOCKER_RUN_ARGS=" \
 init_docker $@
 
 #remove permission for local connections of root (docker daemon) to the current users x server
-if command -v xhost
-    xhost -local:root > /dev/null | true
+if command -v xhost > /dev/null; then
+    xhost -local:root > /dev/null
 fi
 
 exit $DOCKER_EXEC_RETURN_VALUE
