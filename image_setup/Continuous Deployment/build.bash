@@ -38,10 +38,13 @@ fi
 # Params have to be set outside of this script by your CI/CD implementation/server
 ./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/init_git
 echo "calling store_git_credentials for $GIT_USER on $GIT_SERVER"
-./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/store_git_credentials $GIT_USER $GIT_ACCESS_TOKEN $GIT_SERVER
+./exec.bash devel "/opt/startscripts/ContinuousDeploymentHooks/store_git_credentials ${GIT_USER} ${GIT_ACCESS_TOKEN} ${GIT_SERVER}"
 
 # TODO setup_workspace.bash should be non-interactive
 ./exec.bash devel /opt/setup_workspace.bash
+
+#reset credential helper in case setup_workspace chanegd it
+./exec.bash devel git config --global credential.helper store
 
 if [ "$REBUILD_DEVEL" = "true" ]; then 
     # write osdeps to external file
