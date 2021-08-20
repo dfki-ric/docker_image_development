@@ -55,4 +55,9 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 # export VERBOSE=true
 
 # Make the output as quiet as possible (does not apply to programs started in the container)
-#export SILENT=false
+# export SILENT=false
+
+# mount ccache volume, if enabled, a volume name based on the base image name is generated
+# and mounted to /home/devel/.ccache, this way multiple workspaces in docker_image_development
+# can share a single ccache
+# export MOUNT_CCACHE_VOLUME=true

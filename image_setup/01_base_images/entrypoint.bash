@@ -91,4 +91,10 @@ if [ ! -f /initialized_container ]; then
     exit 0
 fi
 
+# create ccache dir, if variable set (enables in settings and CCACHE_DIR set in run command)
+if [ -z "$CCACHE_DIR" ]; then
+    mkdir -p $CCACHE_DIR
+fi
+
+
 exec "$@"

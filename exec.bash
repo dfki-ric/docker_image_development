@@ -65,6 +65,13 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
         -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
+    if [ "$MOUNT_CCACHE_VOLUME" = "true" ]; then
+        DOCKER_DEV_CCACHE_DIR="/ccache"
+        CACHE_VOMUME_NAME="${WORKSPACE_BASE_IMAGE//[\/,:]/_}"
+        $PRINT_INFO "mounting ccache volume ${CACHE_VOMUME_NAME} to ${DOCKER_DEV_CCACHE_DIR}"
+        docker volume create $CACHE_VOMUME_NAME > /dev/null
+        #ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:/home/devel/.ccache"
+    fi
 fi
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
