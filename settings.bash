@@ -58,6 +58,7 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 # export SILENT=false
 
 # mount ccache volume, if enabled, a volume name based on the base image name is generated
-# and mounted to /home/devel/.ccache, this way multiple workspaces in docker_image_development
-# can share a single ccache
-# export MOUNT_CCACHE_VOLUME=true
+# and mounted to /ccache, this way multiple workspaces in docker_image_development
+# can share a single ccache, CCACHE_DIR is automatically set in the env, just install
+# and enable ccache for your builds
+export MOUNT_CCACHE_VOLUME=true

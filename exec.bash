@@ -10,6 +10,11 @@ CONTAINER_USER=devel
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
+if [ "$1" = "base" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
+    EXECMODE="base"
+    shift
+fi
 if [ "$1" = "devel" ]; then
     $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="devel"
@@ -18,12 +23,6 @@ fi
 if [ "$1" = "release" ]; then
     $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="release"
-    shift
-fi
-
-if [ "$1" = "base" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
-    EXECMODE="base"
     shift
 fi
 
@@ -70,7 +69,7 @@ if [ "$EXECMODE" = "devel" ]; then
         CACHE_VOMUME_NAME="${WORKSPACE_BASE_IMAGE//[\/,:]/_}"
         $PRINT_INFO "mounting ccache volume ${CACHE_VOMUME_NAME} to ${DOCKER_DEV_CCACHE_DIR}"
         docker volume create $CACHE_VOMUME_NAME > /dev/null
-        #ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:/home/devel/.ccache"
+        ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
 fi
 if [ "$EXECMODE" == "release" ]; then
