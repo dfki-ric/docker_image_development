@@ -55,7 +55,6 @@ read_value_from_config_file(){
 
 
 init_docker(){
-
     #detect if nvidia runtime is available
     RUNTIMES=$(docker info | grep "Runtimes:")
     if [[ $RUNTIMES == *"nvidia"* ]]; then
@@ -69,7 +68,6 @@ init_docker(){
     #detect if gpus command is supported and working from docker 19.03
     HAS_GPU_SUPPORT=$(read_value_from_config_file has_gpu_support)
     if [ "$HAS_GPU_SUPPORT" = "" ]; then
-        echo "gpu det"
         docker run --gpus=all --rm $IMAGE_NAME > /dev/null
         HAS_GPU_SUPPORT=$?
         write_value_to_config_file has_gpu_support $HAS_GPU_SUPPORT
