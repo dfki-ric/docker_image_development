@@ -4,7 +4,7 @@
 xhost +local:root > /dev/null
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-. $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/docker_commands.bash
 
 CONTAINER_USER=devel
 
@@ -92,18 +92,13 @@ FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 #use current folder name + devel + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
-CONTAINER_ID_FILENAME=$ROOT_DIR/$EXECMODE-container_id.txt
 
 $PRINT_INFO
 $PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME##*:}\e[0m"
 $PRINT_INFO
 
-
-
-if [ ! -f $CONTAINER_ID_FILENAME ]; then
-    touch $CONTAINER_ID_FILENAME
-fi
-CONTAINER_IMAGE_ID=$(cat $CONTAINER_ID_FILENAME)
+check_config_file_exists
+CONTAINER_IMAGE_ID=$(read_value_from_config_file $EXECMODE)
 CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 
 DOCKER_RUN_ARGS=" \

@@ -108,6 +108,7 @@ In this case, and if your host uses the "systemd-resolvd" (ubutnu > 18.04) you c
 * start dnsmasq on boot
   * sudo systemctl enable dnsmasq
 
+
 #### provide dns setting to docker
 
 As this DNS though dnsmasq and systemd-resolvd ist host-specific, you shouldn't add it to the settings.bash of this repo at all.

@@ -41,7 +41,7 @@ export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
 # When you change this, you need to recreate the container
-# best way to do this, is to delete the {devel,release}-container_id.txt file
+# best way to do this, run the delete_contianer.bash script
 # often used params:
 # --dns-search=mydomain
 # --net=host

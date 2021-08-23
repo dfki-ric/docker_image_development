@@ -27,29 +27,51 @@ if [ "$SILENT" = true ]; then
     PRINT_DEBUG=:
 fi
 
+check_config_file_exists(){
+    #init config file, if nonexistent
+    if [ ! -f .container_config.txt ]; then
+        echo "# do not edit, this file is generated and updated automatically when running exec.bash" >> .container_config.txt
+    fi
+}
+
+write_value_to_config_file(){
+    # to be able to write, the value must already exits in the file
+    # find old var line
+    OLDLINE=$(cat .container_config.txt | grep $1)
+    NEWLINE="$1=$2"
+    if [ "$OLDLINE" = "" ]; then 
+        # new value, just append
+        echo "$NEWLINE" >> .container_config.txt
+    else
+        #value exists, replace line
+        sed -i "s/$OLDLINE/$NEWLINE/g" .container_config.txt
+    fi
+}
+
+read_value_from_config_file(){
+    READVARNAME=$1
+    echo $(cat .container_config.txt | grep $READVARNAME | awk -F'=' '{print $2}')
+}
+
 
 init_docker(){
-
     #detect if nvidia runtime is available
     RUNTIMES=$(docker info | grep "Runtimes:")
     if [[ $RUNTIMES == *"nvidia"* ]]; then
         $PRINT_DEBUG "has nvidia runtime"
         RUNTIME_ARG="--runtime=nvidia"
     else
-        $PRINT_DEBUG "deprecated nvidia-docker2 hardware acceleration not available, testing newer docker --gpu setting"
+        $PRINT_DEBUG "nvidia-docker2 hardware acceleration not available, also testing docker --gpu setting..."
         RUNTIME_ARG=""
     fi
 
     #detect if gpus command is supported and working from docker 19.03
-    GPUS_SETTINGS_FILE="$ROOT_DIR/has_gpu_support.txt"
-    if [ ! -f $GPUS_SETTINGS_FILE ]; then
-        touch $GPUS_SETTINGS_FILE
+    HAS_GPU_SUPPORT=$(read_value_from_config_file has_gpu_support)
+    if [ "$HAS_GPU_SUPPORT" = "" ]; then
         docker run --gpus=all --rm $IMAGE_NAME > /dev/null
-        GPU_SUPPORTED=$?
-        echo "this file contains the gegerated result of testing the docker --gpu setting, 0=enabled, 1=disabled" > $GPUS_SETTINGS_FILE
-        echo $GPU_SUPPORTED >> $GPUS_SETTINGS_FILE        
+        HAS_GPU_SUPPORT=$?
+        write_value_to_config_file has_gpu_support $HAS_GPU_SUPPORT
     fi
-    HAS_GPU_SUPPORT=$(tail -n1 $GPUS_SETTINGS_FILE)
 
     if [[ $HAS_GPU_SUPPORT = "0" ]]; then
         $PRINT_DEBUG "docker supports --gpu setting, hardware acceleration enabled"
@@ -101,7 +123,7 @@ init_docker(){
 #generate container and start command given ad paramater
 generate_container(){
     $PRINT_DEBUG "generating new container : $CONTAINER_NAME"
-    echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
+    write_value_to_config_file $EXECMODE $CURRENT_IMAGE_ID
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
@@ -126,7 +148,7 @@ start_container(){
 
 generate_container_nonint(){
     $PRINT_DEBUG "generating new non-interactive container : $CONTAINER_NAME"
-    echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
+    write_value_to_config_file $EXECMODE $CURRENT_IMAGE_ID
 
     # initial run exits no matter what -> due to entrypoint (user id settings)
     # /bin/bash will be default nonetheless when called later without command
