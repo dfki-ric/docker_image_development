@@ -63,6 +63,10 @@ fi
 cd ${ROOT_DIR}/image_setup/03_release_image
 bash build.bash
 
+#run the tests
+cd ${ROOT_DIR}
+./exec.bash release /opt/startscripts/ContinuousDeploymentHooks/test
+
 RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 CD_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
 docker tag $RELEASE_IMAGE_NAME $CD_IMAGE_NAME
