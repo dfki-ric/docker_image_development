@@ -72,10 +72,10 @@ init_docker(){
         $PRINT_WARNING "hardware acceleration disabled"
     fi
 
-    if [ "$1" = "noninteractive" ]; then
-        INTERACTIVE="false"
-        #remove first param
-        shift
+    if [ "$INTERACTIVE" = "true" ]; then
+        DOCKER_FLAGS="-ti"
+    else
+        DOCKER_FLAGS="-t"
     fi
 
     # check if a container from previous runs exist
@@ -85,29 +85,17 @@ init_docker(){
         $PRINT_DEBUG "found existing container"
         if [ "$CURRENT_IMAGE_ID" = "$CONTAINER_IMAGE_ID" ]; then
             $PRINT_DEBUG "using existing container"
-            if [ "$INTERACTIVE" = "true" ]; then
-                start_container $@
-            else
-                start_container_nonint $@
-            fi
+            start_container $@
         else
             $PRINT_INFO "Image id is newer that container image id, removing old container: $CONTAINER_NAME"
             #stop the container in case it is running
             docker stop $CONTAINER_NAME  > /dev/null
             docker rm $CONTAINER_NAME  > /dev/null
-            if [ "$INTERACTIVE" = "true" ]; then
-                generate_container $@
-            else
-                generate_container_nonint $@
-            fi
+            generate_container $@
         fi
     else
         $PRINT_DEBUG "inital run, no container exists"
-        if [ "$INTERACTIVE" = "true" ]; then
-            generate_container $@
-        else
-            generate_container_nonint $@
-        fi
+        generate_container $@
     fi
 }
 
@@ -120,15 +108,15 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
+    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME  > /dev/null
     $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME /opt/check_init_workspace.bash
+    docker exec $DOCKER_FLAGS $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME $@
+    docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
 }
 
@@ -137,32 +125,6 @@ start_container(){
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME > /dev/null
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME $@
-    DOCKER_EXEC_RETURN_VALUE=$?
-}
-
-generate_container_nonint(){
-    $PRINT_DEBUG "generating new non-interactive container : $CONTAINER_NAME"
-    echo $CURRENT_IMAGE_ID > $CONTAINER_ID_FILENAME
-
-    # initial run exits no matter what -> due to entrypoint (user id settings)
-    # /bin/bash will be default nonetheless when called later without command
-    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
-    # default container exists after initial run, so we can start it
-    $PRINT_DEBUG "docker start $CONTAINER_NAME"
-    docker start $CONTAINER_NAME  > /dev/null
-    $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
-    docker exec -t $CONTAINER_NAME /opt/check_init_workspace.bash
-    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec -t $CONTAINER_NAME $@
-    DOCKER_EXEC_RETURN_VALUE=$?
-}
-
-#starts container with the param given in first run
-start_container_nonint(){
-    $PRINT_DEBUG "docker start non-interactive $CONTAINER_NAME"
-    docker start $CONTAINER_NAME
-    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec $CONTAINER_NAME $@
+    docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
 }
