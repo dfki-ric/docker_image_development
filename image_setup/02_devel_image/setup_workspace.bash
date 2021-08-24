@@ -6,7 +6,7 @@
 set -e
 
 if [ ! $1 = "" ]; then
-   echo "overriding git credential helper to ${CREDENTIAL_HELPER_MODE}"
+   echo "overriding git credential helper to $1"
    CREDENTIAL_HELPER_MODE=$1
 fi
 
