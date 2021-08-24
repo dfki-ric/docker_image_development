@@ -34,6 +34,11 @@ if [ "$REBUILD_DEVEL" = "true" ]; then
     cd ${CD_ROOT_DIR}/image_setup/02_devel_image
     bash build.bash
     cd ${CD_ROOT_DIR}
+else
+    # update devel image
+    cd ${CD_ROOT_DIR}/tools
+    bash update_image.bash devel
+    cd ${CD_ROOT_DIR}
 fi
 
 # Use git credential.helper store (it is stored in home folder), delete before building release
