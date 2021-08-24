@@ -13,7 +13,7 @@ set -e
 #print all commands (don't expand vars)
 set -v
 
-ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
+CD_ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 
 catch_exit_err(){
     echo "some part ended with error, deleting credentials and exiting"
@@ -26,14 +26,14 @@ trap "catch_exit_err" ERR
 
 export SILENT=true
 
-echo ${ROOT_DIR}
-cd ${ROOT_DIR}
+echo ${CD_ROOT_DIR}
+cd ${CD_ROOT_DIR}
 
 if [ "$REBUILD_DEVEL" = "true" ]; then 
     # build initial devel image
-    cd ${ROOT_DIR}/image_setup/02_devel_image
+    cd ${CD_ROOT_DIR}/image_setup/02_devel_image
     bash build.bash
-    cd ${ROOT_DIR}
+    cd ${CD_ROOT_DIR}
 fi
 
 # Use git credential.helper store (it is stored in home folder), delete before building release
@@ -49,9 +49,9 @@ if [ "$REBUILD_DEVEL" = "true" ]; then
     # write osdeps to external file
     ./exec.bash devel /opt/write_osdeps.bash
     # build a devel image with dependencies
-    cd ${ROOT_DIR}/image_setup/02_devel_image
+    cd ${CD_ROOT_DIR}/image_setup/02_devel_image
     bash build.bash
-    cd ${ROOT_DIR}
+    cd ${CD_ROOT_DIR}
 fi
 
 ./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/build
@@ -60,11 +60,11 @@ fi
 ./exec.bash devel /opt/startscripts/ContinuousDeploymentHooks/delete_git_credentials
 
 # build the release image
-cd ${ROOT_DIR}/image_setup/03_release_image
+cd ${CD_ROOT_DIR}/image_setup/03_release_image
 bash build.bash
 
 #run the tests
-cd ${ROOT_DIR}
+cd ${CD_ROOT_DIR}
 ./exec.bash release /opt/startscripts/ContinuousDeploymentHooks/test
 
 RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
