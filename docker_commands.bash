@@ -1,7 +1,21 @@
 #!/bin/bash
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-. $ROOT_DIR/settings.bash
+source $ROOT_DIR/settings.bash
+
+# In case you are using CD server uses other registries, they can be overridden via env variables
+if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
+    export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
+fi
+
+if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
+    export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
+fi
+
+if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
+    export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
+fi
+
 
 SCRIPTSVERSION=$(cat VERSION | head -n1 | awk -F' ' '{print $1}')
 

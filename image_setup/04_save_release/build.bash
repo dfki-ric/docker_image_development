@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ../../settings.bash
+source ../../docker_commands.bash
 
 if [ "$DEFAULT_EXECMODE" = "devel" ]; then
     echo "the $DEFAULT_EXECMODE has to be release in the settings.bash in order to export"

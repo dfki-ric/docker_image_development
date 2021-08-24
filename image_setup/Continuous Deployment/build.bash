@@ -1,19 +1,6 @@
 #/!bin/bash
 
-. ../../settings.bash
-
-# In case your CD server uses other registries to push to than set in settings.bash
-if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
-    export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
-fi
-
-if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
-    export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
-fi
-
-if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
-    export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
-fi
+source ../../docker_commands.bash
 
 # REBUILD_DEVEL can be set to "rebuild_devel" to build a new devel image
 # if env already set, use external set value

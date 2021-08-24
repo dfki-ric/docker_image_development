@@ -1,5 +1,6 @@
-. ../../settings.bash
+#!/bin/bash
 
+source ../../docker_commands.bash
 #docker build paramaters
 export DATE=$(date)
 export TAG=$(date +%Y_%m_%d-%H_%M)

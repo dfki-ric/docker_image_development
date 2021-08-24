@@ -1,5 +1,7 @@
 
-. ../../settings.bash
+#!/bin/bash
+
+source ../../docker_commands.bash
 
 export BASE_IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 
