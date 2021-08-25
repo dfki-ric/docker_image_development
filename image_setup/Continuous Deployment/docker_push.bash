@@ -1,5 +1,5 @@
 
-#/!bin/bash
+#!/bin/bash
 
 . ../../settings.bash
 

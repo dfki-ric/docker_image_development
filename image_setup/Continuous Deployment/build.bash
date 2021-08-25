@@ -35,7 +35,7 @@ if [ "$REBUILD_DEVEL" = "true" ]; then
     bash build.bash
     cd ${CD_ROOT_DIR}
 else
-    # update devel image
+    # update devel image even in case it is not enabled in settings.bash
     cd ${CD_ROOT_DIR}/tools
     bash update_image.bash devel
     cd ${CD_ROOT_DIR}
