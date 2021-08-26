@@ -127,7 +127,7 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
+    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} $IMAGE_NAME || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
@@ -152,7 +152,7 @@ generate_container_nonint(){
 
     # initial run exits no matter what -> due to entrypoint (user id settings)
     # /bin/bash will be default nonetheless when called later without command
-    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} $IMAGE_NAME || exit 1
+    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} $IMAGE_NAME || exit 1
     # default container exists after initial run, so we can start it
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME  > /dev/null
