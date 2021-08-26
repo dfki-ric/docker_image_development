@@ -9,6 +9,7 @@ apt-get update && apt-get install -y \
     bash-completion \
     build-essential \
     cmake \
+    ccache \
     git \
     locales \
     nano \
