@@ -42,12 +42,13 @@ export WORKSPACE_CD_IMAGE=ant/consortium/external/docker_image_development/ant_d
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
 # When you change this, you need to recreate the container
-# best way to do this, is to delete the {devel,release}-container_id.txt file
+# best way to do this, run the delete_contianer.bash script
 # often used params:
 # --dns-search=mydomain
 # --net=host
 # --privileged
 # -v /dev/input/:/dev/input
+# -v $HOME/.Xauthority:/home/devel/.Xauthority #mount the .Xauthority file, if the GUI shall be forwarded through ssh Xforwarding
 export ADDITIONAL_DOCKER_RUN_ARGS="--net=host"
 
 # Make the exec script to talk more for debugging/docker setup purposes.
@@ -55,4 +56,10 @@ export ADDITIONAL_DOCKER_RUN_ARGS="--net=host"
 # export VERBOSE=true
 
 # Make the output as quiet as possible (does not apply to programs started in the container)
-#export SILENT=false
+# export SILENT=false
+
+# mount ccache volume, if enabled, a volume name based on the base image name is generated
+# and mounted to /ccache, this way multiple workspaces in docker_image_development
+# can share a single ccache, CCACHE_DIR is automatically set in the env, just install
+# and enable ccache for your builds
+# export MOUNT_CCACHE_VOLUME=true
