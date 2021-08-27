@@ -28,7 +28,5 @@ if [ "$EXECMODE" = "release" ]; then
     IMAGE=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 fi
 
-
-
-echo "pulling image ${IMAGE}"
-docker pull $IMAGE
+bash $ROOT_DIR/delete_contianer.bash $EXECMODE
+docker rmi $IMAGE

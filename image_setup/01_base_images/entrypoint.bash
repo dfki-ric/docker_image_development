@@ -84,6 +84,13 @@ if [ ! -f /initialized_container ]; then
     $PRINT_INFO
     #only executed by docker run
     sudo touch /initialized_container
+    
+    # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
+    if [ ! "$CCACHE_DIR" = "" ]; then
+        sudo mkdir -p $CCACHE_DIR
+        sudo chown devel $CCACHE_DIR
+    fi
+
     # use -E to keep env (for PRINT_* environment)
     sudo -E /bin/bash /opt/init_user_id.bash
     # id script needs exit to apply uid next docker start, so exiting here

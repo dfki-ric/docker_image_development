@@ -199,6 +199,8 @@ You may want to add these lines to the .bashrc of your container:
 git config --global credential.helper 'cache --timeout=2000'
 git config --global url."https://".insteadOf git://
 ```
+The git config can also be used to override git-ssh urls globally to http in case the repositories have git submodules defined with ssh urls.
+e.g. `git config --global url."https://git.hb.dfki.de/".insteadOf git@git.hb.dfki.de:`, it would be even better better is it to use a relative path as submodule url.
 
 
 #### Option 2) SSH (Public Key) Authentication
