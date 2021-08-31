@@ -103,7 +103,6 @@ $PRINT_INFO
 $PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME##*:}\e[0m"
 $PRINT_INFO
 
-check_config_file_exists
 CONTAINER_IMAGE_ID=$(read_value_from_config_file $EXECMODE)
 CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 
