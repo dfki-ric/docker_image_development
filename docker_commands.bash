@@ -49,6 +49,8 @@ check_config_file_exists(){
 }
 
 write_value_to_config_file(){
+    #check if file exists and create if nonexistent
+    check_config_file_exists
     # to be able to write, the value must already exits in the file
     # find old var line
     OLDLINE=$(cat .container_config.txt | grep $1)
@@ -63,6 +65,8 @@ write_value_to_config_file(){
 }
 
 read_value_from_config_file(){
+    #check if file exists and create if nonexistent
+    check_config_file_exists
     READVARNAME=$1
     echo $(cat .container_config.txt | grep $READVARNAME | awk -F'=' '{print $2}')
 }
