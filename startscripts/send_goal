@@ -2,4 +2,4 @@
 
 cd /opt/workspace
 source env.sh
-ruby bundles/crex_navigation/scripts/set_goal.rb 0 0 1
+ruby bundles/crex_navigation/scripts/set_goal.rb 1 0 1
