@@ -5,7 +5,8 @@
 # stop on errors
 set -e
 
-
+BUILDCONF=
+BRANCH=
 
 # In this file you can add a script that intitializes your workspace
 
@@ -24,7 +25,7 @@ set -e
 #
 #    # setup ws using autoproj
 #    wget rock-robotics.org/autoproj_bootstrap
-#    ruby autoproj_bootstrap git <BUILDCONF_URL> branch=master
+#    ruby autoproj_bootstrap git $BUILDCONF branch=$BRANCH
 #    source env.sh
 #    aup
 #    amake
@@ -53,7 +54,7 @@ set -e
 #    git config --global user.name "Image Builder"
 #    git config --global user.email "image@builder.me"
 #    git config --global credential.helper cache
-#    ruby autoproj_bootstrap git <BUILDCONF_URL> branch=master
+#    ruby autoproj_bootstrap git $BUILDCONF branch=$BRANCH
 #    . env.sh
 #    aup
 #    cd /opt/workspace
