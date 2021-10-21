@@ -35,7 +35,8 @@ workspace/**
 !workspace/install/** 
 # but not include
 workspace/install/include
-workspace/install/share/bagel
+
+!workspace/install/share/bagel/**
 
 # additiional repos that are not installed into the install folder
 !workspace/models/**
