@@ -35,12 +35,14 @@ workspace/**
 !workspace/install/** 
 # but not include
 workspace/install/include
+workspace/install/share/bagel
 
 # additiional repos that are not installed into the install folder
 !workspace/models/**
 # bundles but not logs
 !workspace/bundles/**
 workspace/bundles/crex_ant/logs
+
 
 
 
