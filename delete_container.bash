@@ -3,7 +3,10 @@
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-source $ROOT_DIR/settings.bash
+source $ROOT_DIR/docker_commands.bash
+
+# stop on error
+set -e
 
 EXECMODE=$DEFAULT_EXECMODE
 
@@ -25,4 +28,7 @@ fi
 CONTAINER_NAME="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"
 
 echo "stopping ${CONTAINER_NAME}"
-docker stop ${CONTAINER_NAME}
+docker stop ${CONTAINER_NAME} > /dev/null
+docker rm ${CONTAINER_NAME} > /dev/null
+echo "successfully removed ${CONTAINER_NAME}"
+write_value_to_config_file $EXECMODE "deleted"

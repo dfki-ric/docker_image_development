@@ -7,7 +7,7 @@ The devel images contain project specific libraries and can be pushed to the reg
 
 ### Run From a Devel Image
 
-Just follow the instructions given in [docker usage](doc/020_Usage.md) for using a container and running commands in it.
+Just follow the instructions given in [docker usage](020_Usage.md) for using a container and running commands in it.
 Make sure you have access to the Docker registry if you haven't already pulled the image (might require docker login and potentially a VPN connection).
 Make sure that you use the exec mode `devel` (in your settings.bash or as argument to exec.bash).
 
@@ -199,6 +199,8 @@ You may want to add these lines to the .bashrc of your container:
 git config --global credential.helper 'cache --timeout=2000'
 git config --global url."https://".insteadOf git://
 ```
+The git config can also be used to override git-ssh urls globally to http in case the repositories have git submodules defined with ssh urls.
+e.g. `git config --global url."https://git.hb.dfki.de/".insteadOf git@git.hb.dfki.de:`, it would be even better better is it to use a relative path as submodule url.
 
 
 #### Option 2) SSH (Public Key) Authentication
