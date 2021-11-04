@@ -1,4 +1,7 @@
-. ../../settings.bash
+#!/bin/bash
+
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
+source $ROOT_DIR/settings.bash
 
 #docker build paramaters
 export DATE=$(date)
@@ -24,8 +27,11 @@ echo "tagging $RELEASE_IMAGE_NAME as ${RELEASE_IMAGE_NAME}_$TAG"
 docker tag $RELEASE_IMAGE_NAME ${RELEASE_IMAGE_NAME}_$TAG
 
 echo
-echo "don't forget to push the image if you wish:"
+echo "don't forget to push or store the image if you wish:"
 echo "docker push $RELEASE_IMAGE_NAME"
 echo "docker push ${RELEASE_IMAGE_NAME}_$TAG"
 echo "docker push ${DEVEL_IMAGE_NAME}_$TAG"
+echo "bash store.bash ${RELEASE_IMAGE_NAME}_$TAG <SHORTNAME>"
 echo
+
+# TODO: ask if store?

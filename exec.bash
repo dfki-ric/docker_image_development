@@ -25,11 +25,10 @@ if [ "$1" = "release" ]; then
     EXECMODE="release"
     shift
 fi
-
-# set default argument
-if [ -z "$1" ]; then
-    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
-    set -- "/bin/bash"
+if [ "$1" = "storedrelease" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
+    EXECMODE="storedrelease"
+    shift
 fi
 
 ### START EXECUTION
@@ -76,6 +75,21 @@ if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
     CONTAINER_USER=release
+fi
+
+if [ "$EXECMODE" == "storedrelease" ]; then
+    # Read image name from command line, first arg already shifted away
+    STORED_IMAGE_NAME=$1
+    IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
+    CONTAINER_USER=release
+    shift
+fi
+
+# set default argument
+# after shifting paramsm check if a comamnd ist left
+if [ -z "$1" ]; then
+    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
+    set -- "/bin/bash"
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
