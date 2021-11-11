@@ -68,7 +68,7 @@ fi
 #    git config --global user.name "Image Builder"
 #    git config --global user.email "image@builder.me"
 #    git config --global credential.helper cache
-#    ruby autoproj_bootstrap git <BUILDCONF_URL> branch=master
+#    ruby autoproj_bootstrap git $BUILDCONF branch=$BRANCH
 #    . env.sh
 #    aup
 #    cd /opt/workspace

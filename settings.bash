@@ -49,7 +49,7 @@ export WORKSPACE_CD_IMAGE=ant/consortium/external/docker_image_development/ant_d
 # --privileged
 # -v /dev/input/:/dev/input
 # -v $HOME/.Xauthority:/home/devel/.Xauthority #mount the .Xauthority file, if the GUI shall be forwarded through ssh Xforwarding
-export ADDITIONAL_DOCKER_RUN_ARGS="--net=host"
+export ADDITIONAL_DOCKER_RUN_ARGS="--net=host --privileged -v /dev/input/:/dev/input"
 
 # Make the exec script to talk more for debugging/docker setup purposes.
 # This may also be stated in the command line: $> VERBOSE=true ./exec.bash 

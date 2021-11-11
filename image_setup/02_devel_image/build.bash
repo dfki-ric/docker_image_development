@@ -1,7 +1,7 @@
-
 #!/bin/bash
 
-source ../../docker_commands.bash
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
+source $ROOT_DIR/settings.bash
 
 export BASE_IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 
