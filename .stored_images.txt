@@ -1,0 +1,2 @@
+# do not edit, this file is generated and updated automatically when running image_setup/03_release/store.bash
+D1=git.hb.dfki.de:5050/ant/consortium/external/docker_image_development/ant_dfki:D1
