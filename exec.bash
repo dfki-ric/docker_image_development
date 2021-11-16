@@ -7,6 +7,7 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/docker_commands.bash
 
 CONTAINER_USER=devel
+CMD_STRING=""
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
@@ -95,10 +96,16 @@ fi
 
 # set default argument
 # after shifting paramsm check if a comamnd ist left
+
+# evaluate arguments or set default argument
 if [ -z "$1" ]; then
-    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
+    CMD_STRING="No run argument given. Executing: /bin/bash"
     set -- "/bin/bash"
-fi
+elif [ "$1" == "write_osdeps" ]; then
+    CMD_STRING="Executing: /opt/write_osdeps.bash"
+    set -- "/opt/write_osdeps.bash"
+else 
+    CMD_STRING="Executing: $1"
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     $PRINT_INFO
@@ -124,6 +131,8 @@ CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 $PRINT_INFO
 $PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME##*:}\e[0m"
 $PRINT_INFO
+$PRINT_DEBUG $CMD_STRING
+$PRINT_DEBUG
 
 CONTAINER_IMAGE_ID=$(read_value_from_config_file $EXECMODE)
 CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)

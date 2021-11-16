@@ -2,7 +2,6 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export PATH=$ROOT_DIR${PATH:+:${PATH}}
-
 _exec_bash(){
     local cur prev words cword package
 
@@ -34,5 +33,8 @@ _exec_bash(){
 
 #complete -W "base devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
 complete -F _exec_bash ./exec.bash
+complete -F _exec_bash exec.bash
 complete -W "base devel release storedrelease" ./stop.bash
+complete -W "base devel release storedrelease" stop.bash
 complete -W "base devel release storedrelease" ./delete_container.bash
+complete -W "base devel release storedrelease" delete_container.bash
