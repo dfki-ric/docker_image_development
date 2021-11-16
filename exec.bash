@@ -81,6 +81,14 @@ if [ "$EXECMODE" == "storedrelease" ]; then
     # Read image name from command line, first arg already shifted away
     STORED_IMAGE_NAME=$1
     IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
+    if [ "$IMAGENAME" == "" ]; then
+        echo
+        echo "unknown image name: $STORED_IMAGE_NAME"
+        echo "known images are:"
+        echo $(tail -n +2 .stored_images.txt | cut -d '=' -f 1)
+        echo
+        exit 1
+    fi
     CONTAINER_USER=release
     shift
 fi
