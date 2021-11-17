@@ -82,7 +82,7 @@ if [ "$EXECMODE" == "storedrelease" ]; then
     # Read image name from command line, first arg already shifted away
     STORED_IMAGE_NAME=$1
     IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
-    if [ "$IMAGE_NAME" == "" ]; then
+    if [ -z "$IMAGE_NAME" ]; then
         echo
         echo "unknown image name: $STORED_IMAGE_NAME"
         echo "known images are:"
