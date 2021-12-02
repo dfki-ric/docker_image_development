@@ -39,7 +39,8 @@ RUN sudo chown release:release-group /opt/workspace
 COPY --chown=release:release-group workspace /opt/workspace
 COPY --chown=release:release-group startscripts /opt/startscripts
 COPY --chown=release:release-group home /home/devel
-
+RUN ln -s /home/release/ /home/devel
+RUN chown release:release-group /home/devel
 
 #from now on, call RUN as devel user
 USER release
