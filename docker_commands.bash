@@ -57,6 +57,10 @@ read_value_from_config_file(){
     echo $(cat $ROOT_DIR/.container_config.txt | grep $READVARNAME | awk -F'=' '{print $2}')
 }
 
+print_stored_image_tags(){
+    $PRINT_WARNING "available image tags:"
+    for tag in $(tail -n +2 $ROOT_DIR/.stored_images.txt | grep = | cut -d '=' -f 1); do $PRINT_WARNING "    - $tag"; done
+}
 
 init_docker(){
     #detect if nvidia runtime is available

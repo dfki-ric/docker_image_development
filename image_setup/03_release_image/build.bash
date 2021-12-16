@@ -33,5 +33,3 @@ echo "docker push ${RELEASE_IMAGE_NAME}_$TAG"
 echo "docker push ${DEVEL_IMAGE_NAME}_$TAG"
 echo "bash store.bash ${RELEASE_IMAGE_NAME}_$TAG <SHORTNAME>"
 echo
-
-# TODO: ask if store?

@@ -8,7 +8,7 @@ _exec_bash(){
     cur=${COMP_WORDS[COMP_CWORD]}
 
     if [ "${COMP_WORDS[1]}" = "storedrelease" ]; then
-        #nothing comes after release
+        # nothing comes after release
         if [ "${#COMP_WORDS[@]}" -gt "4" ]; then
             return
         fi
@@ -17,7 +17,7 @@ _exec_bash(){
             return
         fi
         # omit the first line
-        STORED_RELEASES=$(tail -n +2 .stored_images.txt | cut -d '=' -f 1)
+        STORED_RELEASES=$(tail -n +2 .stored_images.txt | grep = | cut -d '=' -f 1)
         COMPREPLY=($(compgen -W "${STORED_RELEASES}" -- "$cur"))
         return
     fi
@@ -27,11 +27,10 @@ _exec_bash(){
         return
     fi
 
-    COMPREPLY=($(compgen -W "base devel release storedrelease $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" -- "$cur"))
+    COMPREPLY=($(compgen -W "base devel release storedrelease $(ls startscripts | xargs) /bin/bash write_osdeps" -- "$cur"))
     
 }
 
-#complete -W "base devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
 complete -F _exec_bash ./exec.bash
 complete -F _exec_bash exec.bash
 complete -W "base devel release storedrelease" ./stop.bash

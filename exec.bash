@@ -81,23 +81,28 @@ fi
 if [ "$EXECMODE" == "storedrelease" ]; then
     # Read image name from command line, first arg already shifted away
     STORED_IMAGE_NAME=$1
+    if [ ! -f .stored_images.txt ]; then
+            $PRINT_WARNING "there are no stored images available (file missing: .stored_images.txt)."
+        exit 1
+    fi
+    if [ -z "$STORED_IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "please provide the name tag for the stored release you wish to use."
+        print_stored_image_tags
+        exit 1
+    fi
     IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
     if [ -z "$IMAGE_NAME" ]; then
-        echo
-        echo "unknown image name: $STORED_IMAGE_NAME"
-        echo "known images are:"
-        echo $(tail -n +2 .stored_images.txt | cut -d '=' -f 1)
-        echo
+        $PRINT_WARNING
+        $PRINT_WARNING "unknown image name: $STORED_IMAGE_NAME"
+        print_stored_image_tags
         exit 1
     fi
     CONTAINER_USER=release
     shift
 fi
 
-# set default argument
-# after shifting paramsm check if a comamnd ist left
-
-# evaluate arguments or set default argument
+### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
 if [ -z "$1" ]; then
     CMD_STRING="No run argument given. Executing: /bin/bash"
     set -- "/bin/bash"
@@ -106,6 +111,7 @@ elif [ "$1" == "write_osdeps" ]; then
     set -- "/opt/write_osdeps.bash"
 else 
     CMD_STRING="Executing: $1"
+fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     $PRINT_INFO
@@ -114,18 +120,18 @@ if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     docker pull $IMAGE_NAME
 fi
 
-#this flag defines if an interactive container (console inputs) is created ot not
-#if env already set, use external set value
-#you can use this if your console does not support inputs (e.g. a jenkins build job)
+# this flag defines if an interactive container (console inputs) is created or not
+# if env already set, use external set value
+# you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
 
 
-#get a md5 for the current folder used as container name suffix
-#(several checkouts  of this repo possible withtou interfering)
+# get a md5 for the current folder used as container name suffix
+# (several checkouts  of this repo possible without interfering)
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-#use current folder name + devel + path md5 as container name
-#(several checkouts  of this repo possible withtout interfering)
+# use current folder name + devel + path md5 as container name
+# (several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 
 $PRINT_INFO
