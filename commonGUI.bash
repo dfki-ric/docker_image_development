@@ -1,65 +1,92 @@
 #!/bin/bash
 
-xhost +local:root
+#allow local connections of root (docker daemon) to the current users x server
+xhost +local:root > /dev/null
 
-. ./docker_commands.bash
-. ./settings.bash
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+source $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/settings.bash
 
+CONTAINER_USER=devel
 EXECMODE=$DEFAULT_EXECMODE
 
+### EVALUATE ARGUMENTS AND SET EXECMODE
 if [ "$1" = "devel" ]; then
-    echo "overriding default execmode $DEFAULT_EXECMODE to: devel"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
     EXECMODE="devel"
     shift
 fi
 if [ "$1" = "release" ]; then
-    echo "overriding default execmode $DEFAULT_EXECMODE to: release"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="release"
     shift
 fi
 
 if [ "$1" = "base" ]; then
-    echo "overriding default execmode $DEFAULT_EXECMODE to: base"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="base"
     shift
 fi
 
+### EVALUATE ARGUMENTS OR SET DEFAULT ARGUMENT
 if [ -z "$1" ]; then
-    echo -e "\nNo run argument given!\n    Use \e[1m\e[1m./commonGUI.bash <xml-file>\e[0m"
+    $PRINT_WARNING -e "\nNo run argument given!\n    Use \e[1m\e[1m./commonGUI.bash <xml-file>\e[0m"
     set -- "CommonGUI CommonConfig.xml"
 else
     set -- "CommonGUI $1"
 fi
 
+### START EXECUTION
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
-    HOST_WORKSPACE=$(pwd)
-    mkdir -p $HOST_WORKSPACE/workspace
-    mkdir -p $HOST_WORKSPACE/home
+    mkdir -p $ROOT_DIR/workspace
+    mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
-        -v $HOST_WORKSPACE/workspace/:/opt/workspace \
-        -v $HOST_WORKSPACE/home/:/home/devel \
-        -v $HOST_WORKSPACE/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash
+        -v $ROOT_DIR/workspace/:/opt/workspace \
+        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
 fi
 
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
-    HOST_WORKSPACE=$(pwd)
     #in case the devel image is pulled, we need the create the folders here
-    mkdir -p $HOST_WORKSPACE/workspace
-    mkdir -p $HOST_WORKSPACE/home
+    mkdir -p $ROOT_DIR/workspace
+    mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
-        -v $HOST_WORKSPACE/startscripts:/opt/startscripts \
-        -v $HOST_WORKSPACE/workspace/:/opt/workspace \
-        -v $HOST_WORKSPACE/home/:/home/devel \
+        -v $ROOT_DIR/startscripts:/opt/startscripts \
+        -v $ROOT_DIR/workspace/:/opt/workspace \
+        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
+        -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
+    if [ "$MOUNT_CCACHE_VOLUME" = "true" ]; then
+        DOCKER_DEV_CCACHE_DIR="/ccache"
+        CACHE_VOMUME_NAME="ccache_${WORKSPACE_BASE_IMAGE//[\/,:]/_}"
+        $PRINT_INFO "mounting ccache volume ${CACHE_VOMUME_NAME} to ${DOCKER_DEV_CCACHE_DIR}"
+        docker volume create $CACHE_VOMUME_NAME > /dev/null
+        ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
+    fi
 fi
+
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+fi
+
+if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
+    $PRINT_INFO
+    $PRINT_INFO pulling image: $IMAGE_NAME
+    $PRINT_INFO
+    docker pull $IMAGE_NAME
 fi
 
 #this flag defines if an interactive container (console inputs) is created ot not
@@ -70,23 +97,20 @@ INTERACTIVE=${INTERACTIVE:="true"}
 
 #get a md5 for the current folder used as container name suffix
 #(several checkouts  of this repo possible withtou interfering)
-FOLDER_MD5=$(echo $(pwd) | md5sum | cut -b 1-8)
+FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
 #use current folder name + devel + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)
-CONTAINER_NAME=${CONTAINER_NAME:="${PWD##*/}-$EXECMODE-$FOLDER_MD5"}
-CONTAINER_ID_FILENAME=$EXECMODE-container_id.txt
+CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 
-echo
-echo -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME#*:}\e[0m"
-echo
+$PRINT_INFO
+$PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME##*:}\e[0m"
+$PRINT_INFO
+$PRINT_DEBUG $CMD_STRING
+$PRINT_DEBUG
 
 
-
-if [ ! -f $CONTAINER_ID_FILENAME ]; then
-    touch $CONTAINER_ID_FILENAME
-fi
-CONTAINER_IMAGE_ID=$(cat $CONTAINER_ID_FILENAME)
+CONTAINER_IMAGE_ID=$(read_value_from_config_file $EXECMODE)
 CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 
 DOCKER_RUN_ARGS=" \
@@ -100,4 +124,5 @@ DOCKER_RUN_ARGS=" \
 
 init_docker $@
 
-xhost -local:root
+#remove permission for local connections of root (docker daemon) to the current users x server
+xhost -local:root > /dev/null

@@ -27,7 +27,7 @@ if [ "$1" = "release" ]; then
     shift
 fi
 
-# evaluate arguments or set default argument
+# EVALUATE ARGUMENTS OR SET DEFAULT ARGUMENT
 if [ -z "$1" ]; then
     CMD_STRING="No run argument given. Executing: /bin/bash"
     set -- "/bin/bash"
@@ -78,6 +78,7 @@ if [ "$EXECMODE" = "devel" ]; then
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
 fi
+
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
