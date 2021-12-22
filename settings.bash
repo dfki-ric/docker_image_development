@@ -37,6 +37,7 @@ export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with
 # under normal circumstances you should not need to change these
 export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
 export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
+export WORKSPACE_CD_IMAGE=developmentimage/${PROJECT_NAME}:CD
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
@@ -61,4 +62,10 @@ export ADDITIONAL_DOCKER_RUN_ARGS=" \
 # export VERBOSE=true
 
 # Make the output as quiet as possible (does not apply to programs started in the container)
-#export SILENT=false
+# export SILENT=false
+
+# mount ccache volume, if enabled, a volume name based on the base image name is generated
+# and mounted to /ccache, this way multiple workspaces in docker_image_development
+# can share a single ccache, CCACHE_DIR is automatically set in the env, just install
+# and enable ccache for your builds
+# export MOUNT_CCACHE_VOLUME=true

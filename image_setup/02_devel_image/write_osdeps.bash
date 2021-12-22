@@ -6,7 +6,7 @@ cd /opt/workspace
 if [ -z "$(find -maxdepth 1 -type d -name autoproj)" ] && [ -z "$(find -maxdepth 1 -type d -name src)" ]; then
     echo "Neither autoproj nor ros workspace detected."
     [ -z "$(ls -A)" ] && echo "Your workspace directory is empty!"
-    exit 1
+    exit 0 # don't exit with error code, could be a non-program-managed workspace (with respect to continuous deployment)
 fi    
 
 # overwrite old file and add disclaimer

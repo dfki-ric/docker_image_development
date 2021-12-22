@@ -26,8 +26,20 @@ if [ "$1" = "release" ]; then
     EXECMODE="release"
     shift
 fi
+if [ "$1" = "storedrelease" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
+    EXECMODE="storedrelease"
+    shift
+fi
+if [ "$1" = "CD" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: cd"
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
+    EXECMODE="release"
+    shift
+fi
 
-# EVALUATE ARGUMENTS OR SET DEFAULT ARGUMENT
+### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
 if [ -z "$1" ]; then
     CMD_STRING="No run argument given. Executing: /bin/bash"
     set -- "/bin/bash"
@@ -85,6 +97,30 @@ if [ "$EXECMODE" == "release" ]; then
     CONTAINER_USER=release
 fi
 
+if [ "$EXECMODE" == "storedrelease" ]; then
+    # Read image name from command line, first arg already shifted away
+    STORED_IMAGE_NAME=$1
+    if [ ! -f .stored_images.txt ]; then
+            $PRINT_WARNING "there are no stored images available (file missing: .stored_images.txt)."
+        exit 1
+    fi
+    if [ -z "$STORED_IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "please provide the name tag for the stored release you wish to use."
+        print_stored_image_tags
+        exit 1
+    fi
+    IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
+    if [ -z "$IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "unknown image name: $STORED_IMAGE_NAME"
+        print_stored_image_tags
+        exit 1
+    fi
+    CONTAINER_USER=release
+    shift
+fi
+
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     $PRINT_INFO
     $PRINT_INFO pulling image: $IMAGE_NAME
@@ -92,18 +128,17 @@ if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     docker pull $IMAGE_NAME
 fi
 
-#this flag defines if an interactive container (console inputs) is created ot not
-#if env already set, use external set value
-#you can use this if your console does not support inputs (e.g. a jenkins build job)
+# this flag defines if an interactive container (console inputs) is created or not
+# if env already set, use external set value
+# you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
 
-
-#get a md5 for the current folder used as container name suffix
-#(several checkouts  of this repo possible withtou interfering)
+# get a md5 for the current folder used as container name suffix
+# (several checkouts  of this repo possible without interfering)
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-#use current folder name + devel + path md5 as container name
-#(several checkouts  of this repo possible withtout interfering)
+# use current folder name + devel + path md5 as container name
+# (several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 
 $PRINT_INFO
@@ -126,5 +161,9 @@ DOCKER_RUN_ARGS=" \
 
 init_docker $@
 
-#remove permission for local connections of root (docker daemon) to the current users x server
-xhost -local:root > /dev/null
+# remove permission for local connections of root (docker daemon) to the current users x server
+if command -v xhost > /dev/null; then
+    xhost -local:root > /dev/null
+fi
+
+exit $DOCKER_EXEC_RETURN_VALUE

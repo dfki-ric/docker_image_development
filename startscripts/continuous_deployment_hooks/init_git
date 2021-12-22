@@ -1,0 +1,5 @@
+#!/bin/bash
+
+git config --global user.email ContinuousDeployment@dfki.de
+git config --global user.name "Continuous Deployment of docker_image_development"
+git config --global url."https://git.hb.dfki.de/".insteadOf git@git.hb.dfki.de:
