@@ -9,6 +9,7 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/docker_commands.bash
 
 CONTAINER_USER=devel
+CMD_STRING=""
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$DEFAULT_EXECMODE
@@ -89,16 +90,36 @@ fi
 if [ "$EXECMODE" == "storedrelease" ]; then
     # Read image name from command line, first arg already shifted away
     STORED_IMAGE_NAME=$1
+    if [ ! -f .stored_images.txt ]; then
+            $PRINT_WARNING "there are no stored images available (file missing: .stored_images.txt)."
+        exit 1
+    fi
+    if [ -z "$STORED_IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "please provide the name tag for the stored release you wish to use."
+        print_stored_image_tags
+        exit 1
+    fi
     IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
+    if [ -z "$IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "unknown image name: $STORED_IMAGE_NAME"
+        print_stored_image_tags
+        exit 1
+    fi
     CONTAINER_USER=release
     shift
 fi
 
-# set default argument
-# after shifting paramsm check if a comamnd ist left
+### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
 if [ -z "$1" ]; then
-    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
+    CMD_STRING="No run argument given. Executing: /bin/bash"
     set -- "/bin/bash"
+elif [ "$1" == "write_osdeps" ]; then
+    CMD_STRING="Executing: /opt/write_osdeps.bash"
+    set -- "/opt/write_osdeps.bash"
+else 
+    CMD_STRING="Executing: $1"
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
@@ -108,22 +129,24 @@ if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     docker pull $IMAGE_NAME
 fi
 
-#this flag defines if an interactive container (console inputs) is created or not
-#if env already set, use external set value
-#you can use this if your console does not support inputs (e.g. a jenkins build job)
+# this flag defines if an interactive container (console inputs) is created or not
+# if env already set, use external set value
+# you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
 
-#get a md5 for the current folder used as container name suffix
-#(several checkouts  of this repo possible withtou interfering)
+# get a md5 for the current folder used as container name suffix
+# (several checkouts  of this repo possible without interfering)
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-#use current folder name + devel + path md5 as container name
-#(several checkouts  of this repo possible withtout interfering)
+# use current folder name + devel + path md5 as container name
+# (several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 
 $PRINT_INFO
 $PRINT_INFO -e "\e[32musing ${IMAGE_NAME%:*}:\e[4;33m${IMAGE_NAME##*:}\e[0m"
 $PRINT_INFO
+$PRINT_DEBUG $CMD_STRING
+$PRINT_DEBUG
 
 CONTAINER_IMAGE_ID=$(read_value_from_config_file $EXECMODE)
 CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
@@ -139,7 +162,7 @@ DOCKER_RUN_ARGS=" \
 
 init_docker $@
 
-#remove permission for local connections of root (docker daemon) to the current users x server
+# remove permission for local connections of root (docker daemon) to the current users x server
 if command -v xhost > /dev/null; then
     xhost -local:root > /dev/null
 fi
