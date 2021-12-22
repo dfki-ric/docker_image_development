@@ -3,3 +3,8 @@ echo
 echo "This file is needed for the Continuous Deployment feature."
 echo "It should contain instructions to non-interactively build the workspace"
 echo
+
+#autoproj example
+#cd /opt/workspace
+#source env.sh
+#autoproj build

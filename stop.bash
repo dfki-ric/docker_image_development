@@ -19,6 +19,10 @@ if [ "$1" = "release" ]; then
     EXECMODE="release"
     shift
 fi
+if [ "$1" = "CD" ]; then
+    EXECMODE="release"
+    shift
+fi
 
 #use current folder name + $EXECMODE + path md5 as container name
 #(several checkouts  of this repo possible withtout interfering)

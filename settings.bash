@@ -37,6 +37,7 @@ export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with
 # under normal circumstances you should not need to change these
 export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
 export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
+export WORKSPACE_CD_IMAGE=developmentimage/${PROJECT_NAME}:CD
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.

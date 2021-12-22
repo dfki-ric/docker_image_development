@@ -1,7 +1,9 @@
 #!/bin/bash
 
 #allow local connections of root (docker daemon) to the current users x server
-xhost +local:root > /dev/null
+if command -v xhost > /dev/null; then
+    xhost +local:root > /dev/null
+fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/docker_commands.bash
@@ -25,11 +27,17 @@ if [ "$1" = "release" ]; then
     EXECMODE="release"
     shift
 fi
-
-# set default argument
-if [ -z "$1" ]; then
-    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
-    set -- "/bin/bash"
+if [ "$1" = "storedrelease" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
+    EXECMODE="storedrelease"
+    shift
+fi
+if [ "$1" = "CD" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: cd"
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
+    EXECMODE="release"
+    shift
 fi
 
 ### START EXECUTION
@@ -78,6 +86,21 @@ if [ "$EXECMODE" == "release" ]; then
     CONTAINER_USER=release
 fi
 
+if [ "$EXECMODE" == "storedrelease" ]; then
+    # Read image name from command line, first arg already shifted away
+    STORED_IMAGE_NAME=$1
+    IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
+    CONTAINER_USER=release
+    shift
+fi
+
+# set default argument
+# after shifting paramsm check if a comamnd ist left
+if [ -z "$1" ]; then
+    $PRINT_DEBUG "No run argument given. Using /bin/bash as default"
+    set -- "/bin/bash"
+fi
+
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     $PRINT_INFO
     $PRINT_INFO pulling image: $IMAGE_NAME
@@ -85,11 +108,10 @@ if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     docker pull $IMAGE_NAME
 fi
 
-#this flag defines if an interactive container (console inputs) is created ot not
+#this flag defines if an interactive container (console inputs) is created or not
 #if env already set, use external set value
 #you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
-
 
 #get a md5 for the current folder used as container name suffix
 #(several checkouts  of this repo possible withtou interfering)
@@ -118,6 +140,8 @@ DOCKER_RUN_ARGS=" \
 init_docker $@
 
 #remove permission for local connections of root (docker daemon) to the current users x server
-xhost -local:root > /dev/null
+if command -v xhost > /dev/null; then
+    xhost -local:root > /dev/null
+fi
 
 exit $DOCKER_EXEC_RETURN_VALUE

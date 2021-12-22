@@ -1,0 +1,97 @@
+#/!bin/bash
+
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
+CD_ROOT_DIR=$ROOT_DIR
+source $ROOT_DIR/docker_commands.bash
+
+# exit this script on first error
+set -e
+# print all commands (don't expand vars)
+set -v
+
+catch_exit_err(){
+    echo "some part ended with error, deleting credentials and exiting"
+    ./exec.bash devel /opt/startscripts/continuous_deployment_hooks/delete_git_credentials
+    echo "credentials deleted, exiting"
+    exit 1
+}
+# call catch_exit_err on error exit codes
+trap "catch_exit_err" ERR
+
+# REBUILD_DEVEL can be set to "rebuild_devel" to build a new devel image
+# if env already set, use external set value
+# you can use this if your console does not support inputs (e.g. a jenkins build job)
+REBUILD_DEVEL=${REBUILD_DEVEL:="false"}
+
+# put ./exec script in silent mode
+export SILENT=true
+
+####################################### FUNCTION DEFINITIONS ###
+store_git_credentials(){    
+    # Use git credential.helper store (it is stored in home folder), delete before building release
+    # Params have to be set outside of this script by your CI/CD implementation/server
+    ./exec.bash devel /opt/startscripts/continuous_deployment_hooks/init_git
+    ${PRINT_INFO} "calling store_git_credentials for ${GIT_USER} on ${GIT_SERVER}"
+    ./exec.bash devel "/opt/startscripts/continuous_deployment_hooks/store_git_credentials ${GIT_USER} ${GIT_ACCESS_TOKEN} ${GIT_SERVER}"
+}
+
+build_devel_image(){
+    cd ${CD_ROOT_DIR}/image_setup/02_devel_image
+    bash build.bash
+    cd ${CD_ROOT_DIR}
+}
+
+build_or_pull_devel_image(){
+    cd ${CD_ROOT_DIR}
+    if [ "$REBUILD_DEVEL" = "true" ]; then 
+        # build initial devel image
+        build_devel_image
+    else
+        # update devel image even in case it is not enabled in settings.bash
+        bash ${CD_ROOT_DIR}/tools/update_image.bash devel || ( XTMP=$? && \
+             ${PRINT_WARNING} -e "\nUnable to pull devel image from registry. Set environment variable REBUILD_DEVEL to true to build devel image from scratch." && \
+             exit ${XTMP} )
+    fi
+}
+
+setup_workspace(){
+    # TODO setup_workspace.bash should be non-interactive
+    ./exec.bash devel /opt/setup_workspace.bash
+}
+
+update_workspace_dependencies()
+{
+    ./exec.bash devel /opt/write_osdeps.bash
+}
+
+####################################################### MAIN ###
+${PRINT_DEBUG} "Continuous deployment uses ${CD_ROOT_DIR} as root dir."
+
+build_or_pull_devel_image
+
+store_git_credentials
+
+setup_workspace
+
+update_workspace_dependencies
+
+build_devel_image
+
+# build workspace
+./exec.bash devel /opt/startscripts/continuous_deployment_hooks/build
+
+# the credentails have to be deleted before the release is build
+./exec.bash devel /opt/startscripts/continuous_deployment_hooks/delete_git_credentials
+
+# build the release image
+cd ${CD_ROOT_DIR}/image_setup/03_release_image
+bash build.bash
+
+# run the tests
+cd ${CD_ROOT_DIR}
+./exec.bash release /opt/startscripts/continuous_deployment_hooks/test
+
+RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+CD_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
+docker tag $RELEASE_IMAGE_NAME $CD_IMAGE_NAME
+echo "Tagged CD image: $WORKSPACE_CD_IMAGE"

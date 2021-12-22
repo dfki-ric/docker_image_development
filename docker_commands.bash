@@ -1,9 +1,22 @@
 #!/bin/bash
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-. $ROOT_DIR/settings.bash
+source $ROOT_DIR/settings.bash
 
-SCRIPTSVERSION=$(cat VERSION | head -n1 | awk -F' ' '{print $1}')
+# In case you are using CD server and need to use other registries, they can be overridden via env variables
+if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
+    export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
+fi
+
+if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
+    export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
+fi
+
+if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
+    export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
+fi
+
+SCRIPTSVERSION=$(cat $ROOT_DIR/VERSION | head -n1 | awk -F' ' '{print $1}')
 
 PRINT_WARNING=echo
 PRINT_INFO=echo
@@ -29,7 +42,7 @@ fi
 
 check_config_file_exists(){
     #init config file, if nonexistent
-    if [ ! -f .container_config.txt ]; then
+    if [ ! -f $ROOT_DIR/.container_config.txt ]; then
         echo "# do not edit, this file is generated and updated automatically when running exec.bash" >> .container_config.txt
     fi
 }
@@ -39,14 +52,14 @@ write_value_to_config_file(){
     check_config_file_exists
     # to be able to write, the value must already exits in the file
     # find old var line
-    OLDLINE=$(cat .container_config.txt | grep $1)
+    OLDLINE=$(cat $ROOT_DIR/.container_config.txt | grep "^$1=")
     NEWLINE="$1=$2"
     if [ "$OLDLINE" = "" ]; then 
         # new value, just append
-        echo "$NEWLINE" >> .container_config.txt
+        echo "$NEWLINE" >> $ROOT_DIR/.container_config.txt
     else
         #value exists, replace line
-        sed -i "s/$OLDLINE/$NEWLINE/g" .container_config.txt
+        sed -i "s/^$OLDLINE/$NEWLINE/g" "$ROOT_DIR/.container_config.txt"
     fi
 }
 
@@ -54,7 +67,7 @@ read_value_from_config_file(){
     #check if file exists and create if nonexistent
     check_config_file_exists
     READVARNAME=$1
-    echo $(cat .container_config.txt | grep $READVARNAME | awk -F'=' '{print $2}')
+    echo $(cat $ROOT_DIR/.container_config.txt | grep "^$READVARNAME=" | awk -F'=' '{print $2}')
 }
 
 
@@ -84,10 +97,10 @@ init_docker(){
         $PRINT_WARNING "hardware acceleration disabled"
     fi
 
-    if [ "$1" = "noninteractive" ]; then
-        INTERACTIVE="false"
-        #remove first param
-        shift
+    if [ "$INTERACTIVE" = "true" ]; then
+        DOCKER_FLAGS="-ti"
+    else
+        DOCKER_FLAGS="-t"
     fi
 
     # check if a container from previous runs exist
@@ -97,29 +110,17 @@ init_docker(){
         $PRINT_DEBUG "found existing container"
         if [ "$CURRENT_IMAGE_ID" = "$CONTAINER_IMAGE_ID" ]; then
             $PRINT_DEBUG "using existing container"
-            if [ "$INTERACTIVE" = "true" ]; then
-                start_container $@
-            else
-                start_container_nonint $@
-            fi
+            start_container $@
         else
             $PRINT_INFO "Image id is newer that container image id, removing old container: $CONTAINER_NAME"
             #stop the container in case it is running
             docker stop $CONTAINER_NAME  > /dev/null
             docker rm $CONTAINER_NAME  > /dev/null
-            if [ "$INTERACTIVE" = "true" ]; then
-                generate_container $@
-            else
-                generate_container_nonint $@
-            fi
+            generate_container $@
         fi
     else
         $PRINT_DEBUG "inital run, no container exists"
-        if [ "$INTERACTIVE" = "true" ]; then
-            generate_container $@
-        else
-            generate_container_nonint $@
-        fi
+        generate_container $@
     fi
 }
 
@@ -132,15 +133,15 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run -ti $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} $IMAGE_NAME || exit 1
+    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} $IMAGE_NAME || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME  > /dev/null
     $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME /opt/check_init_workspace.bash
+    docker exec $DOCKER_FLAGS $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME $@
+    docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
 }
 
@@ -149,32 +150,6 @@ start_container(){
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME > /dev/null
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec -ti $CONTAINER_NAME $@
-    DOCKER_EXEC_RETURN_VALUE=$?
-}
-
-generate_container_nonint(){
-    $PRINT_DEBUG "generating new non-interactive container : $CONTAINER_NAME"
-    write_value_to_config_file $EXECMODE $CURRENT_IMAGE_ID
-
-    # initial run exits no matter what -> due to entrypoint (user id settings)
-    # /bin/bash will be default nonetheless when called later without command
-    docker run -t $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} $IMAGE_NAME || exit 1
-    # default container exists after initial run, so we can start it
-    $PRINT_DEBUG "docker start $CONTAINER_NAME"
-    docker start $CONTAINER_NAME  > /dev/null
-    $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
-    docker exec -t $CONTAINER_NAME /opt/check_init_workspace.bash
-    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec -t $CONTAINER_NAME $@
-    DOCKER_EXEC_RETURN_VALUE=$?
-}
-
-#starts container with the param given in first run
-start_container_nonint(){
-    $PRINT_DEBUG "docker start non-interactive $CONTAINER_NAME"
-    docker start $CONTAINER_NAME
-    $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec $CONTAINER_NAME $@
+    docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
 }

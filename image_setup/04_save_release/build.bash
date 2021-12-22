@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. ../../settings.bash
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
+source $ROOT_DIR/docker_commands.bash
 
 if [ "$DEFAULT_EXECMODE" = "devel" ]; then
     echo "the $DEFAULT_EXECMODE has to be release in the settings.bash in order to export"
