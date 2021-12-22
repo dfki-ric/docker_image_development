@@ -41,6 +41,17 @@ if [ "$1" = "CD" ]; then
     shift
 fi
 
+### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
+if [ -z "$1" ]; then
+    CMD_STRING="No run argument given. Executing: /bin/bash"
+    set -- "/bin/bash"
+elif [ "$1" == "write_osdeps" ]; then
+    CMD_STRING="Executing: /opt/write_osdeps.bash"
+    set -- "/opt/write_osdeps.bash"
+else 
+    CMD_STRING="Executing: $1"
+fi
+
 ### START EXECUTION
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
@@ -109,17 +120,6 @@ if [ "$EXECMODE" == "storedrelease" ]; then
     fi
     CONTAINER_USER=release
     shift
-fi
-
-### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
-if [ -z "$1" ]; then
-    CMD_STRING="No run argument given. Executing: /bin/bash"
-    set -- "/bin/bash"
-elif [ "$1" == "write_osdeps" ]; then
-    CMD_STRING="Executing: /opt/write_osdeps.bash"
-    set -- "/opt/write_osdeps.bash"
-else 
-    CMD_STRING="Executing: $1"
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
