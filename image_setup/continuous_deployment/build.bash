@@ -36,13 +36,10 @@ store_git_credentials(){
 }
 
 build_devel_image(){
-    cd ${CD_ROOT_DIR}/image_setup/02_devel_image
-    bash build.bash
-    cd ${CD_ROOT_DIR}
+    bash ${CD_ROOT_DIR}/image_setup/02_devel_image/build.bash
 }
 
 build_or_pull_devel_image(){
-    cd ${CD_ROOT_DIR}
     if [ "$REBUILD_DEVEL" = "true" ]; then 
         # build initial devel image
         build_devel_image
@@ -55,7 +52,7 @@ build_or_pull_devel_image(){
 }
 
 setup_workspace(){
-    # TODO setup_workspace.bash should be non-interactive
+    # TODO setup_workspace.bash must be non-interactive
     ./exec.bash devel /opt/setup_workspace.bash
 }
 
@@ -66,6 +63,7 @@ update_workspace_dependencies()
 
 ####################################################### MAIN ###
 ${PRINT_DEBUG} "Continuous deployment uses ${CD_ROOT_DIR} as root dir."
+cd ${CD_ROOT_DIR}
 
 build_or_pull_devel_image
 
@@ -84,11 +82,9 @@ build_devel_image
 ./exec.bash devel /opt/startscripts/continuous_deployment_hooks/delete_git_credentials
 
 # build the release image
-cd ${CD_ROOT_DIR}/image_setup/03_release_image
-bash build.bash
+bash ${CD_ROOT_DIR}/image_setup/03_release_image/build.bash
 
 # run the tests
-cd ${CD_ROOT_DIR}
 ./exec.bash release /opt/startscripts/continuous_deployment_hooks/test
 
 RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE

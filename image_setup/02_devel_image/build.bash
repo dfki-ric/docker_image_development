@@ -1,5 +1,6 @@
 #!/bin/bash
 
+THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 source $ROOT_DIR/settings.bash
 
@@ -14,7 +15,7 @@ if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     docker pull $BASE_IMAGE_NAME
 fi
 
-docker build --no-cache -f Dockerfile --build-arg BASE_IMAGE_NAME -t $IMAGE_NAME --label "devel-image-name=$IMAGE_NAME" --label "devel-image-created-from=${BASE_IMAGE_NAME} - $(docker inspect --format '{{.Id}}' $BASE_IMAGE_NAME)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" .
+docker build --no-cache -f $THIS_DIR/Dockerfile --build-arg BASE_IMAGE_NAME -t $IMAGE_NAME --label "devel-image-name=$IMAGE_NAME" --label "devel-image-created-from=${BASE_IMAGE_NAME} - $(docker inspect --format '{{.Id}}' $BASE_IMAGE_NAME)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" $THIS_DIR
 
 
 echo
