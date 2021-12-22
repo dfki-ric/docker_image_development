@@ -39,9 +39,11 @@ In order to check for available images you can browse the DFKI [internal registr
 
 * Execute `./stop.bash` in order to stop the container
 
-* Remove the _*-container_id.txt_ file to generate a new container upon next start of _exec.bash_ or _commonGUI.bash_
+* Execute `./delete_container.bash` to delete the current container
 
 * If you want to get into the container to look at the workspace and change things manually execute: `./exec.bash`. Keep in mind that changes in the container will vanish as soon as a new container is generated. Refer to the [usage documentation](doc/020_Usage.md) for detailed infos.
+
+* In order to use this repo for development, you can change the DEFAULT_EXECMODE in the settings.bash to devel. Afterwards your container will be created based on the devel image and won't have the workspace included. However the workspace will conveniently be mounted from your host system, which facilitates development on your host system, while at the same time making your workspace independent of the container. Thus regenerating your container won't have an impact on changes in your workspace. In order to setup the workspace on your host, you can easily execute `bash /opt/setup_workspace.bash` from within your container or execute the `extract_directories_from_release_image.bash` script from this repos tools directory to extract the workspace from your currently used release image.
 
 ## Documentation
 
