@@ -2,7 +2,10 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export PATH=$ROOT_DIR${PATH:+:${PATH}}
-complete -W "base devel release $(ls startscripts | xargs) /bin/bash /opt/write_osdeps.bash" ./exec.bash
+complete -W "base devel release $(ls startscripts | xargs) /bin/bash write_osdeps" ./exec.bash
 complete -W "base devel release" ./stop.bash
 complete -W "base devel release" ./delete_container.bash
 complete -W "devel release --help $(./exec.bash "ls /opt/workspace/ndlcom/RobotConfig/xml" 2>/dev/null | grep '\.xml' | tr -d '\r')" ./commonGUI.bash
+complete -W "base devel release $(ls startscripts | xargs) /bin/bash write_osdeps" exec.bash
+complete -W "base devel release" stop.bash
+complete -W "base devel release" delete_container.bash
