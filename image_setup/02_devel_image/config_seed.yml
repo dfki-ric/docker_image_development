@@ -1,1 +1,37 @@
-# use this file to store your autoproj configuration for non-interactive bootstrap
+---
+ruby_executable: "/usr/bin/ruby2.5"
+gems_install_path: "/home/devel/.local/share/autoproj/gems"
+prefer_indep_over_os_packages: false
+osdeps_mode: all
+apt_dpkg_update: true
+manifest_source:
+  type: git
+  url: https://git.hb.dfki.de/ndlcom/buildconf
+  branch: master
+GITHUB: http,ssh
+GITHUB_ROOT: https://github.com
+GITHUB_PUSH_ROOT: 'git@github.com:'
+GITHUB_PRIVATE_ROOT: 'git@github.com:'
+DFKIGIT: http,ssh
+DFKIGIT_ROOT: https://git.hb.dfki.de
+DFKIGIT_PUSH_ROOT: 'git@git.hb.dfki.de:'
+DFKIGIT_PRIVATE_ROOT: 'git@git.hb.dfki.de:'
+operating_system:
+- - ubuntu
+  - debian
+- - '18.04'
+  - 18.04.5
+  - lts
+  - bionic
+  - beaver
+  - default
+NDLCOM_ROBOTCONFIG: CommonConfig
+ROCK_SELECTED_FLAVOR: master
+ROCK_FLAVOR: master
+ROCK_BRANCH: master
+typelib_cxx_loader: castxml
+USE_PYTHON: false
+syskit_use_bundles: true
+USE_OCL: false
+rtt_target: gnulinux
+rtt_corba_implementation: omniorb
