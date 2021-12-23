@@ -27,6 +27,13 @@ REBUILD_DEVEL=${REBUILD_DEVEL:="false"}
 export SILENT=true
 
 ####################################### FUNCTION DEFINITIONS ###
+patch_settings_file(){
+    # remove mounting host directories
+  $PRINT_DEBUG "Patching settings.bash file"
+  $PRINT_DEBUG "Removing directory mounts"
+  sed -i '/\-v/d' ${ROOT_DIR}/settings.bash
+}
+
 store_git_credentials(){    
     # Use git credential.helper store (it is stored in home folder), delete before building release
     # Params have to be set outside of this script by your CI/CD implementation/server
@@ -64,6 +71,8 @@ update_workspace_dependencies()
 ####################################################### MAIN ###
 ${PRINT_DEBUG} "Continuous deployment uses ${CD_ROOT_DIR} as root dir."
 cd ${CD_ROOT_DIR}
+
+patch_settings_file
 
 build_or_pull_devel_image
 
