@@ -1,5 +1,7 @@
 #!/bin/bash
 echo
-echo "This file is needed for the Continuous Deployment feature."
-echo "It should contain instructions to non-interactively test the program in the workspace"
+echo "Sourcing env.sh in release image as test"
 echo
+
+cd /opt/workspace
+source env.sh
