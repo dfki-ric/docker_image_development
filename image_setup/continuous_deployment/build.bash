@@ -53,7 +53,7 @@ build_or_pull_devel_image(){
 
 setup_workspace(){
     # TODO setup_workspace.bash must be non-interactive
-    ./exec.bash devel /opt/setup_workspace.bash
+    ./exec.bash devel /opt/setup_workspace.bash store
 }
 
 update_workspace_dependencies()
