@@ -116,7 +116,7 @@ init_docker(){
             $PRINT_DEBUG "using existing container"
             start_container $@
         else
-            $PRINT_INFO "Image id is newer that container image id, removing old container: $CONTAINER_NAME"
+            $PRINT_INFO "Image id is newer than container image id, removing old container: $CONTAINER_NAME"
             #stop the container in case it is running
             docker stop $CONTAINER_NAME  > /dev/null
             docker rm $CONTAINER_NAME  > /dev/null
