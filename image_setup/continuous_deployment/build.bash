@@ -31,7 +31,7 @@ store_git_credentials(){
     # Use git credential.helper store (it is stored in home folder), delete before building release
     # Params have to be set outside of this script by your CI/CD implementation/server
     ./exec.bash devel /opt/startscripts/continuous_deployment_hooks/init_git
-    ${PRINT_INFO} "calling store_git_credentials for ${GIT_USER} on ${GIT_SERVER}"
+    ${PRINT_INFO} "calling store_git_credentials for $GIT_USER on $GIT_SERVER"
     ./exec.bash devel "/opt/startscripts/continuous_deployment_hooks/store_git_credentials ${GIT_USER} ${GIT_ACCESS_TOKEN} ${GIT_SERVER}"
 }
 
@@ -53,7 +53,7 @@ build_or_pull_devel_image(){
 
 setup_workspace(){
     # TODO setup_workspace.bash must be non-interactive
-    ./exec.bash devel /opt/setup_workspace.bash
+    ./exec.bash devel /opt/setup_workspace.bash store
 }
 
 update_workspace_dependencies()
