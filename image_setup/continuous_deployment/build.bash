@@ -94,9 +94,11 @@ build_devel_image
 bash ${CD_ROOT_DIR}/image_setup/03_release_image/build.bash
 
 # run the tests
-#./exec.bash release "/opt/startscripts/continuous_deployment_hooks/test"
+./exec.bash release "/opt/startscripts/continuous_deployment_hooks/test"
 
 RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 CD_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
+echo "DEBUG RELEASE_IMAGE_NAME: $RELEASE_IMAGE_NAME"
+echo "DEBUG CD_IMAGE_NAME: $CD_IMAGE_NAME"
 docker tag $RELEASE_IMAGE_NAME $CD_IMAGE_NAME
 echo "Tagged CD image: $WORKSPACE_CD_IMAGE"
