@@ -8,9 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # generic packages to install non-workspace dependencies ( those are added later )
 RUN apt-get update && apt-get install -y \
     bash-completion \
-    git \
-    ruby \
-    ruby-dev
+    git 
 
 # make sure SHELL variable is set. Crucial for base/scripts! => moved to setup_workspace.bash
 ## REMOVE THIS ONCE rock-core PR 173 is merged
@@ -38,9 +36,3 @@ RUN echo '$PRINT_INFO' >> /opt/init_workspace.bash
 
 # add the devel user to the dialout group
 RUN usermod -aG dialout devel
-
-
-
-
-
-

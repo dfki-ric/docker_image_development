@@ -38,4 +38,3 @@ complete -W "base devel release CD storedrelease" ./stop.bash
 complete -W "base devel release CD storedrelease" stop.bash
 complete -W "base devel release CD storedrelease" ./delete_container.bash
 complete -W "base devel release CD storedrelease" delete_container.bash
-complete -W "devel release CD --help $(./exec.bash "ls /opt/workspace/ndlcom/RobotConfig/xml" 2>/dev/null | grep '\.xml' | tr -d '\r')" ./commonGUI.bash
