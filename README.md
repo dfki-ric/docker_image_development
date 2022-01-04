@@ -1,53 +1,49 @@
-# Docker Image Development 
+# CommonGUI to Go
 
-This is a collection of scripts that enables a development process using docker images.
+This is a collection of scripts that facilitate working with docker images and containers. This repo is adapted to quickly retrieve and use a running commonGUI.
 
-It was initiated and is currently developed at the
-[Robotics Innovation Center](http://robotik.dfki-bremen.de/en/startpage.html) of the
-[German Research Center for Artificial Intelligence (DFKI)](http://www.dfki.de) in Bremen,
-together with the [Robotics Group](http://www.informatik.uni-bremen.de/robotik/index_en.php)
-of the [University of Bremen](http://www.uni-bremen.de/en.html).
+**Attention** Changes inside the container do not persist and are gone as soon as a new container is created. If you want any updates to persist, use the devel images with locally mounted directories to develop and generate a new release image from your changes. Please refer to the [usage documentation](doc/020_Usage.md) for further infos.
 
-## Motivation
+## Preperation:
 
-In robot development using several robots, there are sometimes different OS systems and software version used.
-In oder to be able to develop for robots running on different OS version (e.g. Ubuntu 16.04 and 18.04) docker is a very useful tool, but not really intended to be used for development.
+##### 1. install docker
+Please install Docker according to the [010_Setup_Docker.md](doc/010_Setup_Docker.md) or by executing the [install_docker.bash](tools/install_docker.bash) script.
 
-Also, there is a need in research projects to provide partners with runnable software, using this approach, runnable images can be created and sent to the partners without the need for them to install and set up other dependencies than docker.
+##### 2. login to registry
+The docker development is based on different docker image setup steps. For this repo a release image with an installed commonGUI is available on the internal docker registry. Please login with your DFKI credentials as follows (requires VPN connection):
 
+```bash
+    docker login d-reg.hb.dfki.de
+```
 
-These scripts are helping to set up a docker-based development and release workflow.
+In order to check for available images you can browse the DFKI [internal registry](https://d-reg.hb.dfki.de/repositories) (Login required).
 
-The goal is to prepare docker _images_ that encapsulate a component's or a project's dependencies so that work is being done in a consistent, reproducible environment, i.e., to prevent that code not only builds or runs on the developer's machine and fails elsewhere.
-In order to achieve this, the **devel image** is created to contain all dependencies for the workspace preinstalled. The devel image mounts local directories into the container so they can be modified by editors on the host machine, while they are compiled and run in the container.
+## Get GUI
 
-Devel images are usually based on **base images**, that encapsulate dependencies shared by many projects.
-The build process will automatically try to pull required images from a docker registry.
-If the image is already available locally, it doesn't need to be pulled again.
+```bash
+    # create working directory
+    mkdir -p ~/docker/commonGUI && cd ~/docker/commonGUI
+    # clone repo
+    git clone https://git.hb.dfki.de/ndlcom/docker_image-commongui.git .
+    # generate container and start commonGUI with CommonConfig
+    ./commonGUI.bash
+```
 
-Another goal of this approach is to be able to preserve a working version of a component, a project or a demo and possibly ship it to external partners.
-In order to achieve this, the **release image** can be created, which contains the devel image plus the additional workspace files and run scripts required to operate the product.
+##### HINTS:
 
-![process overview](/doc/docker_development_image.png?raw=true "process overview")
+* For starting with another xml config execute: `./commonGUI.bash <Config>` (xml suffix may be omitted)
 
+* To see, which configs are available execute: `./commonGUI.bash --help`
 
+* In order to enable tab completion: `source autocomplete.me`
 
-## Getting Started
+* Execute `./stop.bash` in order to stop the container
 
-Please read the [usage howto](doc/020_Usage.md)
+* Execute `./delete_container.bash` to delete the current container
 
-## Requirements / Dependencies
+* If you want to get into the container to look at the workspace and change things manually execute: `./exec.bash`. Keep in mind that changes in the container will vanish as soon as a new container is generated. Refer to the [usage documentation](doc/020_Usage.md) for detailed infos.
 
-You need docker installed and usable for your user.
-If 3D accelleration is needed, nvidia-docker can be utilized.
-
-Please read the [docker howto](doc/010_Setup_Docker.md)
-
-## Installation
-
-Just fork/clone this repository.
-
-A fork can be used to store your settings and share them with the developers of your project.
+* In order to use this repo for development, you can change the DEFAULT_EXECMODE in the settings.bash to devel. Afterwards your container will be created based on the devel image and won't have the workspace included. However the workspace will conveniently be mounted from your host system, which facilitates development on your host system, while at the same time making your workspace independent of the container. Thus regenerating your container won't have an impact on changes in your workspace. In order to setup the workspace on your host, you can easily execute `bash /opt/setup_workspace.bash` from within your container or execute the `extract_directories_from_release_image.bash` script from this repos tools directory to extract the workspace from your currently used release image.
 
 ## Documentation
 
@@ -59,10 +55,11 @@ This software is stable and maintained by the authors.
 
 ## Bug Reports
 
-To search for bugs or report them, please use GitHubs issue tracker at:
+To search for bugs or report them, please use the issue tracker at:
 
-http://github.com/dfki-ric/docker_image_development
+https://git.hb.dfki.de/ndlcom/docker_image-commongui/-/issues
 
+Also see the [base image Readme](image_setup/01_base_images/Readme.md).
 
 ## Referencing
 
@@ -85,7 +82,7 @@ See [LICENSE](LICENSE) file.
 
 ## Maintainer / Authors / Contributers
 
-Maintainer: Steffen Planthaber
+Maintainer: Steffen Planthaber, Leon Danter
 
 Authors:
 

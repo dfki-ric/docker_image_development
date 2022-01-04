@@ -3,6 +3,7 @@
 THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 source $ROOT_DIR/settings.bash
+source $ROOT_DIR/docker_commands.bash #TODO extract OVERRIDE_REGISTRY LOGIC to other file
 
 #docker build paramaters
 export DATE=$(date)

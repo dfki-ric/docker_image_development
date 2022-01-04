@@ -5,30 +5,25 @@ xhost +local:root > /dev/null
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/settings.bash
 
 CONTAINER_USER=devel
-CMD_STRING=""
+EXECMODE=$DEFAULT_EXECMODE
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
-EXECMODE=$DEFAULT_EXECMODE
 if [ "$1" = "base" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
     EXECMODE="base"
     shift
 fi
 if [ "$1" = "devel" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
     EXECMODE="devel"
     shift
 fi
 if [ "$1" = "release" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
     EXECMODE="release"
-    shift
-fi
-if [ "$1" = "storedrelease" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
-    EXECMODE="storedrelease"
     shift
 fi
 if [ "$1" = "CD" ]; then
@@ -37,21 +32,18 @@ if [ "$1" = "CD" ]; then
     shift
 fi
 
-### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
+### EVALUATE ARGUMENTS OR SET DEFAULT ARGUMENT
 if [ -z "$1" ]; then
-    CMD_STRING="No run argument given. Executing: /bin/bash"
-    set -- "/bin/bash"
-elif [ "$1" == "write_osdeps" ]; then
-    CMD_STRING="Executing: /opt/write_osdeps.bash"
-    set -- "/opt/write_osdeps.bash"
-else 
-    CMD_STRING="Executing: $1"
+    $PRINT_WARNING -e "\nNo run argument given!\n    Use \e[1m\e[1m./commonGUI.bash <xml-file>\e[0m"
+    set -- "CommonGUI CommonConfig.xml"
+else
+    set -- "CommonGUI $1"
 fi
 
 ### START EXECUTION
 if [ "$EXECMODE" == "base" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
+    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_BASE_IMAGE
     mkdir -p $ROOT_DIR/workspace
     mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
@@ -67,7 +59,7 @@ fi
 
 if [ "$EXECMODE" = "devel" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
+    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
     #in case the devel image is pulled, we need the create the folders here
     mkdir -p $ROOT_DIR/workspace
     mkdir -p $ROOT_DIR/home
@@ -95,35 +87,9 @@ if [ "$EXECMODE" == "CD" ]; then
     DOCKER_REGISTRY_AUTOPULL=true
     EXECMODE="release"
 fi
-
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
-    CONTAINER_USER=release
-fi
-
-if [ "$EXECMODE" == "storedrelease" ]; then
-    # Read image name from command line, first arg already shifted away
-    STORED_IMAGE_NAME=$1
-    if [ ! -f .stored_images.txt ]; then
-            $PRINT_WARNING "there are no stored images available (file missing: .stored_images.txt)."
-        exit 1
-    fi
-    if [ -z "$STORED_IMAGE_NAME" ]; then
-        $PRINT_WARNING
-        $PRINT_WARNING "please provide the name tag for the stored release you wish to use."
-        print_stored_image_tags
-        exit 1
-    fi
-    IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
-    if [ -z "$IMAGE_NAME" ]; then
-        $PRINT_WARNING
-        $PRINT_WARNING "unknown image name: $STORED_IMAGE_NAME"
-        print_stored_image_tags
-        exit 1
-    fi
-    CONTAINER_USER=release
-    shift
+    IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 fi
 
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
@@ -133,17 +99,18 @@ if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     docker pull $IMAGE_NAME
 fi
 
-# this flag defines if an interactive container (console inputs) is created or not
-# if env already set, use external set value
-# you can use this if your console does not support inputs (e.g. a jenkins build job)
+#this flag defines if an interactive container (console inputs) is created ot not
+#if env already set, use external set value
+#you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
 
-# get a md5 for the current folder used as container name suffix
-# (several checkouts  of this repo possible without interfering)
+
+#get a md5 for the current folder used as container name suffix
+#(several checkouts  of this repo possible withtou interfering)
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-# use current folder name + devel + path md5 as container name
-# (several checkouts  of this repo possible withtout interfering)
+#use current folder name + devel + path md5 as container name
+#(several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 
 $PRINT_INFO
@@ -152,13 +119,14 @@ $PRINT_INFO
 $PRINT_DEBUG $CMD_STRING
 $PRINT_DEBUG
 
+
 CONTAINER_IMAGE_ID=$(read_value_from_config_file $EXECMODE)
 CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 
 DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
-                -u $CONTAINER_USER \
+                -u devel \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
@@ -166,9 +134,5 @@ DOCKER_RUN_ARGS=" \
 
 init_docker $@
 
-# remove permission for local connections of root (docker daemon) to the current users x server
-if command -v xhost > /dev/null; then
-    xhost -local:root > /dev/null
-fi
-
-exit $DOCKER_EXEC_RETURN_VALUE
+#remove permission for local connections of root (docker daemon) to the current users x server
+xhost -local:root > /dev/null

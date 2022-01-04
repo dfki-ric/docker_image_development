@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd /opt/workspace
+. env.sh || { echo -e "\n[ERROR] Could not source env.sh. Is the workspace initialized?\n" && exit 1; }
+
+XML=$1
+
+function print_info {
+    echo
+    if [ "$1" == "error" ]; then
+        echo -e "\e[31mERROR:\e[0m Invalid xml config!"
+        echo
+    fi
+    echo -e "Usage:  \e[1m\e[1m./commonGUI.bash <xml-file>\e[0m\n"
+    echo -e "Available options:\n\e[2m  => source autocomplete.me\n     to enable tab completion\e[0m"
+    echo
+    ls /opt/workspace/ndlcom/RobotConfig/xml/
+    echo
+    echo
+    exit 1
+}
+
+# check argument and add suffix, if not yet provided
+if [ -z "$XML" ] || [ "$XML" == "--help" ]; then
+    print_info
+elif [ "${XML##*.}" != "xml" ]; then
+    XML=$XML.xml
+fi
+
+CommonGUI --xml-file=/opt/workspace/install/share/RobotConfig/xml/$XML || print_info "error"

@@ -21,6 +21,8 @@ RUN sudo touch /initialized_workspace
 # create release user 
 RUN groupadd release-group
 RUN useradd --shell /bin/bash -c "release user" -m -G release-group release
+# add the devel user to the dialout group
+RUN usermod -aG dialout release
 
 # set user sudoers previlege for start script (w/o password), the /opt/init_user_id.bash script
 # is using NUID and NGID environment variables, but ist executed by the user using sudo, so these vars have to be kept
@@ -34,12 +36,13 @@ RUN echo "release ALL=(ALL) NOPASSWD: ALL \
 RUN sudo chown release:release-group /opt/workspace
 
 #copy all the mounts from folders from dev image
-#the build context is "..", so paths in this folder must habe this folder name as prefix
+#the build context is "..", so paths in this folder must have this folder name as prefix
 #e.g. build_release/entrypoint.sh must be prefixed for files, workspace can be local
-COPY --chown=release:release-group workspace /opt/workspace
-COPY --chown=release:release-group startscripts /opt/startscripts
-COPY --chown=release:release-group home /home/devel
-
+COPY --chown=release:release-group workspace /opt/workspace/
+COPY --chown=release:release-group startscripts /opt/startscripts/
+COPY --chown=release:release-group home /home/devel/
+RUN ln -s /home/release/ /home/devel
+RUN chown release:release-group /home/devel
 
 #from now on, call RUN as devel user
 USER release
