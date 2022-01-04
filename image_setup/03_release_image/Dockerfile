@@ -21,8 +21,6 @@ RUN sudo touch /initialized_workspace
 # create release user 
 RUN groupadd release-group
 RUN useradd --shell /bin/bash -c "release user" -m -G release-group release
-# add the devel user to the dialout group
-RUN usermod -aG dialout release
 
 # set user sudoers previlege for start script (w/o password), the /opt/init_user_id.bash script
 # is using NUID and NGID environment variables, but ist executed by the user using sudo, so these vars have to be kept

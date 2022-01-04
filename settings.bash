@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
-export PROJECT_NAME=commongui
+export PROJECT_NAME=docker_image_development
 
 # path to your docker registry, leave blank if you don't have one
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
-export DOCKER_REGISTRY=d-reg.hb.dfki.de
+export DOCKER_REGISTRY=
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
@@ -29,7 +29,7 @@ export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
 export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
-#export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
 
 
 # The Name of the Workspace image to use
@@ -50,13 +50,7 @@ export WORKSPACE_CD_IMAGE=developmentimage/${PROJECT_NAME}:CD
 # --privileged
 # -v /dev/input/:/dev/input
 # -v $HOME/.Xauthority:/home/devel/.Xauthority #mount the .Xauthority file, if the GUI shall be forwarded through ssh Xforwarding
-export ADDITIONAL_DOCKER_RUN_ARGS=" \
-        --dns-search=dfki.uni-bremen.de \
-        --privileged \
-        --net=host \
-        -v /dev:/dev \
-        -v $HOME/.Xauthority:/home/devel/.Xauthority
-        "
+export ADDITIONAL_DOCKER_RUN_ARGS=""
 
 # Make the exec script to talk more for debugging/docker setup purposes.
 # This may also be stated in the command line: $> VERBOSE=true ./exec.bash 

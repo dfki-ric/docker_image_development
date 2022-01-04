@@ -33,6 +33,3 @@ RUN echo '$PRINT_INFO' >> /opt/init_workspace.bash
 # If you want to run the setup automatically, you can add it directly to the script
 # it is executed every time the container is re-created
 #RUN echo "/opt/setup_workspace.bash" >> /opt/init_workspace.bash
-
-# add the devel user to the dialout group
-RUN usermod -aG dialout devel
