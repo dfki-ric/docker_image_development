@@ -5,14 +5,17 @@ source $ROOT_DIR/settings.bash
 
 # In case you are using CD server and need to use other registries, they can be overridden via env variables
 if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
+    export OLD_BASE_REGISTRY=$BASE_REGISTRY
     export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
 fi
 
 if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
+    export OLD_DEVEL_REGISTRY=$DEVEL_REGISTRY
     export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
 fi
 
 if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
+    export OLD_RELEASE_REGISTRY=$RELEASE_REGISTRY
     export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
 fi
 
@@ -116,7 +119,7 @@ init_docker(){
             $PRINT_DEBUG "using existing container"
             start_container $@
         else
-            $PRINT_INFO "Image id is newer that container image id, removing old container: $CONTAINER_NAME"
+            $PRINT_INFO "Image id is newer than container image id, removing old container: $CONTAINER_NAME"
             #stop the container in case it is running
             docker stop $CONTAINER_NAME  > /dev/null
             docker rm $CONTAINER_NAME  > /dev/null

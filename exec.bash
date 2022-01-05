@@ -34,10 +34,8 @@ if [ "$1" = "storedrelease" ]; then
     shift
 fi
 if [ "$1" = "CD" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: cd"
-    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
-    DOCKER_REGISTRY_AUTOPULL=true
-    EXECMODE="release"
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: CD"
+    EXECMODE="CD"
     shift
 fi
 
@@ -92,6 +90,14 @@ if [ "$EXECMODE" = "devel" ]; then
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
 fi
+
+# needs to be executed before execmode == release is evaluated!
+if [ "$EXECMODE" == "CD" ]; then
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
+    EXECMODE="release"
+fi
+
 if [ "$EXECMODE" == "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE

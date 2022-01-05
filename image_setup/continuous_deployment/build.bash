@@ -27,11 +27,18 @@ REBUILD_DEVEL=${REBUILD_DEVEL:="false"}
 export SILENT=true
 
 ####################################### FUNCTION DEFINITIONS ###
+patch_settings_file(){
+    # remove mounting host directories
+  $PRINT_DEBUG "Patching settings.bash file"
+  $PRINT_DEBUG "Removing directory mounts"
+  sed -i '/\-v/d' ${ROOT_DIR}/settings.bash
+}
+
 store_git_credentials(){    
     # Use git credential.helper store (it is stored in home folder), delete before building release
     # Params have to be set outside of this script by your CI/CD implementation/server
     ./exec.bash devel /opt/startscripts/continuous_deployment_hooks/init_git
-    ${PRINT_INFO} "calling store_git_credentials for ${GIT_USER} on ${GIT_SERVER}"
+    ${PRINT_INFO} "calling store_git_credentials for $GIT_USER on $GIT_SERVER"
     ./exec.bash devel "/opt/startscripts/continuous_deployment_hooks/store_git_credentials ${GIT_USER} ${GIT_ACCESS_TOKEN} ${GIT_SERVER}"
 }
 
@@ -65,6 +72,8 @@ update_workspace_dependencies()
 ${PRINT_DEBUG} "Continuous deployment uses ${CD_ROOT_DIR} as root dir."
 cd ${CD_ROOT_DIR}
 
+patch_settings_file
+
 build_or_pull_devel_image
 
 store_git_credentials
@@ -85,9 +94,10 @@ build_devel_image
 bash ${CD_ROOT_DIR}/image_setup/03_release_image/build.bash
 
 # run the tests
-./exec.bash release /opt/startscripts/continuous_deployment_hooks/test
+./exec.bash release "/opt/startscripts/continuous_deployment_hooks/test"
 
 RELEASE_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 CD_IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
+echo "Using $CD_IMAGE_NAME to tag $RELEASE_IMAGE_NAME"
 docker tag $RELEASE_IMAGE_NAME $CD_IMAGE_NAME
 echo "Tagged CD image: $WORKSPACE_CD_IMAGE"
