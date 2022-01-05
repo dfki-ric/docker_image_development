@@ -33,7 +33,8 @@ if [ "$EXECMODE" = "release" ]; then
 fi
 if [ "$EXECMODE" = "CD" ]; then
     IMAGE=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
+    EXECMODE="release"
 fi
 
-bash $ROOT_DIR/delete_contianer.bash $EXECMODE
+bash $ROOT_DIR/delete_container.bash $EXECMODE
 docker rmi $IMAGE

@@ -23,7 +23,7 @@ if [ "$1" = "release" ] || [ "$1" = "CD" ]; then
     EXECMODE="release"
     shift
 fi
-if [ "$EXECMODE" == "CD" ]; then
+if [ "$EXECMODE" = "CD" ]; then
     EXECMODE="release"
 fi
 
