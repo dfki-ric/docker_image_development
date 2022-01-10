@@ -8,10 +8,7 @@ fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 source $ROOT_DIR/settings.bash
-
-#TODO sourcing docker_commands solely for PRINT_* :(
-#     should we move that part to new file (common.bash || env.bash) instead?
-source $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/src/variables.bash
 
 STORED_IMAGE_NAME=$2
 RELEASE_IMAGE_NAME=$1

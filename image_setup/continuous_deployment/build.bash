@@ -2,7 +2,8 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 CD_ROOT_DIR=$ROOT_DIR
-source $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/settings.bash
+source $ROOT_DIR/src/variables.bash
 
 # exit this script on first error
 set -e

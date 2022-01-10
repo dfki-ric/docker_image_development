@@ -2,7 +2,7 @@
 
 # this script will be called by .bashrc
 
-# $PRINT_DEBUG is set later by the docker run command in docker_commands.bash or by the enrtypoint
+# $PRINT_DEBUG is set later by the docker run command in docker_commands.bash or by the entrypoint
 
 # on initialization check if the UID of the rosuser user has to be changed:
 if [ "$NUID" -a ! -f /initialized_uid ]; then
@@ -29,7 +29,7 @@ if [ "$NUID" -a ! -f /initialized_uid ]; then
     fi
 fi
 
-#indicate theat the initialization was done
+# indicate that the initialization was done
 if [ ! -f /initialized_uid ]; then
     touch "/initialized_uid"
 fi
