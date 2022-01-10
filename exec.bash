@@ -1,7 +1,9 @@
 #!/bin/bash
 
 #allow local connections of root (docker daemon) to the current users x server
-xhost +local:root > /dev/null
+if command -v xhost > /dev/null; then
+    xhost +local:root > /dev/null
+fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/docker_commands.bash
@@ -30,6 +32,22 @@ if [ "$1" = "storedrelease" ]; then
     $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
     EXECMODE="storedrelease"
     shift
+fi
+if [ "$1" = "CD" ]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: CD"
+    EXECMODE="CD"
+    shift
+fi
+
+### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
+if [ -z "$1" ]; then
+    CMD_STRING="No run argument given. Executing: /bin/bash"
+    set -- "/bin/bash"
+elif [ "$1" = "write_osdeps" ]; then
+    CMD_STRING="Executing: /opt/write_osdeps.bash"
+    set -- "/opt/write_osdeps.bash"
+else 
+    CMD_STRING="Executing: $1"
 fi
 
 ### START EXECUTION
@@ -72,13 +90,21 @@ if [ "$EXECMODE" = "devel" ]; then
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
 fi
-if [ "$EXECMODE" == "release" ]; then
+
+# needs to be executed before execmode == release is evaluated!
+if [ "$EXECMODE" = "CD" ]; then
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
+    EXECMODE="release"
+fi
+
+if [ "$EXECMODE" = "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
     CONTAINER_USER=release
 fi
 
-if [ "$EXECMODE" == "storedrelease" ]; then
+if [ "$EXECMODE" = "storedrelease" ]; then
     # Read image name from command line, first arg already shifted away
     STORED_IMAGE_NAME=$1
     if [ ! -f .stored_images.txt ]; then
@@ -102,17 +128,6 @@ if [ "$EXECMODE" == "storedrelease" ]; then
     shift
 fi
 
-### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
-if [ -z "$1" ]; then
-    CMD_STRING="No run argument given. Executing: /bin/bash"
-    set -- "/bin/bash"
-elif [ "$1" == "write_osdeps" ]; then
-    CMD_STRING="Executing: /opt/write_osdeps.bash"
-    set -- "/opt/write_osdeps.bash"
-else 
-    CMD_STRING="Executing: $1"
-fi
-
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     $PRINT_INFO
     $PRINT_INFO pulling image: $IMAGE_NAME
@@ -124,7 +139,6 @@ fi
 # if env already set, use external set value
 # you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
-
 
 # get a md5 for the current folder used as container name suffix
 # (several checkouts  of this repo possible without interfering)
@@ -154,5 +168,9 @@ DOCKER_RUN_ARGS=" \
 
 init_docker $@
 
-#remove permission for local connections of root (docker daemon) to the current users x server
-xhost -local:root > /dev/null
+# remove permission for local connections of root (docker daemon) to the current users x server
+if command -v xhost > /dev/null; then
+    xhost -local:root > /dev/null
+fi
+
+exit $DOCKER_EXEC_RETURN_VALUE

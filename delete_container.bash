@@ -18,13 +18,16 @@ if [ "$1" = "devel" ]; then
     EXECMODE="devel"
     shift
 fi
-if [ "$1" = "release" ]; then
+if [ "$1" = "release" ] || [ "$1" = "CD" ]; then
     EXECMODE="release"
     shift
 fi
 if [ "$1" = "storedrelease" ]; then
     EXECMODE="storedrelease"
     shift
+fi
+if [ "$EXECMODE" == "CD" ]; then
+    EXECMODE="release"
 fi
 
 #use current folder name + $EXECMODE + path md5 as container name

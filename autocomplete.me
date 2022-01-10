@@ -2,6 +2,7 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 export PATH=$ROOT_DIR${PATH:+:${PATH}}
+
 _exec_bash(){
     local cur prev words cword package
 
@@ -27,13 +28,13 @@ _exec_bash(){
         return
     fi
 
-    COMPREPLY=($(compgen -W "base devel release storedrelease $(ls startscripts | xargs) /bin/bash write_osdeps" -- "$cur"))
+    COMPREPLY=($(compgen -W "base devel release CD storedrelease $(ls startscripts | xargs) /bin/bash write_osdeps" -- "$cur"))
     
 }
 
 complete -F _exec_bash ./exec.bash
 complete -F _exec_bash exec.bash
-complete -W "base devel release storedrelease" ./stop.bash
-complete -W "base devel release storedrelease" stop.bash
-complete -W "base devel release storedrelease" ./delete_container.bash
-complete -W "base devel release storedrelease" delete_container.bash
+complete -W "base devel release CD storedrelease" ./stop.bash
+complete -W "base devel release CD storedrelease" stop.bash
+complete -W "base devel release CD storedrelease" ./delete_container.bash
+complete -W "base devel release CD storedrelease" delete_container.bash

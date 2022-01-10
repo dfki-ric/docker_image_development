@@ -34,11 +34,11 @@ RUN echo "release ALL=(ALL) NOPASSWD: ALL \
 RUN sudo chown release:release-group /opt/workspace
 
 #copy all the mounts from folders from dev image
-#the build context is "..", so paths in this folder must habe this folder name as prefix
+#the build context is "..", so paths in this folder must have this folder name as prefix
 #e.g. build_release/entrypoint.sh must be prefixed for files, workspace can be local
-COPY --chown=release:release-group workspace /opt/workspace
-COPY --chown=release:release-group startscripts /opt/startscripts
-COPY --chown=release:release-group home /home/devel
+COPY --chown=release:release-group workspace /opt/workspace/
+COPY --chown=release:release-group startscripts /opt/startscripts/
+COPY --chown=release:release-group home /home/devel/
 RUN ln -s /home/release/ /home/devel
 RUN chown release:release-group /home/devel
 

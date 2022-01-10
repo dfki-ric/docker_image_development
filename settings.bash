@@ -19,16 +19,17 @@ export DOCKER_REGISTRY_AUTOPULL=false
 ### The default release mode to use if no mode paramater is given to ./exec.bash or ./stop.bash
 ### The checked in version should reflect the image status and be the highest availale image (base - devel - release)
 export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
-# export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
-# export DEFAULT_EXECMODE="release" # use the release as default
+#export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
+#export DEFAULT_EXECMODE="release" # use the release as default
+#export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
+export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
 
 
 # The Name of the Workspace image to use
@@ -37,6 +38,7 @@ export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with
 # under normal circumstances you should not need to change these
 export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
 export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
+export WORKSPACE_CD_IMAGE=developmentimage/${PROJECT_NAME}:CD
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.

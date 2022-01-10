@@ -1,0 +1,7 @@
+#!/bin/bash
+echo
+echo "Sourcing env.sh in release image as test"
+echo
+
+cd /opt/workspace
+source env.sh
