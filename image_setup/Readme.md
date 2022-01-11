@@ -4,7 +4,7 @@ Mostly you don't need to execute any of these scripts
 
 ## 01_base_images
 
-You don't need to do this normally, base images are shared globally on hub.docker.com
+You don't need to do this normally, base images are shared globally on hub.docker.com, just select one in the settings.bash
 
 ## 02_devel_image
 
