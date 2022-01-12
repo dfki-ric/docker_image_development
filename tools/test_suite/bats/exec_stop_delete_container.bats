@@ -3,18 +3,6 @@
 
 load test_helper
 
-setup() {
-  if !( [ "$EXECMODE" == "base" ] || 
-        [ "$EXECMODE" == "devel" ] || 
-        [ "$EXECMODE" == "release" ] || 
-        [ "$EXECMODE" == "storedrelease" ] || 
-        [ "$EXECMODE" == "CD" ]
-      ); then
-    echo "# [ERROR] unknown execution mode: $EXECMODE" >&3
-    exit 1
-  fi
-}
-
 @test "running exec.bash in $EXECMODE mode" {
   run bash $ROOT_DIR/exec.bash $EXECMODE whoami
 
