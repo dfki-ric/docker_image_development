@@ -38,5 +38,6 @@ CONTAINER_NAME="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"
 
 $PRINT_INFO "stopping ${CONTAINER_NAME}"
 docker stop ${CONTAINER_NAME} > /dev/null || true
-docker rm ${CONTAINER_NAME} > /dev/null && $PRINT_INFO "successfully removed ${CONTAINER_NAME}"
+docker rm ${CONTAINER_NAME} > /dev/null
+$PRINT_INFO "successfully removed ${CONTAINER_NAME}"
 write_value_to_config_file $EXECMODE "deleted"

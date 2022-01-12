@@ -7,6 +7,7 @@ fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/src/docker_commands.bash
+source $ROOT_DIR/src/variables.bash
 
 CONTAINER_USER=devel
 CMD_STRING=""
@@ -139,10 +140,6 @@ fi
 # if env already set, use external set value
 # you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
-
-# get a md5 for the current folder used as container name suffix
-# (several checkouts  of this repo possible without interfering)
-FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
 # use current folder name + devel + path md5 as container name
 # (several checkouts  of this repo possible withtout interfering)
