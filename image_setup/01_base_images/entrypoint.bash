@@ -95,6 +95,9 @@ if [ ! -f /initialized_container ]; then
     sudo -E /bin/bash /opt/init_user_id.bash
     # id script needs exit to apply uid next docker start, so exiting here
     # the exec script expects this to happen and rund start/exec afterwards
+
+
+    echo "export PS1=\"${EXECMODE}@docker:${PROJECT_NAME}:\w\$ \"" >> ~/.bashrc
     exit 0
 fi
 
