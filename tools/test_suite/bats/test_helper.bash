@@ -19,6 +19,6 @@ fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../../.." && pwd )
 source $ROOT_DIR/settings.bash
-source $ROOT_DIR/src/variables.bash
+source $ROOT_DIR/.docker_scripts/variables.bash
 CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
 export SILENT=true

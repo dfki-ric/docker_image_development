@@ -4,8 +4,8 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
 source $ROOT_DIR/settings.bash
-source $ROOT_DIR/src/file_handling.bash
-source $ROOT_DIR/src/variables.bash
+source $ROOT_DIR/.docker_scripts/file_handling.bash
+source $ROOT_DIR/.docker_scripts/variables.bash
 
 # stop on error
 set -e

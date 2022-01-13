@@ -28,7 +28,7 @@ SCRIPTFOLDER=${PROJECT_NAME_NO_SUBFOLDER}_scripts_${DATE}
 mkdir -p $SCRIPTFOLDER
 #build a scripts zip:
 echo "creating scripts archive: $SCRIPTFOLDER.tar.gz"
-cp $ROOT_DIR/src/docker_commands.bash ./$SCRIPTFOLDER/
+cp $ROOT_DIR/.docker_scripts/docker_commands.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/settings.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/exec.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/stop.bash ./$SCRIPTFOLDER/

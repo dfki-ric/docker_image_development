@@ -2,8 +2,8 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
 source $ROOT_DIR/settings.bash
-source $ROOT_DIR/src/variables.bash
-source $ROOT_DIR/src/file_handling.bash
+source $ROOT_DIR/.docker_scripts/variables.bash
+source $ROOT_DIR/.docker_scripts/file_handling.bash
 
 init_docker(){
     #detect if nvidia runtime is available
