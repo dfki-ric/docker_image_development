@@ -98,6 +98,8 @@ if [ ! -f /initialized_container ]; then
 
 
     echo "export PS1=\"${EXECMODE}@docker:${PROJECT_NAME}:\w\$ \"" >> ~/.bashrc
+    # make sure the ~/.bashrc is owned by the new user id set for the container user
+    chown $NUID:$NGID ~/.bashrc
     exit 0
 fi
 
