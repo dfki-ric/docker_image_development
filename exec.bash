@@ -8,8 +8,6 @@ fi
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/.docker_scripts/docker_commands.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
-
-CONTAINER_USER=devel
 CMD_STRING=""
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
@@ -59,7 +57,7 @@ if [ "$EXECMODE" == "base" ]; then
     mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
         -v $ROOT_DIR/workspace/:/opt/workspace \
-        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/home/:/home/dockeruser \
         -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
         -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
@@ -77,7 +75,7 @@ if [ "$EXECMODE" = "devel" ]; then
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
         -v $ROOT_DIR/startscripts:/opt/startscripts \
         -v $ROOT_DIR/workspace/:/opt/workspace \
-        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/home/:/home/dockeruser \
         -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
         -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
@@ -102,7 +100,6 @@ fi
 if [ "$EXECMODE" = "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
-    CONTAINER_USER=release
 fi
 
 if [ "$EXECMODE" = "storedrelease" ]; then
@@ -125,7 +122,6 @@ if [ "$EXECMODE" = "storedrelease" ]; then
         print_stored_image_tags
         exit 1
     fi
-    CONTAINER_USER=release
     shift
 fi
 
@@ -157,7 +153,7 @@ CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
-                -u $CONTAINER_USER \
+                -u dockeruser \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
