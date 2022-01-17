@@ -5,23 +5,10 @@ FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
 source $ROOT_DIR/settings.bash
 
-EXECMODE=$DEFAULT_EXECMODE
+EXECMODE=$1
 
-if [ "$1" = "base" ]; then
-    EXECMODE="base"
-    shift
-fi
-if [ "$1" = "devel" ]; then
-    EXECMODE="devel"
-    shift
-fi
-if [ "$1" = "release" ] || [ "$1" = "CD" ]; then
-    EXECMODE="release"
-    shift
-fi
-if [ "$1" = "storedrelease" ]; then
-    EXECMODE="storedrelease"
-    shift
+if [ "$EXECMODE" = "" ]; then
+    EXECMODE=$DEFAULT_EXECMODE
 fi
 if [ "$EXECMODE" = "CD" ]; then
     EXECMODE="release"

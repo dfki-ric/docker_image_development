@@ -11,31 +11,18 @@ source $ROOT_DIR/.docker_scripts/variables.bash
 CMD_STRING=""
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
-EXECMODE=$DEFAULT_EXECMODE
-if [ "$1" = "base" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
-    EXECMODE="base"
+EXECMODE=$1
+if [[ ${EXECMODES[*]} =~ $EXECMODE ]]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: $EXECMODE"
     shift
+else
+    EXECMODE=$DEFAULT_EXECMODE
 fi
-if [ "$1" = "devel" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
-    EXECMODE="devel"
-    shift
-fi
-if [ "$1" = "release" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
+
+if [ "$EXECMODE" = "CD" ]; then
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
     EXECMODE="release"
-    shift
-fi
-if [ "$1" = "storedrelease" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
-    EXECMODE="storedrelease"
-    shift
-fi
-if [ "$1" = "CD" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: CD"
-    EXECMODE="CD"
-    shift
 fi
 
 ### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
@@ -88,13 +75,6 @@ if [ "$EXECMODE" = "devel" ]; then
         docker volume create $CACHE_VOMUME_NAME > /dev/null
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
-fi
-
-# needs to be executed before execmode == release is evaluated!
-if [ "$EXECMODE" = "CD" ]; then
-    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
-    DOCKER_REGISTRY_AUTOPULL=true
-    EXECMODE="release"
 fi
 
 if [ "$EXECMODE" = "release" ]; then

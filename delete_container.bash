@@ -10,25 +10,12 @@ source $ROOT_DIR/.docker_scripts/variables.bash
 # stop on error
 set -e
 
-EXECMODE=$DEFAULT_EXECMODE
+EXECMODE=$1
 
-if [ "$1" = "base" ]; then
-    EXECMODE="base"
-    shift
+if [ "$EXECMODE" = "" ]; then
+    EXECMODE=$DEFAULT_EXECMODE
 fi
-if [ "$1" = "devel" ]; then
-    EXECMODE="devel"
-    shift
-fi
-if [ "$1" = "release" ] || [ "$1" = "CD" ]; then
-    EXECMODE="release"
-    shift
-fi
-if [ "$1" = "storedrelease" ]; then
-    EXECMODE="storedrelease"
-    shift
-fi
-if [ "$EXECMODE" == "CD" ]; then
+if [ "$EXECMODE" = "CD" ]; then
     EXECMODE="release"
 fi
 

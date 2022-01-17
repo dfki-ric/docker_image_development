@@ -88,22 +88,13 @@ if [ ! -f /initialized_container ]; then
     # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
     if [ ! "$CCACHE_DIR" = "" ]; then
         sudo mkdir -p $CCACHE_DIR
-        sudo chown devel $CCACHE_DIR
+        sudo chown dockeruser $CCACHE_DIR
     fi
 
     # use -E to keep env (for PRINT_* environment)
     sudo -E /bin/bash /opt/init_user_id.bash
     # id script needs exit to apply uid next docker start, so exiting here
     # the exec script expects this to happen and rund start/exec afterwards
-
-    # try to find a line defining the PS1 env war for bash
-    PS1_LINE=$(cat ~/.bashrc | grep "^export PS1=")
-    if [ "$PS1_LINE" = "" ]; then 
-        # no PS1 setting in bashrc, setting it
-        echo 'export PS1="${EXECMODE}@docker:${PROJECT_NAME}:\w\$ "' >> ~/.bashrc    
-        # make sure the ~/.bashrc is owned by the new user id set for the container user
-        sudo chown $NUID:$NGID /home/dockeruser/.bashrc
-    fi
 
     exit 0
 fi

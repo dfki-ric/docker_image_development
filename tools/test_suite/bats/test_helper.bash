@@ -7,16 +7,6 @@ if [ "$?" != "0" ]; then
     exit
 fi
 
-if !( [ "$EXECMODE" == "base" ] || 
-      [ "$EXECMODE" == "devel" ] || 
-      [ "$EXECMODE" == "release" ] || 
-      [ "$EXECMODE" == "storedrelease" ] || 
-      [ "$EXECMODE" == "CD" ]
-    ); then
-  echo "[ERROR] unknown execution mode: $EXECMODE"
-  exit 1
-fi
-
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../../.." && pwd )
 source $ROOT_DIR/settings.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
