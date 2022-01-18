@@ -9,7 +9,10 @@ If you want to automate the update you can set the auto update mode in the setti
 ### Refreshing the Container
 
 This should not be needed, but is sometimes required for testing.
-The easiest way is to delete the according `*-container_id.txt` file(s).
+The easiest way is to run the provided `delete_container.bash` script.
+This deletes the container of the current default exec mode.
+Call `delete_container.bash [base|devel|release]` to delete other containers.
+
 The container will be re-created on the next call of `./exec.bash`.
 
 When you update the image by pulling from registry or rebuilding the devel image, the containers are also regenerated.
