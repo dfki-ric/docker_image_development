@@ -1,3 +1,4 @@
+3.0.0 - change devel/release users to dockeruser, split docker_commands and init testsuite
 2.2.0 - add continuous development support (CD)
 2.1.0 - add named release image support. store and run specifically tagged release images
 2.0.0 - use "release" as user inside release containers

@@ -3,7 +3,7 @@
 THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 source $ROOT_DIR/settings.bash
-source $ROOT_DIR/docker_commands.bash #TODO extract OVERRIDE_REGISTRY LOGIC to other file TODO how t handle this for base images?
+source $ROOT_DIR/.docker_scripts/variables.bash
 
 export BASE_IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 

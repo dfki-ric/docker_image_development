@@ -6,37 +6,23 @@ if command -v xhost > /dev/null; then
 fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-source $ROOT_DIR/docker_commands.bash
-
-CONTAINER_USER=devel
+source $ROOT_DIR/.docker_scripts/docker_commands.bash
+source $ROOT_DIR/.docker_scripts/variables.bash
 CMD_STRING=""
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
-EXECMODE=$DEFAULT_EXECMODE
-if [ "$1" = "base" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: base"
-    EXECMODE="base"
+EXECMODE=$1
+if [[ ${EXECMODES[*]} =~ $EXECMODE ]]; then
+    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: $EXECMODE"
     shift
+else
+    EXECMODE=$DEFAULT_EXECMODE
 fi
-if [ "$1" = "devel" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: devel"
-    EXECMODE="devel"
-    shift
-fi
-if [ "$1" = "release" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: release"
+
+if [ "$EXECMODE" = "CD" ]; then
+    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
+    DOCKER_REGISTRY_AUTOPULL=true
     EXECMODE="release"
-    shift
-fi
-if [ "$1" = "storedrelease" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: storedrelease"
-    EXECMODE="storedrelease"
-    shift
-fi
-if [ "$1" = "CD" ]; then
-    $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: CD"
-    EXECMODE="CD"
-    shift
 fi
 
 ### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
@@ -58,7 +44,7 @@ if [ "$EXECMODE" == "base" ]; then
     mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
         -v $ROOT_DIR/workspace/:/opt/workspace \
-        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/home/:/home/dockeruser \
         -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
         -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
@@ -76,7 +62,7 @@ if [ "$EXECMODE" = "devel" ]; then
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
         -v $ROOT_DIR/startscripts:/opt/startscripts \
         -v $ROOT_DIR/workspace/:/opt/workspace \
-        -v $ROOT_DIR/home/:/home/devel \
+        -v $ROOT_DIR/home/:/home/dockeruser \
         -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
         -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
@@ -91,17 +77,9 @@ if [ "$EXECMODE" = "devel" ]; then
     fi
 fi
 
-# needs to be executed before execmode == release is evaluated!
-if [ "$EXECMODE" = "CD" ]; then
-    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
-    DOCKER_REGISTRY_AUTOPULL=true
-    EXECMODE="release"
-fi
-
 if [ "$EXECMODE" = "release" ]; then
     # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
     IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
-    CONTAINER_USER=release
 fi
 
 if [ "$EXECMODE" = "storedrelease" ]; then
@@ -124,7 +102,6 @@ if [ "$EXECMODE" = "storedrelease" ]; then
         print_stored_image_tags
         exit 1
     fi
-    CONTAINER_USER=release
     shift
 fi
 
@@ -139,10 +116,6 @@ fi
 # if env already set, use external set value
 # you can use this if your console does not support inputs (e.g. a jenkins build job)
 INTERACTIVE=${INTERACTIVE:="true"}
-
-# get a md5 for the current folder used as container name suffix
-# (several checkouts  of this repo possible without interfering)
-FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
 # use current folder name + devel + path md5 as container name
 # (several checkouts  of this repo possible withtout interfering)
@@ -160,7 +133,7 @@ CURRENT_IMAGE_ID=$(docker inspect --format '{{.Id}}' $IMAGE_NAME)
 DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
-                -u $CONTAINER_USER \
+                -u dockeruser \
                 -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \

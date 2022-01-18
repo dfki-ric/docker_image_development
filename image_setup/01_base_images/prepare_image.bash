@@ -22,13 +22,13 @@ apt-get update && apt-get install -y \
 
 locale-gen en_US.UTF-8
 
-# create devel user (usermod -u UID username will be used later to maybe adapt UID on fitst start).
-groupadd devel-group 
-useradd --shell /bin/bash -c "development user" -m -G devel-group devel
+# create dockeruser user (usermod -u UID username will be used later to maybe adapt UID on first start).
+groupadd dockeruser-group 
+useradd --shell /bin/bash -c "development user" -m -G dockeruser-group dockeruser
 
 # set user sudoers previlege for start script (w/o password), the /opt/init_user_id.bash script
 # is using NUID and NGID environment variables, but ist executed by the user using sudo, so these vars have to be kept
-echo -e "devel ALL=(ALL) NOPASSWD: ALL \
+echo -e "dockeruser ALL=(ALL) NOPASSWD: ALL \
     \nDefaults        env_keep += \"NUID\" \
     \nDefaults        env_keep += \"NGID\"" >> /etc/sudoers
 

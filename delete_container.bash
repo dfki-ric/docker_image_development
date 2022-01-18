@@ -3,30 +3,19 @@
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-source $ROOT_DIR/docker_commands.bash
+source $ROOT_DIR/settings.bash
+source $ROOT_DIR/.docker_scripts/file_handling.bash
+source $ROOT_DIR/.docker_scripts/variables.bash
 
 # stop on error
 set -e
 
-EXECMODE=$DEFAULT_EXECMODE
+EXECMODE=$1
 
-if [ "$1" = "base" ]; then
-    EXECMODE="base"
-    shift
+if [ "$EXECMODE" = "" ]; then
+    EXECMODE=$DEFAULT_EXECMODE
 fi
-if [ "$1" = "devel" ]; then
-    EXECMODE="devel"
-    shift
-fi
-if [ "$1" = "release" ] || [ "$1" = "CD" ]; then
-    EXECMODE="release"
-    shift
-fi
-if [ "$1" = "storedrelease" ]; then
-    EXECMODE="storedrelease"
-    shift
-fi
-if [ "$EXECMODE" == "CD" ]; then
+if [ "$EXECMODE" = "CD" ]; then
     EXECMODE="release"
 fi
 
@@ -34,8 +23,8 @@ fi
 #(several checkouts  of this repo possible withtout interfering)
 CONTAINER_NAME="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"
 
-echo "stopping ${CONTAINER_NAME}"
+$PRINT_INFO "stopping ${CONTAINER_NAME}"
 docker stop ${CONTAINER_NAME} > /dev/null || true
-docker rm ${CONTAINER_NAME} > /dev/null || true
-echo "successfully removed ${CONTAINER_NAME}"
+docker rm ${CONTAINER_NAME} > /dev/null
+$PRINT_INFO "successfully removed ${CONTAINER_NAME}"
 write_value_to_config_file $EXECMODE "deleted"

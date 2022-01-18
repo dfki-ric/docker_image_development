@@ -1,82 +1,9 @@
 #!/bin/bash
 
-ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
 source $ROOT_DIR/settings.bash
-
-# In case you are using CD server and need to use other registries, they can be overridden via env variables
-if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
-    export OLD_BASE_REGISTRY=$BASE_REGISTRY
-    export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
-fi
-
-if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
-    export OLD_DEVEL_REGISTRY=$DEVEL_REGISTRY
-    export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
-fi
-
-if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
-    export OLD_RELEASE_REGISTRY=$RELEASE_REGISTRY
-    export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
-fi
-
-SCRIPTSVERSION=$(cat $ROOT_DIR/VERSION | head -n1 | awk -F' ' '{print $1}')
-
-PRINT_WARNING=echo
-PRINT_INFO=echo
-PRINT_DEBUG=:
-
-if [ "$VERBOSE" = true ] && [ "$SILENT" = true ]; then
-    echo "Error: cannot be VERBOSE and SILENT at the same time"
-    echo "Edit the settings.bash accordingly or if not set there use unset VERBOSE or unset SILENT in your console"
-    exit 1
-fi
-
-if [ "$VERBOSE" = true ]; then
-    PRINT_WARNING=echo
-    PRINT_INFO=echo
-    PRINT_DEBUG=echo
-fi
-
-if [ "$SILENT" = true ]; then
-    PRINT_WARNING=:
-    PRINT_INFO=:
-    PRINT_DEBUG=:
-fi
-
-check_config_file_exists(){
-    #init config file, if nonexistent
-    if [ ! -f $ROOT_DIR/.container_config.txt ]; then
-        echo "# do not edit, this file is generated and updated automatically when running exec.bash" >> $ROOT_DIR/.container_config.txt
-    fi
-}
-
-write_value_to_config_file(){
-    #check if file exists and create if nonexistent
-    check_config_file_exists
-    # to be able to write, the value must already exits in the file
-    # find old var line
-    OLDLINE=$(cat $ROOT_DIR/.container_config.txt | grep "^$1=")
-    NEWLINE="$1=$2"
-    if [ "$OLDLINE" = "" ]; then 
-        # new value, just append
-        echo "$NEWLINE" >> $ROOT_DIR/.container_config.txt
-    else
-        #value exists, replace line
-        sed -i "s/^$OLDLINE/$NEWLINE/g" "$ROOT_DIR/.container_config.txt"
-    fi
-}
-
-read_value_from_config_file(){
-    #check if file exists and create if nonexistent
-    check_config_file_exists
-    READVARNAME=$1
-    echo $(cat $ROOT_DIR/.container_config.txt | grep "^$READVARNAME=" | awk -F'=' '{print $2}')
-}
-
-print_stored_image_tags(){
-    $PRINT_WARNING "available image tags:"
-    for tag in $(tail -n +2 $ROOT_DIR/.stored_images.txt | grep = | cut -d '=' -f 1); do $PRINT_WARNING "    - $tag"; done
-}
+source $ROOT_DIR/.docker_scripts/variables.bash
+source $ROOT_DIR/.docker_scripts/file_handling.bash
 
 init_docker(){
     #detect if nvidia runtime is available
@@ -131,7 +58,7 @@ init_docker(){
     fi
 }
 
-DOCKER_EXEC_RETURN_VALUE=1;
+DOCKER_EXEC_RETURN_VALUE=1
 
 #generate container and start command given ad paramater
 generate_container(){
@@ -140,7 +67,15 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS -e SCRIPTSVERSION=${SCRIPTSVERSION} -e PRINT_WARNING=${PRINT_WARNING} -e PRINT_INFO=${PRINT_INFO} -e PRINT_DEBUG=${PRINT_DEBUG} -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} $IMAGE_NAME || exit 1
+    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS \
+                    -e SCRIPTSVERSION=${SCRIPTSVERSION} \
+                    -e PRINT_WARNING=${PRINT_WARNING} \
+                    -e PRINT_INFO=${PRINT_INFO} \
+                    -e PRINT_DEBUG=${PRINT_DEBUG} \
+                    -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} \
+                    -e PROJECT_NAME=${PROJECT_NAME} \
+                    -e EXECMODE=${EXECMODE} \
+                    $IMAGE_NAME || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"

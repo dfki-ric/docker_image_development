@@ -47,8 +47,6 @@ CREDENTIAL_HELPER_MODE=${CREDENTIAL_HELPER_MODE:="cache"}
 
 # ROS BUILDCONF EXAMPLE
 #
-## add /opt/startscritps to path, you need to do it here, because /home/devel is a mounted folder
-#echo 'export PATH=${PATH}:/opt/startscripts' | sudo tee -a /home/devel/.bashrc > /dev/null
 #if [ ! -d /opt/workspace/src ]; then
 #    echo "first start: setting up workspace"
 #    mkdir -p /opt/workspace/src
