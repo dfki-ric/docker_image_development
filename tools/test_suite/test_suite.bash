@@ -11,10 +11,10 @@ check_container_existance(){
     CONTAINER_NAME="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"
     docker container ls -a | grep --silent $CONTAINER_NAME && return=$? || return=$?
     if [ "$return" -eq 0 ]; then
-        echo "[ERROR] The container $CONTAINER_NAME exists and might still be running."
-        echo "        In order to run the test suite, the container needs to be stopped and deleted."
+        echo "[WARN] The container $CONTAINER_NAME exists and might still be running."
+        echo "       In order to run the test suite, the container needs to be stopped and deleted."
         echo
-        read -p "     => stop and delete $CONTAINER_NAME? (Y/N): " confirm
+        read -p "    => stop and delete $CONTAINER_NAME? (Y/N): " confirm
         if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
             echo
             bash $ROOT_DIR/delete_container.bash $EXECMODE

@@ -7,25 +7,18 @@ load test_helper
   run bash $ROOT_DIR/exec.bash $EXECMODE whoami
 
   if [ "$EXECMODE" == "base" ]; then
-    user="devel"
     IMAGE=$WORKSPACE_BASE_IMAGE
   elif [ "$EXECMODE" == "devel" ]; then
-    user="devel"
     IMAGE=$WORKSPACE_DEVEL_IMAGE
   elif [ "$EXECMODE" == "release" ]; then
-    user="release"
     IMAGE=$WORKSPACE_RELEASE_IMAGE
-  elif [ "$EXECMODE" == "storedrelease" ]; then
-    user="release"
-  elif [ "$EXECMODE" == "CD" ]; then
-    user="release"
   else
     echo "# [ERROR] unknown execution mode: $EXECMODE" >&3
     exit 1
   fi
 
   [ "$status" -eq 0 ]
-  [ "$(echo ${lines[-1]} | tr -d '\r')" == "$user" ]
+  [ "$(echo ${lines[-1]} | tr -d '\r')" == "dockeruser" ]
   docker container ls | grep --silent $CONTAINER_NAME
   [ "$?" -eq 0 ]
   docker container ls | grep "$CONTAINER_NAME" | grep --silent "$IMAGE"

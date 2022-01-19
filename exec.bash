@@ -12,7 +12,7 @@ CMD_STRING=""
 
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$1
-if [[ ${EXECMODES[*]} =~ $EXECMODE ]]; then
+if [[ " ${EXECMODES[*]} " =~ " $EXECMODE " ]]; then
     $PRINT_WARNING "overriding default execmode $DEFAULT_EXECMODE to: $EXECMODE"
     shift
 else
