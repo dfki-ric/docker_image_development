@@ -12,6 +12,14 @@ source $ROOT_DIR/.docker_scripts/variables.bash
 
 STORED_IMAGE_NAME=$2
 RELEASE_IMAGE_NAME=$1
+
+if [[ " ${EXECMODES[*]} " =~ " ${RELEASE_IMAGE_NAME##*:} " ]]; then
+    $PRINT_WARNING "Trying to store image with plain <${RELEASE_IMAGE_NAME##*:}> tag."
+    $PRINT_WARNING "This tag is not unique and might cause the stored image to be overwritten!"
+    $PRINT_WARNING "Please use a unique name, e.g. the date tagged release image, or manually tag the image before storing."
+    exit
+fi
+
 STORED_IMAGES_FILE=$ROOT_DIR/.stored_images.txt
 
 # create image list, if not available
