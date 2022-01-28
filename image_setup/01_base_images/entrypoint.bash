@@ -88,7 +88,8 @@ if [ ! -f /initialized_container ]; then
     # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
     if [ ! "$CCACHE_DIR" = "" ]; then
         sudo mkdir -p $CCACHE_DIR
-        sudo chown dockeruser $CCACHE_DIR
+        # the develuser might still have the wrong id, so using the NUID here
+        sudo chown $NUID $CCACHE_DIR
     fi
 
     # use -E to keep env (for PRINT_* environment)
