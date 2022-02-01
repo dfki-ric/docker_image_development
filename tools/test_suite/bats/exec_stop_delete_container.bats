@@ -28,7 +28,7 @@ load test_helper
 @test "running stop.bash in $EXECMODE mode" {
   run bash $ROOT_DIR/stop.bash $EXECMODE
   [ "$status" -eq 0 ]
-  [ "${lines[1]}" == "$CONTAINER_NAME" ]
+  [ "${lines[0]}" == "$CONTAINER_NAME" ]
   docker container ls | grep --silent -v "$CONTAINER_NAME"
   [ "$?" -eq 0 ]
   docker container ls -a | grep --silent "$CONTAINER_NAME"
