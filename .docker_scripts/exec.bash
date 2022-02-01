@@ -11,12 +11,6 @@ else
     EXECMODE=$DEFAULT_EXECMODE
 fi
 
-if [ "$EXECMODE" = "CD" ]; then
-    WORKSPACE_RELEASE_IMAGE=$WORKSPACE_CD_IMAGE
-    DOCKER_REGISTRY_AUTOPULL=true
-    EXECMODE="release"
-fi
-
 ### EVALUATE REMAINING ARGUMENTS OR SET TO DEFAULT
 if [ -z "$1" ]; then
     CMD_STRING="No run argument given. Executing: /bin/bash"
@@ -29,9 +23,9 @@ else
 fi
 
 ### START EXECUTION
+set_image_name $EXECMODE
+
 if [ "$EXECMODE" == "base" ]; then
-    # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
     mkdir -p $ROOT_DIR/workspace
     mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
@@ -46,9 +40,7 @@ if [ "$EXECMODE" == "base" ]; then
 fi
 
 if [ "$EXECMODE" = "devel" ]; then
-    # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
-    #in case the devel image is pulled, we need the create the folders here
+    # in case the devel image is pulled, we need the create the folders here
     mkdir -p $ROOT_DIR/workspace
     mkdir -p $ROOT_DIR/home
     ADDITIONAL_DOCKER_MOUNT_ARGS=" \
@@ -67,11 +59,6 @@ if [ "$EXECMODE" = "devel" ]; then
         docker volume create $CACHE_VOMUME_NAME > /dev/null
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
-fi
-
-if [ "$EXECMODE" = "release" ]; then
-    # DOCKER_REGISTRY and WORKSPACE_DEVEL_IMAGE from settings.bash
-    IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 fi
 
 if [ "$EXECMODE" = "storedrelease" ]; then
@@ -130,6 +117,3 @@ DOCKER_RUN_ARGS=" \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
                 "
-
-init_docker $@
-
