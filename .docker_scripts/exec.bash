@@ -131,5 +131,4 @@ DOCKER_RUN_ARGS=" \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
                 "
 
-init_docker $@
 
