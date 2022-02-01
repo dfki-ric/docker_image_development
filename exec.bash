@@ -17,5 +17,5 @@ if command -v xhost > /dev/null; then
     xhost -local:root > /dev/null
 fi
 
-#set by $ROOT_DIR/.docker_scripts/exec.bash
+# set by $ROOT_DIR/.docker_scripts/exec.bash
 exit $DOCKER_EXEC_RETURN_VALUE
