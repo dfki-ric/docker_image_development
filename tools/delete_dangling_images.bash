@@ -8,9 +8,7 @@
 # prompt for deletion
 read -p "    => Do you want to delete all listed images? (Y/N): " confirm
 if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
-    echo
     for hash in $(docker images -f dangling=true -q); do docker rmi -f $hash; done
-    echo
 else
     echo 
     echo "As you wish, I won't do anything."
