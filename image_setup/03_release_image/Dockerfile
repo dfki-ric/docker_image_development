@@ -19,7 +19,7 @@ RUN sudo touch /initialized_uid
 RUN sudo touch /initialized_workspace
 
 # the default /opt/workspace is owned by root, change it
-# /opt/startscripts and /home/devel are not affected
+# /opt/startscripts and /home/dockeruser are not affected
 # as they are not already existing
 RUN sudo chown dockeruser:dockeruser-group /opt/workspace
 

@@ -40,9 +40,9 @@ In this case autocompletion might not work correctly. A possible workaround is t
 
 ### Container Management
 
-When you exit (detach from) the container shell, the container keeps running in the background. You can inspect which containers are running at the time via `docker ps` and stop containers via `stop.bash [base|devel|release]`. In order to regenerate a fresh container from an image, you can delete the file `docker_development/<mode>-container_id.txt`. The next call to `./exec.bash` will generate and start a new container.
+When you exit (detach from) the container shell, the container keeps running in the background. You can inspect which containers are running at the time via `docker ps` and stop containers via `stop.bash [base|devel|release|CD]`. In order to regenerate a fresh container from an image, you can delete the old one by executing `delete_container.bash <execmode>`. The next call to `./exec.bash` will generate and start a new container.
 
-IMPORTANT: In order to apply new settings (like 3d acceleration, or new ADDITIONAL_DOCKER_RUN_ARGS in settings.bash), the container and saved settings have to be reset: `rm -rf has_gpu_support.txt {devel,release}-container_id.txt`
+IMPORTANT: In order to apply new settings (like 3d acceleration, or new ADDITIONAL_DOCKER_RUN_ARGS in settings.bash), the container and saved settings have to be reset: `delete_container.bash <execmode>`
 
 ### Advanced
 
