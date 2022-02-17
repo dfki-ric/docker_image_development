@@ -64,7 +64,7 @@ fi
 echo -e "Copying workspace directory."
 docker cp $THIS_ID:/opt/workspace $HOST_WORKSPACE/workspace
 echo -e "Copying home directory."
-docker cp $THIS_ID:/home/devel $HOST_WORKSPACE/home
+docker cp $THIS_ID:/home/dockeruser $HOST_WORKSPACE/home
 echo -e "Copying startscripts directory."
 docker cp $THIS_ID:/opt/startscripts $HOST_WORKSPACE/startscripts
 
