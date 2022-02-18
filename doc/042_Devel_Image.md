@@ -16,7 +16,7 @@ The devel container is set up to mount several directories within the host's rep
 
 * **/opt/startscripts** corresponds to the host's `docker_development/startscripts`
 * **/opt/workspace** corresponds to the host's `docker_development/workspace`
-* **/home/devel** corresponds to the host's `docker_development/home`
+* **/home/dockeruser** corresponds to the host's `docker_development/home`
 
 These are initially empty. That means, in order to run applications from the workspace, it needs to be set up (and usually built) at the first run to fully initialize the container.
 
