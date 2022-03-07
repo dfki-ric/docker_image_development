@@ -1,3 +1,14 @@
+# This dockerignore file can be used to remove workspace aprts from release images.
+# 
+# For example:
+# #Ignore everything in the workspace folder
+# workspace/**
+# # you can also add exemptions from previous definitions
+# # include binaries
+# !workspace/install/** 
+# # but not headers
+# workspace/install/include
+
 home/.ssh/
 home/.ddd/
 
