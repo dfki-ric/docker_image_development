@@ -1,4 +1,5 @@
-# This dockerignore file can be used to remove workspace aprts from release images.
+# This dockerignore file can be used to remove workspace parts from release images.
+# It is only evaluated whan using the image_setup/03_release_image/build.bash script
 # 
 # For example:
 # #Ignore everything in the workspace folder
