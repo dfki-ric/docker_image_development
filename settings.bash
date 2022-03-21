@@ -49,7 +49,7 @@ export WORKSPACE_CD_IMAGE=developmentimage/${PROJECT_NAME}:CD
 # --net=host
 # --privileged
 # -v /dev/input/:/dev/input
-# -v $HOME/.Xauthority:/home/devel/.Xauthority #mount the .Xauthority file, if the GUI shall be forwarded through ssh Xforwarding
+# -v $HOME/.Xauthority:/home/dockeruser/.Xauthority #mount the .Xauthority file, if the GUI shall be forwarded through ssh Xforwarding
 export ADDITIONAL_DOCKER_RUN_ARGS=""
 
 # Make the exec script to talk more for debugging/docker setup purposes.
