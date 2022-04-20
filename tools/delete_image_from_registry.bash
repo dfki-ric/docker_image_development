@@ -6,6 +6,7 @@
 if [ $# -ne 4 ]; then
  echo "illegal number of parameters"
  echo use: RegistryUsername registryURL imagename tag
+ exit 1
 fi
 
 USER=$1
