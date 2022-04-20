@@ -22,7 +22,7 @@ if [ -d $HOST_WORKSPACE/startscripts ]; then
 fi
 
 . $HOST_WORKSPACE/settings.bash
-IMAGE_NAME=${DOCKER_REGISTRY:+${DOCKER_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
 
 # find requested image locally or try pulling from registry
 if [ "$(docker image inspect $IMAGE_NAME 2> /dev/null)" == "[]" ]; then
