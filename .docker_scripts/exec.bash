@@ -32,6 +32,7 @@ if [ "$EXECMODE" == "base" ]; then
         -v $ROOT_DIR/workspace/:/opt/workspace \
         -v $ROOT_DIR/home/:/home/dockeruser \
         -v $ROOT_DIR/image_setup/02_devel_image/setup_workspace.bash:/opt/setup_workspace.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/config_seed.yml:/opt/config_seed.yml \
         -v $ROOT_DIR/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt \
         -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
         -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
