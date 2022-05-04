@@ -35,7 +35,7 @@ if [ -z "$SCRIPTSVERSION" ]; then
     $PRINT_WARNING
 else
     if [ "$IMAGEVERSION" != "$SCRIPTSVERSION" ]; then
-        $PRINT_DEBUG "Scritps/Image version mismatch"
+        $PRINT_DEBUG "Scripts/Image version mismatch"
         # check major versions
         if [ "$IMAGE_MAJOR" -gt "$SCRIPTS_MAJOR" ]; then
             echo
