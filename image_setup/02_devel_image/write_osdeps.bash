@@ -44,6 +44,6 @@ echo
 if cmp -s "/opt/installed_workspace_os_dependencies.txt" "/opt/workspace_os_dependencies.txt"; then
     echo "No new OS dependencies written"
 else
-    echo "Found new OS dependencies, please update the devel image"
+    echo "Found new OS dependencies, please rebuild the devel image"
 fi
 echo
