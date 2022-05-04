@@ -65,6 +65,12 @@ generate_container(){
     $PRINT_DEBUG "generating new container : $CONTAINER_NAME"
     write_value_to_config_file $EXECMODE $CURRENT_IMAGE_ID
 
+    # special treatement for ccache as empty string might cause compiler error
+    if [ $MOUNT_CCACHE_VOLUME ]; then
+        $PRINT_DEBUG "Adding -e CCACHE_DIR to DOCKER_RUN_ARGS"
+        DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR}"
+    fi
+
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
     docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS \
@@ -72,7 +78,6 @@ generate_container(){
                     -e PRINT_WARNING=${PRINT_WARNING} \
                     -e PRINT_INFO=${PRINT_INFO} \
                     -e PRINT_DEBUG=${PRINT_DEBUG} \
-                    -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR} \
                     -e PROJECT_NAME=${PROJECT_NAME} \
                     -e EXECMODE=${EXECMODE} \
                     $IMAGE_NAME || exit 1
