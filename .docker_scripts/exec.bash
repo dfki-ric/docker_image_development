@@ -55,10 +55,10 @@ if [ "$EXECMODE" = "devel" ]; then
         "
     if [ "$MOUNT_CCACHE_VOLUME" = "true" ]; then
         DOCKER_DEV_CCACHE_DIR="/ccache"
-        CACHE_VOMUME_NAME="ccache_${WORKSPACE_BASE_IMAGE//[\/,:]/_}"
-        $PRINT_INFO "mounting ccache volume ${CACHE_VOMUME_NAME} to ${DOCKER_DEV_CCACHE_DIR}"
-        docker volume create $CACHE_VOMUME_NAME > /dev/null
-        ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
+        CACHE_VOLUME_NAME="ccache_${WORKSPACE_BASE_IMAGE//[\/,:]/_}"
+        $PRINT_INFO "mounting ccache volume ${CACHE_VOLUME_NAME} to ${DOCKER_DEV_CCACHE_DIR}"
+        docker volume create $CACHE_VOLUME_NAME > /dev/null
+        ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOLUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
 fi
 
