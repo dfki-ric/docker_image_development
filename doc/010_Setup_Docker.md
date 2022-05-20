@@ -75,11 +75,8 @@ If successful, you should be able to reproduce this command and receive a simila
     |=============================================================================|
     +-----------------------------------------------------------------------------+
 
-IMPORTANT: In order to enable 3d acceleration, existing containers have to be re-created.
+IMPORTANT: In order to enable 3d acceleration, existing containers have to be re-created (which is explained [here](020_Usage.md#container-management)).
 
- * Stop running containers: `./stop.bash`
- * Clear container settings: `rm -f has_gpu_support.txt *-container_id.txt`
- * regenerate (and re-attach to) container: `./exec.bash`
 
 ### DNS Troubeshooting
 
