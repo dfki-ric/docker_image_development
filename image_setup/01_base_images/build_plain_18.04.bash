@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # copy scripts VERSION file to put it into the image
 cp ../../VERSION ./
