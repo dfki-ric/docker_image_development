@@ -10,8 +10,8 @@ sudo apt update
 sudo apt install docker-ce
 
 sudo adduser $(id -un) docker
+su - ${USER}
+sudo systemctl restart docker
 
 echo
-echo "[INFO] Installation finished! Please relogin as $USER to complete the setup."
-echo
-echo "       If you want to use a registry to push/pull images or if you'd like to enable gpu support, refer to doc/010_Setup_Docker.md"
+echo "[INFO] If you want to use a registry to push/pull images or if you'd like to enable gpu support, refer to doc/010_Setup_Docker.md"
