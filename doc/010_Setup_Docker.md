@@ -32,6 +32,8 @@ sudo apt install docker-ce
 In order to be able to run docker commands without being root, you should add your user to the `docker` group (new login required to take effect).
 ```bash
 sudo adduser $(id -un) docker
+su - ${USER} // alternatively log out and in
+sudo systemctl restart docker
 ```
 
 ### NVIDIA Docker (2)
