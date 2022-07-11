@@ -59,6 +59,10 @@ if [ "$EXECMODE" = "devel" ]; then
         docker volume create $CACHE_VOMUME_NAME > /dev/null
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOMUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
+    if [ "$USE_ICECC" = "true" ] && [[ "${ADDITIONAL_DOCKER_RUN_ARGS}" != *"--net=host"* ]] && [[ "${ADDITIONAL_DOCKER_RUN_ARGS}" != *"10245:10245"* ]] ; then
+        $PRINT_WARNING "icecc shoud be used but whouldn't be reachable, adding -p 10245:10245 to the run args"
+        ADDITIONAL_DOCKER_RUN_ARGS="$ADDITIONAL_DOCKER_RUN_ARGS -p 10245:10245"
+    fi
 fi
 
 if [ "$EXECMODE" = "storedrelease" ]; then
