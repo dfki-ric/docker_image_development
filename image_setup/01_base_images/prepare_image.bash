@@ -11,6 +11,7 @@ apt-get update && apt-get install -y \
     cmake \
     ccache \
     icecc \
+    xpra \
     git \
     locales \
     nano \
