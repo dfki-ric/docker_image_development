@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #allow local connections of root (docker daemon) to the current users x server
-if command -v xhost > /dev/null; then
+if [ "$DOCKER_XSERVER_TYPE" = "mount" ] && command -v xhost > /dev/null; then
     xhost +local:root > /dev/null
 fi
 
@@ -13,7 +13,7 @@ source $ROOT_DIR/.docker_scripts/exec.bash
 init_docker $@
 
 # remove permission for local connections of root (docker daemon) to the current users x server
-if command -v xhost > /dev/null; then
+if [ "$DOCKER_XSERVER_TYPE" = "mount" ] && command -v xhost > /dev/null; then
     xhost -local:root > /dev/null
 fi
 

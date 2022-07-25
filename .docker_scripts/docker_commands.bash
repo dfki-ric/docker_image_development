@@ -76,6 +76,13 @@ check_iceccd(){
     fi
 }
 
+check_xpra(){
+    if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
+        $PRINT_INFO "starting xpra with DISPLAY=:10000 and ARGS: --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT"
+        docker exec $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT &> /dev/null'
+    fi
+}
+
 #storage variable for the return value of the docker exec command
 DOCKER_EXEC_RETURN_VALUE=1
 
@@ -86,7 +93,7 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS \
+    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
                     -e SCRIPTSVERSION=${SCRIPTSVERSION} \
                     -e PRINT_WARNING=${PRINT_WARNING} \
                     -e PRINT_INFO=${PRINT_INFO} \
@@ -103,6 +110,8 @@ generate_container(){
     docker exec $DOCKER_FLAGS $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "check if iceccd needs to be started $CONTAINER_NAME"
     check_iceccd
+    $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
+    check_xpra
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
@@ -115,6 +124,8 @@ start_container(){
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     $PRINT_DEBUG "check if iceccd needs to be started $CONTAINER_NAME"
     check_iceccd
+    $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
+    check_xpra
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
