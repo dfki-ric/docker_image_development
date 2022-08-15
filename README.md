@@ -36,6 +36,8 @@ In order to achieve this, the **release image** can be created, which contains t
 
 Please read the [usage howto](doc/020_Usage.md)
 
+When you have issues while running the container, please have a look into the [troubleshooting guide](doc/040_Troubleshooting.md) or create a issue in the [original location of the repo](https://github.com/dfki-ric/docker_image_development)
+
 ## Requirements / Dependencies
 
 You need docker installed and usable for your user.
