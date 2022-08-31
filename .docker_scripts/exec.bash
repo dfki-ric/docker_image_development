@@ -38,6 +38,13 @@ if [ "$EXECMODE" == "base" ]; then
         -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
         -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
         "
+    if [ "$MOUNT_CCACHE_VOLUME" = "true" ]; then
+        DOCKER_DEV_CCACHE_DIR="/ccache"
+        CACHE_VOLUME_NAME="ccache_${WORKSPACE_BASE_IMAGE//[\/,:]/_}"
+        $PRINT_INFO "mounting ccache volume ${CACHE_VOLUME_NAME} to ${DOCKER_DEV_CCACHE_DIR}"
+        docker volume create $CACHE_VOLUME_NAME > /dev/null
+        ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOLUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
+    fi
 fi
 
 if [ "$EXECMODE" = "devel" ]; then
