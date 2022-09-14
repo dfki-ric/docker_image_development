@@ -67,6 +67,10 @@ if [ "$EXECMODE" = "devel" ]; then
         docker volume create $CACHE_VOLUME_NAME > /dev/null
         ADDITIONAL_DOCKER_MOUNT_ARGS="$ADDITIONAL_DOCKER_MOUNT_ARGS -v $CACHE_VOLUME_NAME:${DOCKER_DEV_CCACHE_DIR}"
     fi
+    if [ "$USE_ICECC" = "true" ] && [[ "${ADDITIONAL_DOCKER_RUN_ARGS}" != *"--net=host"* ]] && [[ "${ADDITIONAL_DOCKER_RUN_ARGS}" != *"10245:10245"* ]] ; then
+        $PRINT_WARNING "icecc shoud be used but whouldn't be reachable, adding -p 10245:10245 to the run args"
+        ADDITIONAL_DOCKER_RUN_ARGS="$ADDITIONAL_DOCKER_RUN_ARGS -p 10245:10245"
+    fi
 fi
 
 if [ "$EXECMODE" = "storedrelease" ]; then
@@ -121,7 +125,15 @@ DOCKER_RUN_ARGS=" \
                 --name $CONTAINER_NAME \
                 -e NUID=$(id -u) -e NGID=$(id -g) \
                 -u dockeruser \
-                -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix \
                 $ADDITIONAL_DOCKER_RUN_ARGS \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
                 "
+
+DOCKER_XSERVER_ARGS=""
+if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
+    DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/dockeruser/.Xauthority"
+fi
+
+if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
+    DOCKER_XSERVER_ARGS="-e USE_XPRA=true -e DISPLAY=:10000 -e XPRA_PORT"
+fi

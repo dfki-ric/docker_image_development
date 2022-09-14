@@ -10,6 +10,8 @@ apt-get update && apt-get install -y \
     build-essential \
     cmake \
     ccache \
+    icecc \
+    xpra \
     git \
     locales \
     nano \

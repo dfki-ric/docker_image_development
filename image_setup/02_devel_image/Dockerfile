@@ -9,6 +9,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     bash-completion
 
+# add distributed compiler config
+ADD icecc.conf /etc/icecc/icecc.conf
+
 # make sure SHELL variable is set. Crucial for base/scripts! => moved to setup_workspace.bash
 ## REMOVE THIS ONCE rock-core PR 173 is merged
 ENV SHELL="/bin/bash"
