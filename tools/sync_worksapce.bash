@@ -2,8 +2,8 @@
 
 # Copies/Synchronizes folders that are mounted to the devel image to a remote server
 # This allows for compiling code on a workstation/laptop and deploy the compiled
-# development code to a server or remote pc and execute the freshly compileed code there
-# without creating and deploing a release image (after initial copy only changed files are
+# development code to a server or remote pc and execute the freshly compiled code there
+# without creating and deploying a release image (after initial copy only changed files are
 # uploaded to the remote)
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
