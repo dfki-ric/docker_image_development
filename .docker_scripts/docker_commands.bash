@@ -7,9 +7,9 @@ source $ROOT_DIR/.docker_scripts/file_handling.bash
 
 check_run_args_changed(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
-    OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS)
+    OLD_RUN_ARGS=$(read_value_from_config_file ${EXECMODE}_RUN_ARGS)
     if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ]; then
-        write_value_to_config_file RUN_ARGS "$CURRENT_RUN_ARGS"
+        write_value_to_config_file "${EXECMODE}_RUN_ARGS" "$CURRENT_RUN_ARGS"
         RUN_ARGS_CHANGED=true
     else
         RUN_ARGS_CHANGED=false
