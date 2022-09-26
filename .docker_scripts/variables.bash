@@ -2,6 +2,7 @@
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
 source $ROOT_DIR/settings.bash
+source $ROOT_DIR/.docker_scripts/file_handling.bash
 
 SCRIPTSVERSION=$(cat $ROOT_DIR/VERSION | head -n1 | awk -F' ' '{print $1}')
 
@@ -57,6 +58,7 @@ function evaluate_execmode(){
     fi
 }
 
+
 # DOCKER_REGISTRY and WORKSPACE_${EXECMODE}_IMAGE from settings.bash
 function set_image_name(){
     if [ "$EXECMODE" = "base" ]; then
@@ -67,6 +69,9 @@ function set_image_name(){
     fi
     if [ "$EXECMODE" = "release" ]; then
         IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
+    fi
+    if [ "$EXECMODE" = "storedrelease" ]; then
+        set_stored_image_name $1
     fi
     if [ "$EXECMODE" = "CD" ]; then
         IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_CD_IMAGE
