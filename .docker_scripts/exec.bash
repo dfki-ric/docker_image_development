@@ -23,7 +23,7 @@ else
 fi
 
 ### START EXECUTION
-set_image_name $EXECMODE
+set_image_name $1
 
 if [ "$EXECMODE" == "base" ]; then
     mkdir -p $ROOT_DIR/workspace
@@ -75,24 +75,7 @@ fi
 
 if [ "$EXECMODE" = "storedrelease" ]; then
     # Read image name from command line, first arg already shifted away
-    STORED_IMAGE_NAME=$1
-    if [ ! -f .stored_images.txt ]; then
-            $PRINT_WARNING "there are no stored images available (file missing: .stored_images.txt)."
-        exit 1
-    fi
-    if [ -z "$STORED_IMAGE_NAME" ]; then
-        $PRINT_WARNING
-        $PRINT_WARNING "please provide the name tag for the stored release you wish to use."
-        print_stored_image_tags
-        exit 1
-    fi
-    IMAGE_NAME=$(cat .stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
-    if [ -z "$IMAGE_NAME" ]; then
-        $PRINT_WARNING
-        $PRINT_WARNING "unknown image name: $STORED_IMAGE_NAME"
-        print_stored_image_tags
-        exit 1
-    fi
+    set_stored_image_name $1
     shift
 fi
 

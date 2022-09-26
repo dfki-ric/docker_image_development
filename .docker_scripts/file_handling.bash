@@ -37,3 +37,24 @@ print_stored_image_tags(){
     $PRINT_WARNING "available image tags:"
     for tag in $(tail -n +2 $ROOT_DIR/.stored_images.txt | grep = | cut -d '=' -f 1); do $PRINT_WARNING "    - $tag"; done
 }
+
+function set_stored_image_name(){
+    STORED_IMAGE_NAME=$1
+    if [ ! -f $ROOT_DIR/.stored_images.txt ]; then
+        $PRINT_WARNING "there are no stored images available (file missing: .stored_images.txt)."
+        exit 1
+    fi
+    if [ -z "$STORED_IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "please provide the name tag for the stored release you wish to use."
+        print_stored_image_tags
+        exit 1
+    fi
+    IMAGE_NAME=$(cat $ROOT_DIR/.stored_images.txt | grep "^$STORED_IMAGE_NAME=" | awk -F'=' '{print $2}')
+    if [ -z "$IMAGE_NAME" ]; then
+        $PRINT_WARNING
+        $PRINT_WARNING "unknown image name: $STORED_IMAGE_NAME"
+        print_stored_image_tags
+        exit 1
+    fi
+}
