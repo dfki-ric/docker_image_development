@@ -5,6 +5,17 @@ source $ROOT_DIR/settings.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
 source $ROOT_DIR/.docker_scripts/file_handling.bash
 
+check_run_args_changed(){
+    CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
+    OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
+    if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ]; then
+        write_value_to_config_file "RUN_ARGS_${EXECMODE}" "$CURRENT_RUN_ARGS"
+        RUN_ARGS_CHANGED=true
+    else
+        RUN_ARGS_CHANGED=false
+    fi
+}
+
 init_docker(){
     #detect if nvidia runtime is available
     RUNTIMES=$(docker info | grep "Runtimes:")
@@ -42,11 +53,12 @@ init_docker(){
         #check if the local image is newer that the one the container was created with
         #generate_container saves the current id to a file
         $PRINT_DEBUG "found existing container"
-        if [ "$CURRENT_IMAGE_ID" = "$CONTAINER_IMAGE_ID" ]; then
+        check_run_args_changed
+        if [ "$RUN_ARGS_CHANGED" = "false" ] && [ "$CURRENT_IMAGE_ID" = "$CONTAINER_IMAGE_ID" ]; then
             $PRINT_DEBUG "using existing container"
             start_container $@
         else
-            $PRINT_INFO "Image id is newer than container image id, removing old container: $CONTAINER_NAME"
+            $PRINT_INFO "Image or run arguments changed, renewing container: $CONTAINER_NAME"
             #stop the container in case it is running
             docker stop $CONTAINER_NAME  > /dev/null
             docker rm $CONTAINER_NAME  > /dev/null
@@ -78,8 +90,9 @@ check_iceccd(){
 
 check_xpra(){
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
-        $PRINT_INFO "starting xpra with DISPLAY=:10000 and ARGS: --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT"
-        docker exec $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT &> /dev/null'
+        $PRINT_INFO "using xpra server: xpra start :$XPRA_PORT --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT"
+        $PRINT_INFO -e "\nRemember to start the xpra client on your PC:\n\txpra attach tcp:<THIS_PC_IP>:$XPRA_PORT\n\txpra attach tcp:127.0.0.1:$XPRA_PORT\n"
+        docker exec $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
     fi
 }
 

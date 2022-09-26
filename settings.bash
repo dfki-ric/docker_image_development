@@ -74,8 +74,9 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 # You'll have to enable the use of icecc for your workspace manually, this only set up the availability of icecc in the container
 # export USE_ICECC=true
 
-# conenct to xverver via [mount, xpra, none]
-export DOCKER_XSERVER_TYPE=mount
+# conenct to xserver via [mount, xpra, none, auto]
+# auto will detect if the container is started over an ssh session and if yes, xpra is used, mount otherwise
+export DOCKER_XSERVER_TYPE=auto
 #xpra_port may be set if --net=host is used, otherwise, please use -p in the ADDITIONAL_DOCKER_RUN_ARGS to assign a port for the
 #xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
 export XPRA_PORT="10000"
