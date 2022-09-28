@@ -19,3 +19,6 @@ image_setup/04_save_release/
 # vscode remote-container plugin
 home/.vscode-server/
 home/.cache/vscode-cpptools/
+
+# mounted .Xauthority that might have been left
+home/.Xauthority
