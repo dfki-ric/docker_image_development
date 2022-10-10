@@ -128,7 +128,7 @@ if [ "$DOCKER_XSERVER_TYPE" = "auto" ]; then
 fi
 
 if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
-    DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority/:/home/dockeruser/.Xauthority/:rw"
+    DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
 fi
 
 if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
