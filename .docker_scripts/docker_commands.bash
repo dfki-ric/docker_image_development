@@ -94,7 +94,7 @@ check_iceccd(){
 check_xpra(){
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
         $PRINT_INFO "using xpra server: xpra start :$XPRA_PORT --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT"
-        $PRINT_INFO -e "\nRemember to start the xpra client on your PC:\n\txpra attach tcp:<THIS_PC_IP>:$XPRA_PORT\n\txpra attach tcp:127.0.0.1:$XPRA_PORT\n"
+        $PRINT_INFO -e "\nRemember to start the xpra client on your PC:\n    bash xpra_attach.bash"
         docker exec $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
     fi
 }
