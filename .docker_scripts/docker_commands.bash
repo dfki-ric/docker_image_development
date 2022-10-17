@@ -5,6 +5,9 @@ source $ROOT_DIR/settings.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
 source $ROOT_DIR/.docker_scripts/file_handling.bash
 
+#storage variable for the return value of the docker exec command
+DOCKER_EXEC_RETURN_VALUE=1
+
 check_run_args_changed(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
     OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
@@ -96,8 +99,35 @@ check_xpra(){
     fi
 }
 
-#storage variable for the return value of the docker exec command
-DOCKER_EXEC_RETURN_VALUE=1
+set_xserver_args(){
+    DOCKER_XSERVER_ARGS=""
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+      IS_SSH_TERMINAL=true
+    fi
+    
+    if [ -z "$DOCKER_XSERVER_TYPE" ]; then
+        $PRINT_INFO "DOCKER_XSERVER_TYPE is undefined. Using auto as default."
+        DOCKER_XSERVER_TYPE="auto"
+    fi
+    
+    if [ "$DOCKER_XSERVER_TYPE" = "auto" ]; then
+        if [ -n "$IS_SSH_TERMINAL" ]; then
+            $PRINT_INFO "exec.bash was executed in ssh terminal, using xpra for X Apps"
+            DOCKER_XSERVER_TYPE=xpra
+        else
+            $PRINT_INFO "exec.bash was executed in local terminal, using mount for X Apps"
+            DOCKER_XSERVER_TYPE=mount
+        fi
+    fi
+    
+    if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
+        DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
+    fi
+    
+    if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
+        DOCKER_XSERVER_ARGS="-e USE_XPRA=true -e DISPLAY=:10000 -e XPRA_PORT"
+    fi
+}
 
 #generate container and start command given ad paramater
 generate_container(){

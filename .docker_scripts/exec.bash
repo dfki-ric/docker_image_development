@@ -112,25 +112,5 @@ DOCKER_RUN_ARGS=" \
                 $ADDITIONAL_DOCKER_MOUNT_ARGS \
                 "
 
-DOCKER_XSERVER_ARGS=""
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  IS_SSH_TERMINAL=true
-fi
-
-if [ "$DOCKER_XSERVER_TYPE" = "auto" ]; then
-    if [ -n "$IS_SSH_TERMINAL" ]; then
-        $PRINT_INFO "exec.bash was executed in ssh terminal, using xpra for X Apps"
-        DOCKER_XSERVER_TYPE=xpra
-    else
-        $PRINT_INFO "exec.bash was executed in local terminal, using mount for X Apps"
-        DOCKER_XSERVER_TYPE=mount
-    fi
-fi
-
-if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
-    DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
-fi
-
-if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
-    DOCKER_XSERVER_ARGS="-e USE_XPRA=true -e DISPLAY=:10000 -e XPRA_PORT"
-fi
+# check which xserver type should be used and set additional args accordingly
+set_xserver_args

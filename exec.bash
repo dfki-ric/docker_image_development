@@ -7,7 +7,6 @@ fi
 
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 source $ROOT_DIR/.docker_scripts/docker_commands.bash
-source $ROOT_DIR/.docker_scripts/variables.bash
 source $ROOT_DIR/.docker_scripts/exec.bash
 
 init_docker $@
