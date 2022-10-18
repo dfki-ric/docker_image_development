@@ -34,23 +34,6 @@ if [ "$SILENT" = true ]; then
     PRINT_DEBUG=:
 fi
 
-
-# In case you are using CD server and need to use other registries, they can be overridden via env variables
-if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
-    export OLD_BASE_REGISTRY=$BASE_REGISTRY
-    export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
-fi
-
-if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
-    export OLD_DEVEL_REGISTRY=$DEVEL_REGISTRY
-    export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
-fi
-
-if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
-    export OLD_RELEASE_REGISTRY=$RELEASE_REGISTRY
-    export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
-fi
-
 function evaluate_execmode(){
     EXECMODE=$1
     if [ "$EXECMODE" = "" ]; then
@@ -58,9 +41,30 @@ function evaluate_execmode(){
     fi
 }
 
+function check_registry_overrides() {
+    # In case you are using CD server and need to use other registries, they can be overridden via env variables
+    if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then
+        export OLD_BASE_REGISTRY=$BASE_REGISTRY
+        export BASE_REGISTRY=$OVERRIDE_BASE_REGISTRY
+        $PRINT_DEBUG "Overriding devel registry from $OLD_BASE_REGISTRY to $BASE_REGISTRY"
+    fi
+    
+    if [ ! "$OVERRIDE_DEVEL_REGISTRY" = "" ]; then
+        export OLD_DEVEL_REGISTRY=$DEVEL_REGISTRY
+        export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
+        $PRINT_DEBUG "Overriding devel registry from $OLD_DEVEL_REGISTRY to $DEVEL_REGISTRY"
+    fi
+    
+    if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
+        export OLD_RELEASE_REGISTRY=$RELEASE_REGISTRY
+        export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
+        $PRINT_DEBUG "Overriding devel registry from $OLD_RELEASE_REGISTRY to $RELEASE_REGISTRY"
+    fi
+}
 
 # DOCKER_REGISTRY and WORKSPACE_${EXECMODE}_IMAGE from settings.bash
 function set_image_name(){
+    check_registry_overrides
     if [ "$EXECMODE" = "base" ]; then
         IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
     fi
