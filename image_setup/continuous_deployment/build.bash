@@ -73,6 +73,8 @@ update_workspace_dependencies()
 ${PRINT_DEBUG} "Continuous deployment uses ${CD_ROOT_DIR} as root dir."
 cd ${CD_ROOT_DIR}
 
+check_registry_overrides
+
 patch_settings_file
 
 build_or_pull_devel_image

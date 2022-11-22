@@ -11,7 +11,7 @@ LABEL build_info="Build by ${USER} on ${HOST}. Date: ${DATE}"
 
 
 #do not run the user id setting for mounted folders
-RUN sudo touch /initialized_uid
+RUN sudo touch /initialized_container
 
 #tell the base image entrypoint that the code was already installed
 #wel let the container init the uid so that the user can kill processes in the
