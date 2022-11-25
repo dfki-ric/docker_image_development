@@ -31,3 +31,6 @@ apt update && apt upgrade -y &&  apt install -y \
     python$vPYTHON-wstool
 
 #rosdep init && rosdep update
+
+# delete downloaded and installed .deb files to lower image size
+apt-get clean

@@ -7,7 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # generic packages to install non-workspace dependencies ( those are added later )
 RUN apt-get update && apt-get install -y \
-    bash-completion
+    bash-completion \
+    && apt-get clean
 
 # add distributed compiler config
 ADD icecc.conf /etc/icecc/icecc.conf
@@ -24,7 +25,7 @@ ADD config_seed.yml /opt/config_seed.yml
 # add the dependency list to the image
 ADD workspace_os_dependencies.txt /opt/installed_workspace_os_dependencies.txt
 # install dependencies from the list
-RUN grep -vE '^#' /opt/installed_workspace_os_dependencies.txt | xargs apt install -y
+RUN grep -vE '^#' /opt/installed_workspace_os_dependencies.txt | xargs apt install -y && apt-get clean
 
 # opt/init_workspace.bash is run once via dockercommands.bash by calling check_init_workspace.bash
 # $PRINT_INFO is set later by the docker run command in docker_commands.bash

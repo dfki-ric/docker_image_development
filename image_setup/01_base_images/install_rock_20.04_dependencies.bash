@@ -59,3 +59,6 @@ apt-get update && apt-get install -y \
  ruby-thor \
  qt4-designer \
  qt4-qmake
+
+# delete downloaded and installed .deb files to lower image size
+apt-get clean
