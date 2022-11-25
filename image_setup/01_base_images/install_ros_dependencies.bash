@@ -27,3 +27,6 @@ apt-get update && apt-get install -y \
 
 
 #rosdep init && rosdep update
+
+# delete downloaded and installed .deb files to lower image size
+apt-get clean
