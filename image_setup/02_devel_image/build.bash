@@ -11,6 +11,15 @@ export BASE_IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 
 IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
 
+while true; do
+    read -p "Do you wish to download the most recent base image [y/n]? " answer
+    case $answer in
+        [Yy]* ) DOCKER_REGISTRY_AUTOPULL=true; break;;
+        [Nn]* ) DOCKER_REGISTRY_AUTOPULL=false; break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
 if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
     echo
     echo pulling image: $BASE_IMAGE_NAME
