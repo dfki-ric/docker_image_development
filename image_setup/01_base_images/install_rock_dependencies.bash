@@ -55,3 +55,6 @@ apt-get update && apt-get install -y \
  libsdformat6-dev \
  libtinyxml-dev \
  libyaml-cpp-dev
+
+# delete downloaded and installed .deb files to lower image size
+apt-get clean

@@ -38,3 +38,6 @@ echo -e "dockeruser ALL=(ALL) NOPASSWD: ALL \
 # You can use echo to add scripts here, that should be run when your (derived) container starts
 touch /opt/init_workspace.bash
 chmod 755 /opt/init_workspace.bash
+
+# delete downloaded and installed .deb files to lower image size
+apt-get clean
