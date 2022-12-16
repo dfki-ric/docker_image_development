@@ -12,8 +12,20 @@ check_run_args_changed(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
     OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
     if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ]; then
-        write_value_to_config_file "RUN_ARGS_${EXECMODE}" "$CURRENT_RUN_ARGS"
-        RUN_ARGS_CHANGED=true
+        if [ $INTERACTIVE ]; then
+            while true; do
+                $PRINT_INFO "Image or run arguments changed. For changes to take effect the container $CONTAINER_NAME has to be renewed."
+                read -p "Do you want to renew the container now [y/n]?" answer
+                case $answer in
+                    [Yy]* ) RUN_ARGS_CHANGED=true && write_value_to_config_file "RUN_ARGS_${EXECMODE}" "$CURRENT_RUN_ARGS"; break;;
+                    [Nn]* ) RUN_ARGS_CHANGED=false; break;;
+                    * ) echo "Please answer yes or no.";;
+                esac
+            done
+        else
+            write_value_to_config_file "RUN_ARGS_${EXECMODE}" "$CURRENT_RUN_ARGS"
+            RUN_ARGS_CHANGED=true
+        fi
     else
         RUN_ARGS_CHANGED=false
     fi
@@ -61,7 +73,7 @@ init_docker(){
             $PRINT_DEBUG "using existing container"
             start_container $@
         else
-            $PRINT_INFO "Image or run arguments changed, renewing container: $CONTAINER_NAME"
+            $PRINT_INFO "Renewing container: $CONTAINER_NAME"
             #stop the container in case it is running
             docker stop $CONTAINER_NAME  > /dev/null
             docker rm $CONTAINER_NAME  > /dev/null
