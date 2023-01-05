@@ -67,10 +67,10 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 
 # Icecc will only work in a single container at a time.
 # For icecc to work, you need to make int available from the host, so either use
-# "--net=host" or "-p 10245:10245" in the ADDITIONAL_DOCKER_RUN_ARGS.
-# if none of them is added there, "-p 10245:10245" will be added automatically
-# WARNING: using -p 10245:10245 will block the port on the host, only allowing one contianer to exist at a time using the ports.
-# stop the container using the port before launching the next one, or use --net=host for teh containers and stop the iceccd service.
+# "--net=host" or "-p 10245:10245 -p 8765:8765/udp" in the ADDITIONAL_DOCKER_RUN_ARGS.
+# if none of them is added there, "-p 10245:10245 -p 8765:8765/udp" will be added automatically with a warning
+# WARNING: using "-p 10245:10245 -p 8765:8765/udp" will block the port on the host, only allowing one container to exist at a time using the ports.
+# stop the container using the port before launching the next one, or use --net=host for the containers and stop the iceccd service.
 # You'll have to enable the use of icecc for your workspace manually, this only set up the availability of icecc in the container
 # export USE_ICECC=true
 
