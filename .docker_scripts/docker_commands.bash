@@ -97,7 +97,7 @@ check_iceccd(){
             # iceccd already running on system
             CONTAINER_ICECCD_PID=$(read_value_from_config_file CONTAINER_ICECCD_PID)
             if [ "${CONTAINER_ICECCD_PID}" != "${ICECCD_PID}" ]; then
-                echo -e "\nThere is already and iceccd instance running on this system, icecc is disabled in this container\n"
+                echo -e "\nThere is already and iceccd instance running on this system, not starting icecc\nMake sure icecc is not running on the host and other containers using icecc are stopped\n"
             fi
         fi
     fi
