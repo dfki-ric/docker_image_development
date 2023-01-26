@@ -2,16 +2,9 @@
 
 You need Docker Version > 19.03, it should be available from the OS repositories (Ubuntu: sudo apt install docker.io)
 
-In order to be able to run docker commands without being root, you should add your user to the `docker` group (new login required to take effect).
-```bash
-sudo adduser $(id -un) docker
-su - ${USER} // alternatively log out and in
-sudo systemctl restart docker
-```
+# NVIDIA Docker
 
-# NVIDIA Docker (2)
-
-Then, you can proceed to install the NVIDIA Docker containers for 3d acceleration with access to (nvidia) graphics hardware.
+In case you have an nvidia graphics card installed, you can proceed to install NVIDIA Docker to enable 3d acceleration for docker.
 
 Note: This requires to have the current NVIDIA driver installed, ubuntu is not updating major versions, check your 
 package manager for the latest main package of the driver. When this document was written (30.11.2018) the latest version
