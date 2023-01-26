@@ -1,33 +1,6 @@
-### Docker CE
+# Docker
 
-You need Docker > 19.03.
-
-If this version of Docker is not already installed from the standard Ubuntu repositories you need to uninstall docker first. Step 5 is mandantory also if you use the ubuntu version.
-
-Then you can install the latest Docker version as described here: https://docs.docker.com/engine/install/ubuntu/
-
-You can copy paste the following steps or execute them all at once by using the install_docker.bash script in the tools directory:
-
-1. Install curl (if not already done)
-```bash
-sudo apt install curl
-```
-1. Install the docker repository key: 
-```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-```
-3. Install the repository:
-```bash
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) stable"
-```
-4. Update repositories and install docker_ce:
-```bash
-sudo apt update
-sudo apt install docker-ce
-```
-5. Add your user to the docker group:
+You need Docker Version > 19.03, it should be available from the OS repositories (Ubuntu: sudo apt install docker.io)
 
 In order to be able to run docker commands without being root, you should add your user to the `docker` group (new login required to take effect).
 ```bash
@@ -36,7 +9,7 @@ su - ${USER} // alternatively log out and in
 sudo systemctl restart docker
 ```
 
-### NVIDIA Docker (2)
+# NVIDIA Docker (2)
 
 Then, you can proceed to install the NVIDIA Docker containers for 3d acceleration with access to (nvidia) graphics hardware.
 
