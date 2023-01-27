@@ -1,0 +1,3 @@
+#!/bin/bash
+#
+echo -e "\n\e[4;33mScripts were updated, please remember to update the images using: ./tools/update_image.bash [devel|release]\e[0m \n"

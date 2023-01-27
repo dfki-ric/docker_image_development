@@ -114,3 +114,5 @@ DOCKER_RUN_ARGS=" \
 
 # check which xserver type should be used and set additional args accordingly
 set_xserver_args
+
+check_git_post_merge_hook_exists
