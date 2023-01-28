@@ -127,46 +127,46 @@ As a recap, here the steps in short:
     <td>1.</td>
     <td>Edit project name, select base image, exec mode & registry</td>
     <td> => </td>
-    <td> edit (in the repo's root directory): <code>settings.bash</code> </td>
+    <td>in the repo's root directory edit:<br><code>settings.bash</code> </td>
  </tr>
  <tr>
     <td>2.</td>
     <td>Add the steps to setup your workspace<br></br> (e.g. using buildconf, wstool, git-repo, etc.)</td>
     <td> => </td>
-    <td> edit: <code>setup_workspace.bash</code> </td>
+    <td>in the repo's root directory edit:<br><code>image_setup/02_devel_image/setup_workspace.bash</code> </td>
  </tr>
   <tr>
     <td>3.</td>
     <td>Start container and attach shell to it to test the setup script</td>
     <td> => </td>
-    <td>exec (in the repo's root directory): <code>bash exec.bash base</code> </td>
+    <td>in the repo's root directory execute:<br><code>bash exec.bash base</code> </td>
  </tr>
  <tr>
     <td>4.</td>
     <td>Test the script for workspace initialization</td>
     <td> => </td>
-    <td>exec (in the attached container shell): <code>bash /opt/setup_workspace.bash</code></td>
+    <td>in the attached container shell run:<br><code>bash /opt/setup_workspace.bash</code></td>
  </tr>
  <tr>
     <td>5.</td>
     <td>Find out what OS dependencies are required</td>
     <td> => </td>
-    <td> Run <code>./exec.bash /opt/write_osdeps.bash</code> or <code>/opt/write_osdeps.bash</code> in your container<br>
-         The dependencies list will be written to image_setup/02_devel_image/workspace_os_dependencies.txt and added to the devel image<br>
-         When you don't use ROCK os ROS put the dependencies manually to the workspace_os_dependencies.txt or the Dockerfile 
+ <td> Exit the container with <code>exit</code> and run <code>./exec.bash /opt/write_osdeps.bash</code> to extract workspace dependencies<br>
+         The dependencies list will be written to <code>image_setup/02_devel_image/workspace_os_dependencies.txt</code> and added to the devel image<br>
+         When you don't use ROCK or ROS put the dependencies manually to your Dockerfile in <code>image_setup/02_devel_image</code>
     </td>
  </tr>
  <tr>
     <td>6.</td>
     <td>Build the initial version of the devel image with OS dependencies</td>
     <td> => </td>
-    <td>exec (in <code>image_setup/02_devel_image</code>): <code>bash build.bash</code> </td>
+    <td>in <code>image_setup/02_devel_image</code> run: <code>bash build.bash</code> </td>
  </tr>
   <tr>
     <td>7.</td>
-    <td>You should change the default exec mode to <code>devel</code> and push to your fork after pusing the image.</td>
+    <td>You should change the default exec mode to <code>devel</code> and push to your fork after pusing the image to the docker registry</td>
     <td> => </td>
-    <td>edit <code>settings.bash</code> </td>
+    <td>in the repo's root directory edit: <code>settings.bash</code> </td>
  </tr>
 </table>
 
