@@ -5,9 +5,9 @@ set -e
 cp ../../VERSION ./
 
 . ../../settings.bash
-export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/ros2_humble_22.04
+export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/ros2_humble_22.04_nogl
 
-export BASE_IMAGE=developmentimage/plain_22.04_nogl:base
+export BASE_IMAGE=ubuntu:22.04
 export INSTALL_SCRIPT=install_ros2_dependencies.bash
 export INSTALL_ARGS=humble
 
