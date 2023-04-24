@@ -154,6 +154,10 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
+    echo "DEBUG: $DOCKER_FLAGS"
+    echo "DEBUG: $RUNTIME_ARG"
+    echo "DEBUG: $DOCKER_RUN_ARGS"
+    echo "DEBUG: $DOCKER_XSERVER_ARGS"
     docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
                     -e SCRIPTSVERSION=${SCRIPTSVERSION} \
                     -e PRINT_WARNING=${PRINT_WARNING} \
