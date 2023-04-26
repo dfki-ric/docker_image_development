@@ -106,6 +106,7 @@ fi
 
 # initialize the release image
 if [ ! -f /initialized_container_release ]; then
+    sudo touch /initialized_container_release
     # the release image also has to exit on the initial docker run, it is expected by the docker_commands.bash
     exit 0
 fi
