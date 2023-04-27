@@ -54,7 +54,7 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 
 # Make the exec script to talk more for debugging/docker setup purposes.
 # This may also be stated in the command line: $> VERBOSE=true ./exec.bash 
-export VERBOSE=true
+# export VERBOSE=true
 
 # Make the output as quiet as possible (does not apply to programs started in the container)
 # export SILENT=false
