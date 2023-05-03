@@ -30,7 +30,7 @@ services:
         #   - redis
   
   cloud_slam:
-    image: d-reg.hb.dfki.de/cloud_slam:latest
+    image: d-reg.hb.dfki.de/slam/cloud_slam:latest
     environment:
       - LISTEN_PORT=7890
       - REDIS_IP=redis
