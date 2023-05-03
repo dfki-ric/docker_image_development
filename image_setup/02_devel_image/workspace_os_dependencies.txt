@@ -19,7 +19,6 @@ cmake
  libgdal-dev 
  libjsoncpp-dev 
  liblapack-dev 
- libopenscenegraph-dev 
  libpcl-dev 
  libprotobuf-dev 
  libqglviewer-dev-qt5 
@@ -27,3 +26,4 @@ cmake
  libzmq3-dev 
  pkg-config 
  protobuf-compiler
+

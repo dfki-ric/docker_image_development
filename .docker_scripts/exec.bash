@@ -59,6 +59,7 @@ if [ "$EXECMODE" = "devel" ]; then
         -v $ROOT_DIR/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb \
         -v $ROOT_DIR/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash \
         -v $ROOT_DIR/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash \
+        -v $ROOT_DIR/image_setup/02_devel_image/collect_dependencies.bash:/opt/collect_dependencies.bash \
         "
     if [ "$MOUNT_CCACHE_VOLUME" = "true" ]; then
         DOCKER_DEV_CCACHE_DIR="/ccache"
