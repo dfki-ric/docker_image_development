@@ -1,0 +1,54 @@
+version: '3.2'
+
+services:
+  neo4j:
+    image: neo4j:community
+    #container_name: neo4j
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+       - "7474:7474"
+       - "7687:7687"
+    expose:
+      - "7474"
+      # - "7687"
+    networks:
+      cloud_slam_network:
+        # aliases:
+        #   - neo4j
+
+  redis:
+    image: redis
+    #container_name: redis
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    networks:
+      cloud_slam_network:
+        # aliases:
+        #   - redis
+  
+  cloud_slam:
+    image: d-reg.hb.dfki.de/cloud_slam:latest
+    environment:
+      - LISTEN_PORT=7890
+      - REDIS_IP=redis
+      - REDIS_PORT=6379
+      - NEO4J_IP=neo4j
+      - NEO4J_PORT=7474
+    depends_on:
+      - redis
+      - neo4j
+    restart: on-failure:10
+    #container_name: cloud_slam
+    ports:
+      - "7890:7890"
+    expose:
+      - "7890"
+    networks:
+      cloud_slam_network:
+
+
+networks:
+  cloud_slam_network:
