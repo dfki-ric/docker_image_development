@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # generic packages to install non-workspace dependencies ( those are added later )
 RUN apt-get update && apt-get install -y \
     bash-completion \
+    ruby-dev \
     && apt-get clean
 
 # add distributed compiler config
