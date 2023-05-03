@@ -17,8 +17,8 @@ export DOCKER_REGISTRY_AUTOPULL=false
 
 ### The default release mode to use if no mode paramater is given to ./exec.bash or ./stop.bash
 ### The checked in version should reflect the image status and be the highest availale image (base - devel - release)
-export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
-#export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
+#export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
+export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
 #export DEFAULT_EXECMODE="release" # use the release as default
 #export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
 

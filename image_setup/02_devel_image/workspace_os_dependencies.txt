@@ -13,6 +13,7 @@ cmake
  libboost-system-dev 
  libboost-thread-dev 
  libcgal-dev 
+ libcpprest-dev 
  libeigen3-dev 
  libflann-dev 
  libgdal-dev 
@@ -22,67 +23,7 @@ cmake
  libpcl-dev 
  libprotobuf-dev 
  libqglviewer-dev-qt5 
- libqt4-dev 
- libqt4-opengl-dev 
  libsuitesparse-dev 
  libzmq3-dev 
  pkg-config 
- protobuf-compiler 
- qt4-qmake
-
-cmake 
- libboost-dev 
- libboost-filesystem-dev 
- libboost-graph-dev 
- libboost-iostreams-dev 
- libboost-program-options-dev 
- libboost-regex-dev 
- libboost-serialization-dev 
- libboost-system-dev 
- libboost-thread-dev 
- libcgal-dev 
- libeigen3-dev 
- libflann-dev 
- libgdal-dev 
- libjsoncpp-dev 
- liblapack-dev 
- libopenscenegraph-dev 
- libpcl-dev 
- libprotobuf-dev 
- libqglviewer-dev-qt5 
- libqt4-dev 
- libqt4-opengl-dev 
- libsuitesparse-dev 
- libzmq3-dev 
- pkg-config 
- protobuf-compiler 
- qt4-qmake
-
-cmake 
- libboost-dev 
- libboost-filesystem-dev 
- libboost-graph-dev 
- libboost-iostreams-dev 
- libboost-program-options-dev 
- libboost-regex-dev 
- libboost-serialization-dev 
- libboost-system-dev 
- libboost-thread-dev 
- libcgal-dev 
- libeigen3-dev 
- libflann-dev 
- libgdal-dev 
- libjsoncpp-dev 
- liblapack-dev 
- libopenscenegraph-dev 
- libpcl-dev 
- libprotobuf-dev 
- libqglviewer-dev-qt5 
- libqt4-dev 
- libqt4-opengl-dev 
- libsuitesparse-dev 
- libzmq3-dev 
- pkg-config 
- protobuf-compiler 
- qt4-qmake
-
+ protobuf-compiler
