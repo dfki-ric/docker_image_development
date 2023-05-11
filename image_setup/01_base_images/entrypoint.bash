@@ -77,13 +77,15 @@ else
 fi
 
 
-#set the correct UID from host
+# initialize the base and devel container, set the correct UID from host
 if [ ! -f /initialized_container ]; then
     $PRINT_INFO
     $PRINT_INFO -e "\e[33mSetting the containers devel user id to host user id\e[0m"
     $PRINT_INFO
     #only executed by docker run
     sudo touch /initialized_container
+    # we initialize the container with an uid and exit once, no need to execute the release version and exit below
+    sudo touch /initialized_container_release
     
     # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
     if [ ! -z $CCACHE_DIR ]; then
@@ -102,4 +104,10 @@ if [ ! -f /initialized_container ]; then
     exit 0
 fi
 
+# initialize the release image
+if [ ! -f /initialized_container_release ]; then
+    sudo touch /initialized_container_release
+    # the release image also has to exit on the initial docker run, it is expected by the docker_commands.bash
+    exit 0
+fi
 exec "$@"
