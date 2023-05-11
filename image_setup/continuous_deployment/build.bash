@@ -32,7 +32,7 @@ patch_settings_file(){
     # remove mounting host directories
   $PRINT_DEBUG "Patching settings.bash file"
   $PRINT_DEBUG "Removing directory mounts"
-  sed -i '/\-v/d' ${ROOT_DIR}/settings.bash
+  sed -iE 's/-v *([a-zA-Z0-9\/]+):([a-zA-Z0-9\/]+)//g' ${ROOT_DIR}/settings.bash
 }
 
 store_git_credentials(){    
