@@ -31,8 +31,10 @@ export SILENT=true
 patch_settings_file(){
     # remove mounting host directories
   $PRINT_DEBUG "Patching settings.bash file"
-  $PRINT_DEBUG "Removing directory mounts"
+  $PRINT_DEBUG "  Removing directory mounts"
   sed -iE 's/-v *([a-zA-Z0-9\/]+):([a-zA-Z0-9\/]+)//g' ${ROOT_DIR}/settings.bash
+  $PRINT_DEBUG "  Removing privileged argument"
+  sed -i 's/--privileged//g' ${ROOT_DIR}/settings.bash
 }
 
 store_git_credentials(){    
