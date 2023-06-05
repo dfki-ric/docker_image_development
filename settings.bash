@@ -81,8 +81,9 @@ export DOCKER_XSERVER_TYPE=auto
 #xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
 export XPRA_PORT="10000"
 
-# If you need to start docker contaiers from your workspace set this optioon to true
-# It will add "--privileged -v /var/run/docker.sock:/var/run/docker.sock" to the ADDITIONAL_DOCKER_RUN_ARGS
-# and set up the docker group inside the container to have the same gid than the host, so the dockeruser
-# can access the hosts docker deamon
+# If you need to start docker contaiers from your workspace (e.g. for launch tools) set this option to true
+# It will add "--privileged -v /var/run/docker.sock:/var/run/docker.sock" to the DOCKER_RUN_ARGS
+# The hosts docker deamon can then be used from within the container. Setting this to true will also add the dockeruser
+# to the docker group inside the container and set the docker groups id in the container to have the same gid as the host docker group.
+# The docker.io (apt) package has to be installed manually (e.g. through the 02_devel_image/Dockerfile)
 export NEEDS_DOCKER_IN_CONTAINER=false
