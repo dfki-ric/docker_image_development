@@ -63,6 +63,14 @@ init_docker(){
         DOCKER_FLAGS="-t"
     fi
 
+    if [ $NEEDS_DOCKER_IN_CONTAINER = true ]; then
+        DOCKER_GROUP_ID=$(getent group docker | cut -d: -f3)
+        $PRINT_DEBUG "Setting up docker usage inside the container"
+        $PRINT_DEBUG "adding: '--privileged -v /var/run/docker.sock:/var/run/docker.sock -e DOCKER_GROUP_ID=$DOCKER_GROUP_ID' to run args"
+        $PRINT_DEBUG "Setting docker group id to $DOCKER_GROUP_ID inside the container"
+        DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS --privileged -v /var/run/docker.sock:/var/run/docker.sock -e DOCKER_GROUP_ID=$DOCKER_GROUP_ID"
+    fi
+
     # check if a container from previous runs exist
     if [ "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
         #check if the local image is newer that the one the container was created with
@@ -110,6 +118,7 @@ check_xpra(){
         docker exec $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
     fi
 }
+
 
 set_xserver_args(){
     DOCKER_XSERVER_ARGS=""

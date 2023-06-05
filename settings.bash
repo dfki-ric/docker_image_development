@@ -80,3 +80,9 @@ export DOCKER_XSERVER_TYPE=auto
 #xpra_port may be set if --net=host is used, otherwise, please use -p in the ADDITIONAL_DOCKER_RUN_ARGS to assign a port for the
 #xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
 export XPRA_PORT="10000"
+
+# If you need to start docker contaiers from your workspace set this optioon to true
+# It will add "--privileged -v /var/run/docker.sock:/var/run/docker.sock" to the ADDITIONAL_DOCKER_RUN_ARGS
+# and set up the docker group inside the container to have the same gid than the host, so the dockeruser
+# can access the hosts docker deamon
+export NEEDS_DOCKER_IN_CONTAINER=false
