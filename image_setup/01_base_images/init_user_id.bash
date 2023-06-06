@@ -29,6 +29,19 @@ if [ "$NUID" -a ! -f /initialized_uid ]; then
     fi
 fi
 
+if [ "$DOCKER_GROUP_ID" -a ! -f /initialized_docker_gid ]; then
+    if [ "$DOCKER_GROUP_ID" != "$(getent group docker | cut -d: -f3)" ]; then
+        $PRINT_DEBUG "Docker GID is going to be changed to $DOCKER_GROUP_ID"
+        groupadd docker || true
+        groupmod -g $DOCKER_GROUP_ID docker
+        usermod -aG docker dockeruser
+        $PRINT_DEBUG -e "\n \033[0;32m EXITING THE CONTAINER PLEASE RELOGIN ! \n(using \"docker start -ai <containername>\")\e[0m"
+    else
+        $PRINT_DEBUG "Docker GID  did not need to be changed"
+    fi
+fi
+
+
 # indicate that the initialization was done
 if [ ! -f /initialized_uid ]; then
     touch "/initialized_uid"
