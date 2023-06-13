@@ -25,6 +25,8 @@ in the standard ubuntu package repositories was: nvidia-driver-390. You can look
 
 **Please follow the installation procedure [here.](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)**
 
+On laptops with hybrid graphics cards, it is very likely that you need to set the nvidia card as default using `sudo prime-select nvidia` and reboot (this might affect battery life). 
+
 **IMPORTANT:** In order to enable 3d acceleration, existing containers have to be re-created (which is explained [here](020_Usage.md#container-management)).
 
 
