@@ -15,47 +15,19 @@ Now you are ready to use docker!
 
 # NVIDIA Docker (Optional)
 
-In case you have an nvidia graphics card installed, you can proceed to install NVIDIA Docker to enable 3d acceleration for docker.
+**In case you have an nvidia graphics card with driver support installed**
+
+You can proceed to install NVIDIA Docker to enable 3d acceleration for docker.
 
 Note: This requires to have the current NVIDIA driver installed, ubuntu is not updating major versions, check your 
 package manager for the latest main package of the driver. When this document was written (30.11.2018) the latest version
 in the standard ubuntu package repositories was: nvidia-driver-390. You can look for more recent drivers (higher numbers) via `apt search nvidia-driver-*`.
 
-The following commands can be used to install the nvidia docker images. Original repository and installation instructions can be found
-here: https://github.com/NVIDIA/nvidia-docker
+**Please follow the installation procedure [here.](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)**
 
-```bash
-# Add the package repositories
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+On laptops with hybrid graphics cards, it is very likely that you need to set the nvidia card as default using `sudo prime-select nvidia` and reboot (this might affect battery life). 
 
-sudo apt update && sudo apt install nvidia-docker2
-sudo systemctl restart docker
-```
-
-If successful, you should be able to reproduce this command and receive a similar output (also see [here](https://github.com/NVIDIA/nvidia-docker#usage)):
-
-    $ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
-    Mon Aug 24 19:28:37 2020       
-    +-----------------------------------------------------------------------------+
-    | NVIDIA-SMI 440.100      Driver Version: 440.100      CUDA Version: 10.2     |
-    |-------------------------------+----------------------+----------------------+
-    | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-    |===============================+======================+======================|
-    |   0  GeForce MX150       Off  | 00000000:01:00.0 Off |                  N/A |
-    | N/A   46C    P3    N/A /  N/A |    474MiB /  2002MiB |     27%      Default |
-    +-------------------------------+----------------------+----------------------+
-
-    +-----------------------------------------------------------------------------+
-    | Processes:                                                       GPU Memory |
-    |  GPU       PID   Type   Process name                             Usage      |
-    |=============================================================================|
-    +-----------------------------------------------------------------------------+
-
-IMPORTANT: In order to enable 3d acceleration, existing containers have to be re-created (which is explained [here](020_Usage.md#container-management)).
-
+**IMPORTANT:** In order to enable 3d acceleration, existing containers have to be re-created (which is explained [here](020_Usage.md#container-management)).
 
 
 

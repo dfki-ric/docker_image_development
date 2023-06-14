@@ -12,7 +12,7 @@ check_run_args_changed(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
     OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
     if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ]; then
-        if [ $INTERACTIVE ]; then
+        if $INTERACTIVE; then
             while true; do
                 $PRINT_INFO "Image or run arguments changed. For changes to take effect the container $CONTAINER_NAME has to be renewed."
                 read -p "Do you want to renew the container now [y/n]?" answer
@@ -57,7 +57,7 @@ init_docker(){
         $PRINT_WARNING "hardware acceleration disabled"
     fi
 
-    if [ "$INTERACTIVE" = "true" ]; then
+    if "$INTERACTIVE"; then
         DOCKER_FLAGS="-ti"
     else
         DOCKER_FLAGS="-t"
