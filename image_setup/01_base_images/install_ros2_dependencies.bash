@@ -25,6 +25,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 
 apt update && apt upgrade -y &&  apt install -y \
     ros-$DISTRO-desktop \
+    python$vPYTHON-colcon-common-extensions \
     python$vPYTHON-rosdep \
     python$vPYTHON-rosinstall \
     python$vPYTHON-wstool
