@@ -1,5 +1,7 @@
 # Docker
 
+If soemone already prapared a clone of the docker_image_development repo for your project, you can also follow the (quick start howto)[010_Quick_Start]
+
 You need Docker Version > 19.03, it should be available from the OS repositories (Ubuntu: sudo apt install docker.io)
 
 ### Restart and convenience 
