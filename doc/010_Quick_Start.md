@@ -16,8 +16,8 @@
    1. `./exec.bash devel`
    2. If this does not download a new image check if you executed the steps under 4.
    3. If downloading does not work, you can build your own devel image
-     1.  `cd image_setup/02_devel_imahe`
-     2.  bash build.bash
+      1.  `cd image_setup/02_devel_imahe`
+      2.  bash build.bash
 6. Setup workspace:
    1. Run workspace setup in container shell `/opt/setup_workspace.bash`
    2. Build workspace as usual
