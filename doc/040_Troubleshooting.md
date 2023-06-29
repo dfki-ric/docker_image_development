@@ -25,9 +25,15 @@ Docker uses the DNS settigns of the host at container creation, if your system i
 
 In case the host is swiching Networks and the DNS server changes, name resolution may fail in your container after switching (e.g. connecting to a new WIFI of en/disabling VPN Connections).
 
-In this case, and if your host uses the "systemd-resolvd" (ubutnu > 18.04) you can set up dnsmasq to provide DNS name resolution on your host for your containers.
 
-## Install dnsmasq
+## Using systemd-resolvd (recommendend)
+
+In most recent versions of systemd-resolvd you can specify 'DNSStubListenerExtra=172.17.0.1' in /etc/systemd/resolved.conf to start a local server and restart the service `sudo systemctl restart systemd-resolved`
+
+Proceed with "provide dns setting to docker"
+
+## Using dnsmasq
+In cases where "systemd-resolvd" does not have the option, you can set up dnsmasq to provide DNS name resolution on your host for your containers.
 
 * sudo apt install dnsmasq
 * add the following content in the /etc/dnsmasq.d/docker.conf file
@@ -46,6 +52,7 @@ In this case, and if your host uses the "systemd-resolvd" (ubutnu > 18.04) you c
 * start dnsmasq on boot
   * sudo systemctl enable dnsmasq
 
+Proceed with "provide dns setting to docker"
 
 ## provide dns setting to docker
 
