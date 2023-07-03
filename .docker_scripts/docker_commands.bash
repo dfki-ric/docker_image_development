@@ -142,7 +142,14 @@ set_xserver_args(){
     fi
     
     if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
-        DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
+
+        if [ "$USE_XSERVER_VIA_SSH" = "false" ]; then
+            DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
+        else
+            # neeed to reach xserver through "localhost" for DISPLAY var to work
+            DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix --net=host"
+        fi
+
     fi
     
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
@@ -196,7 +203,10 @@ start_container(){
     $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
     check_xpra
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    if [ "${UPDATE_DISPLAY_ENVVAR}" == "true" ]; then
+
+    if [ "$USE_XSERVER_VIA_SSH" = "true" ]; then
+        # copy most recent XAuthority file to home folder
+        docker cp ~/.XAuthority $CONTAINER_NAME:/home/dockeruser/
         docker exec $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
     else
         docker exec $DOCKER_FLAGS $CONTAINER_NAME $@

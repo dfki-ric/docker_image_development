@@ -83,7 +83,8 @@ export XPRA_PORT="10000"
 
 # always update DISPLAY variable for new ./exec.bash commands
 # when ./exec.bash is called through ssh -X each ssh conenction will have its own DISPLAY)
-export UPDATE_DISPLAY_ENVVAR=false
+# this also needs --net=host (auto-added) to reach the xserver via localhost
+export USE_XSERVER_VIA_SSH=false
 
 
 # If you need to start docker contaiers from your workspace (e.g. for launch tools) set this option to true
