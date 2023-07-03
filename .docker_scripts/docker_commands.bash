@@ -196,8 +196,10 @@ start_container(){
     $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
     check_xpra
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    # always update DISPLAY variable for new ./exec.bash commands
-    # when ./exec.bash is called through ssh -X each ssh conenction will have its own DISPLAY)
-    docker exec $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
+    if [ "${UPDATE_DISPLAY_ENVVAR}" == "true" ]; then
+        docker exec $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
+    else
+        docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
+    fi
     DOCKER_EXEC_RETURN_VALUE=$?
 }
