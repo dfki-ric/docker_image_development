@@ -92,6 +92,7 @@ export USE_XSERVER_VIA_SSH=false
 # The hosts docker deamon can then be used from within the container. Setting this to true will also add the dockeruser
 # to the docker group inside the container and set the docker groups id in the container to have the same gid as the host docker group.
 # The docker.io (apt) package has to be installed manually (e.g. through the 02_devel_image/Dockerfile)
+# Also, add "RUN adduser dockeruser docker" that file, if you want to use it with the default user
 export NEEDS_DOCKER_IN_CONTAINER=false
 
 
