@@ -58,8 +58,7 @@ init_docker(){
     else
         $PRINT_WARNING "hardware acceleration disabled"
         if [[ "$DOCKER_RUN_ARGS" != *" --privileged "* ]]; then
-            $PRINT_WARNING "addind: '--privileged' to run args to allow usage of X apps, add it to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash file to supress this warning"
-            DOCKER_RUN_ARGS=$(add_param_if_not_present "${DOCKER_RUN_ARGS}" --privileged)
+            $PRINT_WARNING "if you want to use X apps, add "--privileged" to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash"
         fi
     fi
 
