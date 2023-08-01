@@ -30,10 +30,12 @@ SCRIPTFOLDER=${PROJECT_NAME_NO_SUBFOLDER}_scripts_${DATE}
 mkdir -p $SCRIPTFOLDER
 #build a scripts zip:
 echo "creating scripts archive: $SCRIPTFOLDER.tar.gz"
-cp $ROOT_DIR/.docker_scripts/docker_commands.bash ./$SCRIPTFOLDER/
+cp -R $ROOT_DIR/.docker_scripts/ ./$SCRIPTFOLDER/.docker_scripts/
 cp $ROOT_DIR/settings.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/exec.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/stop.bash ./$SCRIPTFOLDER/
+cp $ROOT_DIR/delete_container.bash ./$SCRIPTFOLDER/
+cp $ROOT_DIR/VERSION ./$SCRIPTFOLDER/
 cp $ROOT_DIR/doc/010_Setup_Docker.md ./$SCRIPTFOLDER/Readme_Docker.md
 cp $THIS_DIR/Readme_scripts.md ./$SCRIPTFOLDER/Readme.md
 echo "complete -W \"$(ls $ROOT_DIR/startscripts | xargs) /bin/bash\" ./exec.bash" >> $SCRIPTFOLDER/autocomplete.me
@@ -42,4 +44,4 @@ rm -rf $SCRIPTFOLDER
 
 
 echo "saving ${IMAGE_NAME} to ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz"
-docker save ${IMAGE_NAME} | gzip > ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
+# docker save ${IMAGE_NAME} | gzip > ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz

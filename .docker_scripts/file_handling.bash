@@ -5,7 +5,7 @@ source $ROOT_DIR/settings.bash
 
 check_git_post_merge_hook_exists(){
     #copy hook file, if nonexistent
-    if [ ! -f $ROOT_DIR/.git/hooks/post-merge ]; then
+    if [ ! -f $ROOT_DIR/.git/hooks/post-merge ] && [ -d $ROOT_DIR/.git ]; then
         cp $ROOT_DIR/.docker_scripts/git_hooks/post-merge $ROOT_DIR/.git/hooks/post-merge
     fi
 }
