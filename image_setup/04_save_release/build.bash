@@ -44,4 +44,4 @@ rm -rf $SCRIPTFOLDER
 
 
 echo "saving ${IMAGE_NAME} to ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz"
-# docker save ${IMAGE_NAME} | gzip > ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
+docker save ${IMAGE_NAME} | gzip > ${TARGETPATH}/${PROJECT_NAME_NO_SUBFOLDER}_image_${DATE}.tar.gz
