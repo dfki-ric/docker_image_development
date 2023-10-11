@@ -125,7 +125,7 @@ As a recap, here the steps in short:
  </tr>
  <tr>
     <td>1.</td>
-    <td>Edit project name, select base image, exec mode & registry</td>
+    <td>Edit project name, select base image, set exec mode to base & set registry if needed</td>
     <td> => </td>
     <td>in the repo's root directory edit:<br><code>settings.bash</code> </td>
  </tr>
