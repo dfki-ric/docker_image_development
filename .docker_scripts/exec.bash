@@ -2,6 +2,9 @@
 
 CMD_STRING=""
 
+### RUNNING SCRIPTS LOCATED IN image_setup/02_devel_image/pre_exec_hooks ON HOST
+run_pre_exec_hooks
+
 ### EVALUATE ARGUMENTS AND SET EXECMODE
 EXECMODE=$1
 if [[ " ${EXECMODES[*]} " =~ " $EXECMODE " ]]; then
