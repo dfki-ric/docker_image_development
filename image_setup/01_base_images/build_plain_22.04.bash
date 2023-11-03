@@ -5,7 +5,7 @@ set -e
 cp ../../VERSION ./
 
 . ../../settings.bash
-export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/plain_22.04_nogl
+export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/plain_22.04
 
 export BASE_IMAGE=nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
 export INSTALL_SCRIPT=install_plain_dependencies.bash
