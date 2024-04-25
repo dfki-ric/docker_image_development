@@ -10,6 +10,16 @@ source $ROOT_DIR/.docker_scripts/helper_functions.bash
 #storage variable for the return value of the docker exec command
 DOCKER_EXEC_RETURN_VALUE=1
 
+run_pre_exec_hooks(){
+    PRE_EXEC_HOOKS_DIR="$ROOT_DIR/image_setup/02_devel_image/pre_exec_hooks"
+    if [ -d $PRE_EXEC_HOOKS_DIR ]; then
+      for script in $(find $PRE_EXEC_HOOKS_DIR -regextype sed -regex "^.*/[0-9]\{2\}[-a-zA-Z0-9._]*.bash$" | sort); do
+        $PRINT_WARNING "Executing: $(basename $script) in $PRE_EXEC_HOOKS_DIR"
+        bash $script
+      done     
+    fi
+}
+
 check_run_args_changed(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
     OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
