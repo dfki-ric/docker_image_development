@@ -84,8 +84,6 @@ if [ ! -f /initialized_container ]; then
     $PRINT_INFO
     #only executed by docker run
     sudo touch /initialized_container
-    # we initialize the container with an uid and exit once, no need to execute the release version and exit below
-    sudo touch /initialized_container_release
     
     # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
     if [ ! -z $CCACHE_DIR ]; then
@@ -100,14 +98,19 @@ if [ ! -f /initialized_container ]; then
     sudo -E /bin/bash /opt/init_user_id.bash
     # id script needs exit to apply uid next docker start, so exiting here
     # the exec script expects this to happen and rund start/exec afterwards
-
-    exit 0
 fi
 
-# initialize the release image
-if [ ! -f /initialized_container_release ]; then
-    sudo touch /initialized_container_release
-    # the release image also has to exit on the initial docker run, it is expected by the docker_commands.bash
-    exit 0
+# The init_user_id.bash change of a uid requires the container to exit, but we don't want that bahavior when running custom commands
+# so the CMD in the dockerfile is "init_container" to detect a default start, translated to /bin/bash when no exit is required (already exited once)
+# in case docker run is called with a command (or startscript), that one is executed directly
+if [ "$@" == "init_container" ]; then
+    if [ ! -f /start_already_exited ]; then
+        sudo touch /start_already_exited
+        exit 0
+    else
+        exec "/bin/bash"
+    fi
+else
+    exec "$@"
 fi
-exec "$@"
+

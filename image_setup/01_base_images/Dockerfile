@@ -25,6 +25,8 @@ ENV LANG=en_US.UTF-8  LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 SHELL=/bin/bash PATH=
 WORKDIR /opt/workspace
 
 ENTRYPOINT ["/opt/entrypoint.bash"]
-CMD ["/bin/bash"]
+
+# the entrypoint converts this to /bin/bash
+CMD ["init_container"]
 
 RUN /opt/install.bash ${INSTALL_ARGS}
