@@ -31,3 +31,10 @@ COPY --chown=dockeruser:dockeruser-group startscripts /opt/startscripts/
 COPY --chown=dockeruser:dockeruser-group home /home/dockeruser/
 
 #keep the entrypoint from the base image, we are using the startscripts folder to run stuff
+
+# In case your release should be runnable without the exec.bash script, create a 
+# /initialized_container_release file that prevents /image_setup/01_base_image/entrypoint.bash
+# from exiting, to run with plain docker, use the "-u dockeruser" paramater in your docker run
+# command to set the user correctly e.g.:
+# docker run --rm -ti -u dockeruser developmentimage/docker_image_development:release /bin/bash
+# RUN touch /initialized_container_release
