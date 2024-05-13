@@ -179,14 +179,16 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
+    DOCKER_ARGS="$DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
                     -e SCRIPTSVERSION=${SCRIPTSVERSION} \
                     -e PRINT_WARNING=${PRINT_WARNING} \
                     -e PRINT_INFO=${PRINT_INFO} \
                     -e PRINT_DEBUG=${PRINT_DEBUG} \
                     -e PROJECT_NAME=${PROJECT_NAME} \
                     -e EXECMODE=${EXECMODE} \
-                    $IMAGE_NAME || exit 1
+                    $IMAGE_NAME"
+    $PRINT_DEBUG "Executing: docker run ${DOCKER_ARGS}"
+    docker run ${DOCKER_ARGS} || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
