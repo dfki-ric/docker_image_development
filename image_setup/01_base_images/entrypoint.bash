@@ -104,17 +104,22 @@ if [ "$@" == "init_container" ]; then
         # initialize the container, set the correct UID from host
         # use -E to keep env (for PRINT_* environment)
         sudo -E /bin/bash /opt/init_user_id.bash
+    fi
+    if [ ! -f /initial_exit ]; then
+        sudo touch /initial_exit
+        # even thogh the uid setup is not needed by exec.bash, this initial exit is expected also for releases
         # id script needs exit to apply uid next docker start, so exiting here
         # the exec script expects this to happen and rund start/exec afterwards
         exit 0
     else 
-        # subsequent docker start commands should start a console as default (these scripts are using exec to launch additional stuff)
-        # this keeps the container running
+        # subsequent docker start commands should start a console as default
+        # exec.bash is using additinal docker exec calls to launch additional programs
+        # this just keeps the container running
         exec "/bin/bash"
     fi
-else
-    # if a non-default cmd is set after docker run, use that one, allows to directly run contiansers via e.g. docker-compose
-    # in case a custom command is given (even /bin/bash)
-    exec "$@"
 fi
+
+# if a non-default cmd is set after docker run, use that one, allows to directly run contiansers via e.g. docker-compose
+# in case a custom command is given (even /bin/bash), you won't have uid setup, but for r.g. releaes you don't need it
+exec "$@"
 
