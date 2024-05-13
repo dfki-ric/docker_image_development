@@ -9,11 +9,7 @@ LABEL description="This image was generated to be a base image for docker_image_
 LABEL dockerfile_repo_url="https://github.com/dfki-ric/docker_image_development"
 LABEL maintainer="DFKI RIC"
 
-ADD prepare_image.bash /opt/prepare_image.bash
-ADD check_init_workspace.bash /opt/check_init_workspace.bash 
-ADD init_user_id.bash /opt/init_user_id.bash
-ADD VERSION /opt/VERSION
-ADD entrypoint.bash /opt/entrypoint.bash
+ADD prepare_image.bash check_init_workspace.bash init_user_id.bash VERSION entrypoint.bash /opt/
 ADD ${INSTALL_SCRIPT} /opt/install.bash
 
 #these scripts must be runnable by users, not only root
