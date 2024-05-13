@@ -104,13 +104,18 @@ fi
 # so the CMD in the dockerfile is "init_container" to detect a default start, translated to /bin/bash when no exit is required (already exited once)
 # in case docker run is called with a command (or startscript), that one is executed directly
 if [ "$@" == "init_container" ]; then
+    # init_container is the default cmd, executed on docker run AND docker start
+    # this part is executed when the default command is used
     if [ ! -f /start_already_exited ]; then
+        # on first start (rocker run) on default arg (used by exec stript), we need to exit to update a potentially changed uid 
         sudo touch /start_already_exited
         exit 0
     else
+        # subsequent docker start should start a console as default 
         exec "/bin/bash"
     fi
 else
+    # if a non-default cmd is set after docker run, use that one
     exec "$@"
 fi
 
