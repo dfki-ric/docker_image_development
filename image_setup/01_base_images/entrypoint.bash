@@ -103,7 +103,10 @@ if [ "$@" == "init_container" ]; then
 
         # initialize the container, set the correct UID from host
         # use -E to keep env (for PRINT_* environment)
+        sudo touch /initial_exit
         sudo -E /bin/bash /opt/init_user_id.bash
+        # we need to exit here and not in the next if clause, as sudo cannot be run afterwards
+        exit 0
     fi
     if [ ! -f /initial_exit ]; then
         sudo touch /initial_exit
