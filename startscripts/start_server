@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /opt/workspace
+. env.sh
+cloud_slam_server -d --neo4j_ip neo4j --neo4j_port 7474 --redis_ip redis --redis_port 6379
