@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
-export PROJECT_NAME=cloud_slam
+export PROJECT_NAME=cloud_slam_server
+
 # path to your docker registry, leave blank if you don't have one
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
@@ -30,6 +31,8 @@ export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparin
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
 export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04_nogl:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04_nogl:base # image with ros2 humble desktop installed
 
