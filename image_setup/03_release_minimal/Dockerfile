@@ -34,8 +34,8 @@ ENTRYPOINT ["/opt/entrypoint.bash"]
 
 # add default command
 #use ENV VAR to forward to cmd
-# ENV EXECUTABLE_ENVVAR="${EXECUTABLE}"
-# ENV EXECUTABLE_PARAMS_ENVVAR="${EXECUTABLE_PARAMS}"
+ENV EXECUTABLE_ENVVAR="${EXECUTABLE}"
+ENV EXECUTABLE_PARAMS_ENVVAR="${EXECUTABLE_PARAMS}"
 #CMD [./rrc_gamepad_client config.yml]
 #needs bach for variable 
 CMD ["run"]

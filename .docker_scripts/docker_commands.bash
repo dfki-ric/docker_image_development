@@ -4,15 +4,21 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
 source $ROOT_DIR/settings.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
 source $ROOT_DIR/.docker_scripts/file_handling.bash
+source $ROOT_DIR/.docker_scripts/helper_functions.bash
+
 
 #storage variable for the return value of the docker exec command
 DOCKER_EXEC_RETURN_VALUE=1
 
-check_run_args_changed(){
+generate_run_args_checksum(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
+}
+
+check_run_args_changed(){
+    generate_run_args_checksum
     OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
-    if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ]; then
-        if [ $INTERACTIVE ]; then
+    if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ] && [ "$OLD_RUN_ARGS" != "" ]; then
+        if $INTERACTIVE; then
             while true; do
                 $PRINT_INFO "Image or run arguments changed. For changes to take effect the container $CONTAINER_NAME has to be renewed."
                 read -p "Do you want to renew the container now [y/n]?" answer
@@ -55,12 +61,27 @@ init_docker(){
         RUNTIME_ARG="--gpus all"
     else
         $PRINT_WARNING "hardware acceleration disabled"
+        if [[ "$DOCKER_RUN_ARGS" != *" --privileged "* ]]; then
+            $PRINT_WARNING "if you want to use X apps, add "--privileged" to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash"
+        fi
     fi
 
-    if [ "$INTERACTIVE" = "true" ]; then
+    if "$INTERACTIVE"; then
         DOCKER_FLAGS="-ti"
     else
         DOCKER_FLAGS="-t"
+    fi
+
+    if [ $NEEDS_DOCKER_IN_CONTAINER = true ]; then
+        DOCKER_GROUP_ID=$(getent group docker | cut -d: -f3)
+        $PRINT_DEBUG "Setting up docker usage inside the container"
+        if [[ "$DOCKER_RUN_ARGS" != *" --privileged "* ]]; then
+            $PRINT_WARNING "adding: '--privileged' to run args to allow using docker from the container, add it to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash file to supress this warning"
+            DOCKER_RUN_ARGS=$(add_param_if_not_present "${DOCKER_RUN_ARGS}" --privileged)
+        fi
+        $PRINT_DEBUG "adding: '-v /var/run/docker.sock:/var/run/docker.sock -e DOCKER_GROUP_ID=$DOCKER_GROUP_ID' to run args"
+        $PRINT_DEBUG "Setting docker group id to $DOCKER_GROUP_ID inside the container"
+        DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS -v /var/run/docker.sock:/var/run/docker.sock -e DOCKER_GROUP_ID=$DOCKER_GROUP_ID"
     fi
 
     # check if a container from previous runs exist
@@ -111,6 +132,7 @@ check_xpra(){
     fi
 }
 
+
 set_xserver_args(){
     DOCKER_XSERVER_ARGS=""
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
@@ -133,7 +155,14 @@ set_xserver_args(){
     fi
     
     if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
-        DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
+
+        if [ "$USE_XSERVER_VIA_SSH" = "false" ]; then
+            DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
+        else
+            # neeed to reach xserver through "localhost" for DISPLAY var to work
+            DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix --net=host"
+        fi
+
     fi
     
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
@@ -146,6 +175,10 @@ generate_container(){
     $PRINT_DEBUG "generating new container : $CONTAINER_NAME"
     write_value_to_config_file $EXECMODE $CURRENT_IMAGE_ID
 
+    # # write initial run args to configfile
+    generate_run_args_checksum
+    write_value_to_config_file "RUN_ARGS_${EXECMODE}" "$CURRENT_RUN_ARGS"
+
     # special treatement for ccache as empty string might cause compiler error
     if [ $MOUNT_CCACHE_VOLUME ]; then
         $PRINT_DEBUG "Adding -e CCACHE_DIR to DOCKER_RUN_ARGS"
@@ -154,18 +187,25 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
+    DOCKER_ARGS="$DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
                     -e SCRIPTSVERSION=${SCRIPTSVERSION} \
                     -e PRINT_WARNING=${PRINT_WARNING} \
                     -e PRINT_INFO=${PRINT_INFO} \
                     -e PRINT_DEBUG=${PRINT_DEBUG} \
                     -e PROJECT_NAME=${PROJECT_NAME} \
                     -e EXECMODE=${EXECMODE} \
-                    $IMAGE_NAME || exit 1
+                    $IMAGE_NAME"
+    $PRINT_DEBUG "Executing: docker run ${DOCKER_ARGS}"
+    docker run ${DOCKER_ARGS} || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
     docker start $CONTAINER_NAME  > /dev/null
+    if [ "$USE_XSERVER_VIA_SSH" = "true" ]; then
+        # copy most recent XAuthority file to home folder
+        $PRINT_DEBUG "copying most recent ~/.Xauthority file to container"
+        docker cp ~/.Xauthority $CONTAINER_NAME:/home/dockeruser/
+    fi
     $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
     docker exec $DOCKER_FLAGS $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "check if iceccd needs to be started $CONTAINER_NAME"
@@ -187,6 +227,14 @@ start_container(){
     $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
     check_xpra
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
+
+    if [ "$USE_XSERVER_VIA_SSH" = "true" ]; then
+        # copy most recent XAuthority file to home folder
+        $PRINT_DEBUG "copying most recent ~/.Xauthority file to container"
+        docker cp ~/.Xauthority $CONTAINER_NAME:/home/dockeruser/
+        docker exec $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
+    else
+        docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
+    fi
     DOCKER_EXEC_RETURN_VALUE=$?
 }

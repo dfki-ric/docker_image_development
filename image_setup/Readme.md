@@ -15,7 +15,7 @@ you need to set up the development image, follow the [devel setup documentation]
 ## 03_release_image
 
 Once your code is ready and compiled, you can release it in a single image.
-The previously mountded home, workspace and startscripts folders are copied into the release image. [Follow this documentation](043_Release_Image.md)
+The previously mountded home, workspace and startscripts folders are copied into the release image. [Follow this documentation](../doc/043_Release_Image.md)
 
 ## 04_save_release
 
