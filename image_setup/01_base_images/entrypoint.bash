@@ -76,38 +76,53 @@ else
     fi
 fi
 
+# The init_user_id.bash change of a uid requires the container to exit, but we don't want that bahavior when running custom commands
+# so the CMD in the dockerfile is "init_container" to detect a default start, translated to /bin/bash when no exit is required (already exited once)
+# in case docker run is called with a command (or startscript), that one is executed directly
 
-# initialize the base and devel container, set the correct UID from host
-if [ ! -f /initialized_container ]; then
-    $PRINT_INFO
-    $PRINT_INFO -e "\e[33mSetting the containers devel user id to host user id\e[0m"
-    $PRINT_INFO
-    #only executed by docker run
-    sudo touch /initialized_container
-    # we initialize the container with an uid and exit once, no need to execute the release version and exit below
-    sudo touch /initialized_container_release
-    
-    # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
-    if [ ! -z $CCACHE_DIR ]; then
-        sudo mkdir -p $CCACHE_DIR
-        # the dockeruser might still have the wrong id, so using the NUID here
-        sudo chown $NUID $CCACHE_DIR
-    else
-        unset CCACHE_DIR
+# init_container is the default cmd in the Dockerfile, executed on docker run AND docker start
+# this part is executed when the default command is used
+if [ "$@" == "init_container" ]; then
+    if [ ! -f /initialized_container ]; then
+        # only executed by initial docker run, not on docker start
+        # releases are creating this file in thrir Dockerfile, so this is not run at all from release images
+        sudo touch /initialized_container
+        
+        $PRINT_INFO
+        $PRINT_INFO -e "\e[33mSetting the containers devel user id to host user id\e[0m"
+        $PRINT_INFO
+
+        # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
+        if [ ! -z $CCACHE_DIR ]; then
+            sudo mkdir -p $CCACHE_DIR
+            # the dockeruser might still have the wrong id, so using the NUID here
+            sudo chown $NUID $CCACHE_DIR
+        else
+            unset CCACHE_DIR
+        fi
+
+        # initialize the container, set the correct UID from host
+        # use -E to keep env (for PRINT_* environment)
+        sudo touch /initial_exit
+        sudo -E /bin/bash /opt/init_user_id.bash
+        # we need to exit here and not in the next if clause, as sudo cannot be run afterwards
+        exit 0
     fi
-
-    # use -E to keep env (for PRINT_* environment)
-    sudo -E /bin/bash /opt/init_user_id.bash
-    # id script needs exit to apply uid next docker start, so exiting here
-    # the exec script expects this to happen and rund start/exec afterwards
-
-    exit 0
+    if [ ! -f /initial_exit ]; then
+        sudo touch /initial_exit
+        # even thogh the uid setup is not needed by exec.bash, this initial exit is expected also for releases
+        # id script needs exit to apply uid next docker start, so exiting here
+        # the exec script expects this to happen and rund start/exec afterwards
+        exit 0
+    else 
+        # subsequent docker start commands should start a console as default
+        # exec.bash is using additinal docker exec calls to launch additional programs
+        # this just keeps the container running
+        exec "/bin/bash"
+    fi
 fi
 
-# initialize the release image
-if [ ! -f /initialized_container_release ]; then
-    sudo touch /initialized_container_release
-    # the release image also has to exit on the initial docker run, it is expected by the docker_commands.bash
-    exit 0
-fi
+# if a non-default cmd is set after docker run, use that one, allows to directly run contiansers via e.g. docker-compose
+# in case a custom command is given (even /bin/bash), you won't have uid setup, but for r.g. releaes you don't need it
 exec "$@"
+

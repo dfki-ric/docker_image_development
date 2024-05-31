@@ -10,10 +10,14 @@ source $ROOT_DIR/.docker_scripts/helper_functions.bash
 #storage variable for the return value of the docker exec command
 DOCKER_EXEC_RETURN_VALUE=1
 
-check_run_args_changed(){
+generate_run_args_checksum(){
     CURRENT_RUN_ARGS=$(echo $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS | md5sum | cut -b 1-32)
+}
+
+check_run_args_changed(){
+    generate_run_args_checksum
     OLD_RUN_ARGS=$(read_value_from_config_file RUN_ARGS_${EXECMODE})
-    if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ]; then
+    if [ "$OLD_RUN_ARGS" != "$CURRENT_RUN_ARGS" ] && [ "$OLD_RUN_ARGS" != "" ]; then
         if $INTERACTIVE; then
             while true; do
                 $PRINT_INFO "Image or run arguments changed. For changes to take effect the container $CONTAINER_NAME has to be renewed."
@@ -171,6 +175,10 @@ generate_container(){
     $PRINT_DEBUG "generating new container : $CONTAINER_NAME"
     write_value_to_config_file $EXECMODE $CURRENT_IMAGE_ID
 
+    # # write initial run args to configfile
+    generate_run_args_checksum
+    write_value_to_config_file "RUN_ARGS_${EXECMODE}" "$CURRENT_RUN_ARGS"
+
     # special treatement for ccache as empty string might cause compiler error
     if [ $MOUNT_CCACHE_VOLUME ]; then
         $PRINT_DEBUG "Adding -e CCACHE_DIR to DOCKER_RUN_ARGS"
@@ -179,14 +187,16 @@ generate_container(){
 
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
-    docker run $DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
+    DOCKER_ARGS="$DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
                     -e SCRIPTSVERSION=${SCRIPTSVERSION} \
                     -e PRINT_WARNING=${PRINT_WARNING} \
                     -e PRINT_INFO=${PRINT_INFO} \
                     -e PRINT_DEBUG=${PRINT_DEBUG} \
                     -e PROJECT_NAME=${PROJECT_NAME} \
                     -e EXECMODE=${EXECMODE} \
-                    $IMAGE_NAME || exit 1
+                    $IMAGE_NAME"
+    $PRINT_DEBUG "Executing: docker run ${DOCKER_ARGS}"
+    docker run ${DOCKER_ARGS} || exit 1
     # default container exists after initial run
 
     $PRINT_DEBUG "docker start $CONTAINER_NAME"
