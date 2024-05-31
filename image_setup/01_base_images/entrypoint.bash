@@ -82,7 +82,7 @@ fi
 
 # init_container is the default cmd in the Dockerfile, executed on docker run AND docker start
 # this part is executed when the default command is used
-if [ "$@" == "init_container" ]; then
+if [ "$*" == "init_container" ]; then
     if [ ! -f /initialized_container ]; then
         # only executed by initial docker run, not on docker start
         # releases are creating this file in thrir Dockerfile, so this is not run at all from release images
@@ -122,7 +122,6 @@ if [ "$@" == "init_container" ]; then
     fi
 fi
 
-# if a non-default cmd is set after docker run, use that one, allows to directly run contiansers via e.g. docker-compose
+# if a non-default cmd is set after docker run, use that one, allows to directly run containers via e.g. docker-compose
 # in case a custom command is given (even /bin/bash), you won't have uid setup, but for r.g. releaes you don't need it
-exec "$@"
-
+eval "$@"
