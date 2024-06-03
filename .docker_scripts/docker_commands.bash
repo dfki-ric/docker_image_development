@@ -37,7 +37,7 @@ check_run_args_changed(){
     fi
 }
 
-init_docker(){
+check_gpu(){
     #detect if nvidia runtime is available
     RUNTIMES=$(docker info | grep "Runtimes:")
     if [[ $RUNTIMES == *"nvidia"* ]]; then
@@ -65,6 +65,10 @@ init_docker(){
             $PRINT_WARNING "if you want to use X apps, add "--privileged" to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash"
         fi
     fi
+}
+
+init_docker(){
+    check_gpu
 
     if "$INTERACTIVE"; then
         DOCKER_FLAGS="-ti"
