@@ -31,7 +31,7 @@ check_run_args_changed(){
     fi
 }
 
-init_docker(){
+check_gpu(){
     #detect if nvidia runtime is available
     RUNTIMES=$(docker info | grep "Runtimes:")
     if [[ $RUNTIMES == *"nvidia"* ]]; then
@@ -56,6 +56,10 @@ init_docker(){
     else
         $PRINT_WARNING "hardware acceleration disabled"
     fi
+}
+
+init_docker(){
+    check_gpu
 
     if [ "$INTERACTIVE" = "true" ]; then
         DOCKER_FLAGS="-ti"
