@@ -16,7 +16,7 @@ SCRIPTS_MINOR=$(echo $SCRIPTSVERSION | awk -F'.' '{print $2}')
 SCRIPTS_PATCH=$(echo $SCRIPTSVERSION | awk -F'.' '{print $3}')
 
 # if SCRIPTSVERSION is not set at all expect "manual" run from command line/dockerfile etc, no version checks then
-if ! [ -z "$SCRIPTSVERSION" ]; then
+if [ -n "$SCRIPTSVERSION" ]; then
     if [ "$IMAGEVERSION" != "$SCRIPTSVERSION" ]; then
         $PRINT_DEBUG "Scripts/Image version mismatch"
         # check major versions
