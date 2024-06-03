@@ -45,7 +45,7 @@ CREDENTIAL_HELPER_MODE=${CREDENTIAL_HELPER_MODE:="cache"}
 #    exit 1
 #fi
 
-# ROS BUILDCONF EXAMPLE
+# ROS autoproj BUILDCONF EXAMPLE
 #
 #if [ ! -d /opt/workspace/src ]; then
 #    echo "first start: setting up workspace"
@@ -73,3 +73,35 @@ CREDENTIAL_HELPER_MODE=${CREDENTIAL_HELPER_MODE:="cache"}
 #else
 #    echo "[ERROR] Workspace is already initialized (/opt/workspace/src already exists)."
 #fi
+
+
+# ROS2 autoproj BUILDCONF EXAMPLE
+#
+# if [ ! -d /opt/workspace/src ]; then
+#    echo "first start: setting up workspace"
+#    mkdir -p /opt/workspace/src
+#    cd /opt/workspace/
+#    #source /opt/setup_env.sh
+#    source /opt/ros/humble/setup.bash
+#    #init ws
+#    colcon build
+#    source ./install/setup.bash
+
+#    echo "[INFO] Setting up workspace with autoproj."
+#    cd /opt/workspace/src
+#    gti clone 
+#    wget https://rock-robotics.org/autoproj_bootstrap
+#    git config --global user.name "Image Builder"
+#    git config --global user.email "image@builder.me"
+#    git config --global credential.helper cache
+#    ruby autoproj_bootstrap git $BUILDCONF branch=$BRANCH
+#    . env.sh
+#    aup
+#    cd /opt/workspace
+#    echo
+#    echo "workspace initialized, please"
+#    echo "'source ./src/env.sh' and run 'colcon build'"
+#    echo
+# else
+#    echo "[ERROR] Workspace is already initialized (/opt/workspace/src already exists)."
+# fi
