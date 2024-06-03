@@ -7,11 +7,15 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 source $ROOT_DIR/settings.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
 
+check_registry_overrides
+
 export BASE_IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}$WORKSPACE_BASE_IMAGE
 
 IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
 
-while true; do
+INTERACTIVE=${INTERACTIVE:="true"}
+
+while $INTERACTIVE; do
     read -p "Do you wish to download the most recent base image [y/n]? " answer
     case $answer in
         [Yy]* ) DOCKER_REGISTRY_AUTOPULL=true; break;;
@@ -20,7 +24,7 @@ while true; do
     esac
 done
 
-if [ "$DOCKER_REGISTRY_AUTOPULL" = true ]; then
+if [ "$DOCKER_REGISTRY_AUTOPULL" = true ] || [ "$INTERACTIVE" = false ]; then
     echo
     echo pulling image: $BASE_IMAGE_NAME
     echo

@@ -7,6 +7,8 @@ ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
 source $ROOT_DIR/settings.bash
 source $ROOT_DIR/.docker_scripts/variables.bash
 
+check_registry_overrides
+
 #docker build paramaters
 export DATE=$(date)
 export TAG=$(date +%Y_%m_%d-%H_%M)

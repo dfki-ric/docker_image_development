@@ -1,0 +1,93 @@
+version: '3.2'
+
+services:
+  neo4j:
+    image: neo4j:community
+    #container_name: neo4j
+    environment:
+      - NEO4J_AUTH=none
+    ports:
+       - "7474:7474"
+       - "7687:7687"
+    expose:
+       - "7687"
+       #  - "7474"
+
+    healthcheck:
+      test: wget http://localhost:7474 || exit 1
+      interval: 1s
+      timeout: 10s
+      retries: 20
+      start_period: 3s
+
+    # networks:
+    #   cloud_slam_network:
+    #     aliases:
+    #       - neo4j_container
+
+  redis:
+    image: redis
+    #container_name: redis
+    ports:
+      - "6379:6379"
+    
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    # expose:
+    #   - "6379"
+    # networks:
+    #   cloud_slam_network:
+    #     aliases:
+    #       - redis_container
+
+  server:
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    image: d-reg.hb.dfki.de/developmentimage/cloud_slam_server:devel
+    command: "start_server"
+    ports:
+      - "7890:7890"
+    expose:
+      - "7890"
+    links:
+      - redis:redis
+      - neo4j:neo4j
+
+    volumes:
+    - ./startscripts:/opt/startscripts
+    - ./workspace:/opt/workspace
+    - ./home:/home/dockeruser
+
+    # networks:
+    #   cloud_slam_network:
+
+
+  server1:
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    image: d-reg.hb.dfki.de/developmentimage/cloud_slam_server:devel
+    command: "start_server"
+    ports:
+      - "7891:7890"
+    expose:
+      - "7891"
+    links:
+      - redis:redis
+      - neo4j:neo4j
+
+    volumes:
+    - ./startscripts:/opt/startscripts
+    - ./workspace:/opt/workspace
+    - ./home:/home/dockeruser
+
+# networks:
+#   cloud_slam_network:

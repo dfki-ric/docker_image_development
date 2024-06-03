@@ -119,13 +119,13 @@ As a recap, here the steps in short:
     <th>File to edit/execute</th>
  <tr>
     <td>0.</td>
-    <td>Fork this repository</td>
-    <td> => </td>
+    <td>Clone this repository</td>
+    <td></td>
     <td></td>
  </tr>
  <tr>
     <td>1.</td>
-    <td>Edit project name, select base image, exec mode & registry</td>
+    <td>Edit project name, select base image, set exec mode to base & set registry if needed</td>
     <td> => </td>
     <td>in the repo's root directory edit:<br><code>settings.bash</code> </td>
  </tr>
@@ -167,6 +167,12 @@ As a recap, here the steps in short:
     <td>You should change the default exec mode to <code>devel</code> and push to your fork after pusing the image to the docker registry</td>
     <td> => </td>
     <td>in the repo's root directory edit: <code>settings.bash</code> </td>
+ </tr>
+ <tr>
+    <td>8.</td>
+    <td>push this repo to your project git</td>
+    <td></td>
+    <td></td>
  </tr>
 </table>
 

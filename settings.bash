@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
-export PROJECT_NAME=cloud_slam
+export PROJECT_NAME=cloud_slam_server
+
 # path to your docker registry, leave blank if you don't have one
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
@@ -17,10 +18,10 @@ export DOCKER_REGISTRY_AUTOPULL=false
 
 ### The default release mode to use if no mode paramater is given to ./exec.bash or ./stop.bash
 ### The checked in version should reflect the image status and be the highest availale image (base - devel - release)
-#export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
+# export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
 export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
-#export DEFAULT_EXECMODE="release" # use the release as default
-#export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
+# export DEFAULT_EXECMODE="release" # use the release as default
+# export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
@@ -29,9 +30,10 @@ export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparin
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
 export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04_nogl:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04_nogl:base # image with ros2 humble desktop installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04:base # image with ros2 humble desktop installed
 
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
@@ -79,3 +81,20 @@ export DOCKER_XSERVER_TYPE=auto
 #xpra_port may be set if --net=host is used, otherwise, please use -p in the ADDITIONAL_DOCKER_RUN_ARGS to assign a port for the
 #xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
 export XPRA_PORT="10000"
+
+# always update DISPLAY variable for new ./exec.bash commands
+# when ./exec.bash is called through ssh -X each ssh conenction will have its own DISPLAY)
+# this also needs --net=host (auto-added) to reach the xserver via localhost
+export USE_XSERVER_VIA_SSH=false
+
+
+# If you need to start docker contaiers from your workspace (e.g. for launch tools) set this option to true
+# It will add "--privileged -v /var/run/docker.sock:/var/run/docker.sock" to the DOCKER_RUN_ARGS
+# The hosts docker deamon can then be used from within the container. Setting this to true will also add the dockeruser
+# to the docker group inside the container and set the docker groups id in the container to have the same gid as the host docker group.
+# The docker.io (apt) package has to be installed manually (e.g. through the 02_devel_image/Dockerfile)
+# Also, add "RUN adduser dockeruser docker" that file, if you want to use it with the default user
+export NEEDS_DOCKER_IN_CONTAINER=false
+
+
+
