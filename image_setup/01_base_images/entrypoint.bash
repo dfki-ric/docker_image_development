@@ -27,13 +27,8 @@ SCRIPTS_MAJOR=$(echo $SCRIPTSVERSION | awk -F'.' '{print $1}')
 SCRIPTS_MINOR=$(echo $SCRIPTSVERSION | awk -F'.' '{print $2}')
 SCRIPTS_PATCH=$(echo $SCRIPTSVERSION | awk -F'.' '{print $3}')
 
-# if SCRIPTSVERSION is not set at all, the scripts are too old (but compatible)
-if [ -z "$SCRIPTSVERSION" ]; then
-    $PRINT_WARNING
-    $PRINT_WARNING "WARNING: Your docker_image_development scripts are outdated, please pull your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
-    $PRINT_WARNING -e "\t* docker_image_developent Version checks disabled"
-    $PRINT_WARNING
-else
+# if SCRIPTSVERSION is not set at all expect "manual" run from command line/dockerfile etc, no version checks then
+if ! [ -z "$SCRIPTSVERSION" ]; then
     if [ "$IMAGEVERSION" != "$SCRIPTSVERSION" ]; then
         $PRINT_DEBUG "Scripts/Image version mismatch"
         # check major versions
