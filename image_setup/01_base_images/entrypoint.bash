@@ -5,18 +5,6 @@
 #get HOST ip /sbin/ip route|awk '/default/ { print $3 }'
 
 
-# in clase of legacy scripts using new base images, set it here
-if [ -z "$PRINT_INFO" ]; then
-    # we expect that in info is neither "echo" or ":", nothing has been set
-    echo
-    echo "WARNING: Your docker_image_development scripts are outdated, please pull your repo or merge a newer version from https://github.com/dfki-ric/docker_image_development"
-    echo -e "\t* docker_image_developent verbosity levels are disabled for ouputs from the image, printing everything (as before)"
-    echo
-    export PRINT_DEBUG=echo
-    export PRINT_INFO=echo
-    export PRINT_WARNING=echo
-fi
-
 IMAGEVERSION=$(cat /opt/VERSION | head -n1 | awk -F' ' '{print $1}')
 #SCRIPTSVERSION provided via ENV in run command
 
@@ -27,13 +15,8 @@ SCRIPTS_MAJOR=$(echo $SCRIPTSVERSION | awk -F'.' '{print $1}')
 SCRIPTS_MINOR=$(echo $SCRIPTSVERSION | awk -F'.' '{print $2}')
 SCRIPTS_PATCH=$(echo $SCRIPTSVERSION | awk -F'.' '{print $3}')
 
-# if SCRIPTSVERSION is not set at all, the scripts are too old (but compatible)
-if [ -z "$SCRIPTSVERSION" ]; then
-    $PRINT_WARNING
-    $PRINT_WARNING "WARNING: Your docker_image_development scripts are outdated, please pull your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
-    $PRINT_WARNING -e "\t* docker_image_developent Version checks disabled"
-    $PRINT_WARNING
-else
+# if SCRIPTSVERSION is not set at all expect "manual" run from command line/dockerfile etc, no version checks then
+if [ -n "$SCRIPTSVERSION" ]; then
     if [ "$IMAGEVERSION" != "$SCRIPTSVERSION" ]; then
         $PRINT_DEBUG "Scripts/Image version mismatch"
         # check major versions

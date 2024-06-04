@@ -1,3 +1,4 @@
+4.0.2 - disable incompatibility warning for scriptless runs 
 4.0.1 - fix question behavior "renew" container for inital runs (always asked for renewal on 2nd run)
 4.0.0 - change exit behavior in container init to allow running without scripts
 3.0.0 - change devel/release users to dockeruser, split docker_commands and init testsuite
