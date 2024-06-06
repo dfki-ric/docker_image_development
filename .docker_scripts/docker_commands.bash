@@ -61,9 +61,6 @@ check_gpu(){
         RUNTIME_ARG="--gpus all"
     else
         $PRINT_WARNING "hardware acceleration disabled"
-        if [[ "$DOCKER_RUN_ARGS" != *" --privileged "* ]]; then
-            $PRINT_WARNING "if you want to use X apps, add "--privileged" to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash"
-        fi
     fi
 }
 
@@ -79,10 +76,6 @@ init_docker(){
     if [ $NEEDS_DOCKER_IN_CONTAINER = true ]; then
         DOCKER_GROUP_ID=$(getent group docker | cut -d: -f3)
         $PRINT_DEBUG "Setting up docker usage inside the container"
-        if [[ "$DOCKER_RUN_ARGS" != *" --privileged "* ]]; then
-            $PRINT_WARNING "adding: '--privileged' to run args to allow using docker from the container, add it to the ADDITIONAL_DOCKER_RUN_ARGS in your settings.bash file to supress this warning"
-            DOCKER_RUN_ARGS=$(add_param_if_not_present "${DOCKER_RUN_ARGS}" --privileged)
-        fi
         $PRINT_DEBUG "adding: '-v /var/run/docker.sock:/var/run/docker.sock -e DOCKER_GROUP_ID=$DOCKER_GROUP_ID' to run args"
         $PRINT_DEBUG "Setting docker group id to $DOCKER_GROUP_ID inside the container"
         DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS -v /var/run/docker.sock:/var/run/docker.sock -e DOCKER_GROUP_ID=$DOCKER_GROUP_ID"
