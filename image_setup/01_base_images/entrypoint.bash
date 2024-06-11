@@ -40,18 +40,18 @@ if [ -n "$SCRIPTSVERSION" ]; then
         fi
         if [ "$IMAGE_MAJOR" -lt "$SCRIPTS_MAJOR" ]; then
             echo
-            echo -e "\e[31mError: The image was produced with incompatible scripts version\e[0m: Please update your images"
+            echo -e "\e[31mError: The image was produced with incompatible scripts version\e[0m: Please update your images (run ./tools/update_image.bash)"
             echo
             exit 0
         else
             if [ "$IMAGE_MINOR" -lt "$SCRIPTS_MINOR" ]; then
                 $PRINT_INFO
-                $PRINT_INFO "The image was produced with a lesser minor scripts version: Consider updating your images"
+                $PRINT_INFO "The image was produced with a lesser minor scripts version: Consider updating your images (run ./tools/update_image.bash)"
                 $PRINT_INFO
             else
                 if [ "$IMAGE_PATCH" -lt "$SCRIPTS_PATCH" ]; then
                     $PRINT_DEBUG
-                    $PRINT_DEBUG "The image was produced with a lesser patch scripts version: Consider updating your images"
+                    $PRINT_DEBUG "The image was produced with a lesser patch scripts version: Consider updating your images (run ./tools/update_image.bash)"
                     $PRINT_DEBUG
                 fi
             fi
