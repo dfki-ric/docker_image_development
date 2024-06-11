@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
-export PROJECT_NAME=docker_image_development
+export PROJECT_NAME=sw-backbone
 
 # path to your docker registry, leave blank if you don't have one
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
-export DOCKER_REGISTRY=
+export DOCKER_REGISTRY=d-reg.hb.dfki.de
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
@@ -25,12 +25,12 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
+export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04:base # image with ros2 humble desktop installed
