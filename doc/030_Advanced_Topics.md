@@ -19,20 +19,49 @@ When you update the image by pulling from registry or rebuilding the devel image
 
 ### Keeping the Fork in Sync with Upstream Changes
 
-Normally it is not required to keep the forked repo in sync with the upstream changes.
+Normally it is not required to keep the forked docker_image_development repo in sync with the upstream changes.
 Everything should be fine, as long as the forked repo version corresponds to the version that was used to create the devel image that is used.
 
 A common case for when a sync actually is (or may be) required, is the creation of a new devel image.
-The scripts' version should match that with which the upstream-provided base image was created.
-Recent versions of the scripts implement a version check that compares the versions of scripts and base image for this purpose.
-A warning is printed if the versions no longer match.
+The scripts version should match that with which the upstream-provided base image was created.
 
-In this case you should merge the upstream changes with your setup.
+There is a version check on container creation that compares the versions of scripts and base image for this purpose.
+A warning/error is printed if the versions no longer match.
 
-In case you want to build a new devel image based on a new version of the base image you might need to activate the setting `DOCKER_REGISTRY_AUTOPULL` to make sure a new version is actually pulled from the registry (if available). Another option is to use `tools/update_image.bash base` to update the base image before you create a devel image, or to delete local the base image using `docker rmi`.
+In this case you should follow the messages inscructions and either update the scripts or the image.
 
-On the other hand, if `DOCKER_REGISTRY_AUTOPULL` is false, you may re-use the base image used for the initial build of the devel image (if you still have it available). Also, you may build your own local base images using the script versions in your fork.
+#### Update the Scripts
 
+* Try a `git pull` on the scripts possibly a collaborator already did the script update
+
+If that does not help, do the script update yourself:
+
+* `git remote add docker_image_develomment https://github.com/dfki-ric/docker_image_development` (if not present from older upgrade)
+* `git pull docker_image_develomment master
+* resolve the conflicts (if any, but keep your local settings)
+* `git push` the updated scripts to your fork
+
+Now you can push the upgrade to your fork of docker_image_develomment and build/push the new devel image
+
+Optionally you can build your own base image based on the current version of the scripts: navigate to image_setup/01_base_images/ and run the build script of your base image.
+This creates a fresh the base image in your state of the scripts. BUT when creating the devel image answer "no" when asked if a newer image should be pulled.
+
+#### Update the Image
+
+First, try if a collaborator already did the devel image upgrade, the chances are high that the person that merged the script update also pushed new images to the registry:
+
+* `./tools/update_image.bash`
+
+If that is unsuccessful:
+
+* `./exec.bash write_osdeps` (in case you use a supported software stack to auto-fill apt depenencies)
+* `cd image_setup/02_devel_image/`
+* `bash bild.bash`
+* `push the new image`
+
+Also check if you need a new release image.
+
+TIP: If you want to run an old image, the git commit_id of the versien the image was created with, is stored as label in the image, you can run `./tools/match_repo_commit_with_image.bash` to create a detached HEAD with the matching scripts version.
 
 
 ### Apply Changes to a Release Without Devel Folders

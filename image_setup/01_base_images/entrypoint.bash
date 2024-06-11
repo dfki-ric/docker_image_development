@@ -23,17 +23,20 @@ if [ -n "$SCRIPTSVERSION" ]; then
         if [ "$IMAGE_MAJOR" -gt "$SCRIPTS_MAJOR" ]; then
             echo
             echo -e "\e[31mError: The image was produced with incompatible scripts\e[0m: Please pull your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
+            echo "See https://github.com/dfki-ric/docker_image_development/blob/master/doc/030_Advanced_Topics.md#keeping-the-fork-in-sync-with-upstream-changes for further instructions"
             echo
             exit 0
         else
             if [ "$IMAGE_MINOR" -gt "$SCRIPTS_MINOR" ]; then
                 $PRINT_INFO
                 $PRINT_INFO "The image was produced with a newer minor scripts version: Consider pulling your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
+                $PRINT_INFO "See https://github.com/dfki-ric/docker_image_development/blob/master/doc/030_Advanced_Topics.md#keeping-the-fork-in-sync-with-upstream-changes for further instructions"
                 $PRINT_INFO
             else
                 if [ "$IMAGE_PATCH" -gt "$SCRIPTS_PATCH" ]; then
                     $PRINT_DEBUG
                     $PRINT_DEBUG "The image was produced with a newer patch scripts version: Consider pulling your repo or merge a newer version from from https://github.com/dfki-ric/docker_image_development"
+                    $PRINT_DEBUG "See https://github.com/dfki-ric/docker_image_development/blob/master/doc/030_Advanced_Topics.md#keeping-the-fork-in-sync-with-upstream-changes for further instructions"
                     $PRINT_DEBUG
                 fi
             fi
@@ -41,17 +44,20 @@ if [ -n "$SCRIPTSVERSION" ]; then
         if [ "$IMAGE_MAJOR" -lt "$SCRIPTS_MAJOR" ]; then
             echo
             echo -e "\e[31mError: The image was produced with incompatible scripts version\e[0m: Please update your images (run ./tools/update_image.bash)"
+            echo "Or see https://github.com/dfki-ric/docker_image_development/blob/master/doc/030_Advanced_Topics.md#keeping-the-fork-in-sync-with-upstream-changes for further instructions"
             echo
             exit 0
         else
             if [ "$IMAGE_MINOR" -lt "$SCRIPTS_MINOR" ]; then
                 $PRINT_INFO
                 $PRINT_INFO "The image was produced with a lesser minor scripts version: Consider updating your images (run ./tools/update_image.bash)"
+                $PRINT_INFO "Or see https://github.com/dfki-ric/docker_image_development/blob/master/doc/030_Advanced_Topics.md#keeping-the-fork-in-sync-with-upstream-changes for further instructions"
                 $PRINT_INFO
             else
                 if [ "$IMAGE_PATCH" -lt "$SCRIPTS_PATCH" ]; then
                     $PRINT_DEBUG
                     $PRINT_DEBUG "The image was produced with a lesser patch scripts version: Consider updating your images (run ./tools/update_image.bash)"
+                    $PRINT_DEBUG "Or see https://github.com/dfki-ric/docker_image_development/blob/master/doc/030_Advanced_Topics.md#keeping-the-fork-in-sync-with-upstream-changes for further instructions"
                     $PRINT_DEBUG
                 fi
             fi
