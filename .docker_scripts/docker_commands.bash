@@ -182,6 +182,11 @@ generate_container(){
         DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS -e CCACHE_DIR=${DOCKER_DEV_CCACHE_DIR}"
     fi
 
+    if [ $MOUNT_SSH_AGENT ]; then
+        $PRINT_DEBUG "Adding -e -v \$SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent to DOCKER_RUN_ARGS"
+        DOCKER_RUN_ARGS="$DOCKER_RUN_ARGS -v $SSH_AUTH_SOCK:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent"
+    fi
+
     #initial run exits no matter what due to entrypoint (user id settings)
     #/bin/bash will be default nonetheless when called later without command
     DOCKER_ARGS="$DOCKER_FLAGS $RUNTIME_ARG $DOCKER_RUN_ARGS $DOCKER_XSERVER_ARGS \
