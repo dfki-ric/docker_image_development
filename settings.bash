@@ -60,6 +60,10 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 # Make the output as quiet as possible (does not apply to programs started in the container)
 # export SILENT=false
 
+# make the local ssh-agent available in the container
+# with this you can checkout code into your devel contaienr usind ssh
+export MOUNT_SSH_AGENT=true
+
 # mount ccache volume, if enabled, a volume name based on the base image name is generated
 # and mounted to /ccache, this way multiple workspaces in docker_image_development
 # can share a single ccache, CCACHE_DIR is automatically set in the env, just install
