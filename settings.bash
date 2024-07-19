@@ -4,10 +4,10 @@
 export PROJECT_NAME=sw-backbone
 
 # path to your docker registry, leave blank if you don't have one
-# e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
-export DOCKER_REGISTRY=d-reg.hb.dfki.de
-# When your registry has subfolders you can 
-export DOCKER_REGISTRY_GROUP=sw-backbone
+# e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com, harbor.mydomain.com
+export DOCKER_REGISTRY=
+# When your registry has subfolders/groups you can add it here 
+export DOCKER_REGISTRY_GROUP=
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
