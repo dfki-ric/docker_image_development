@@ -1,4 +1,4 @@
-#!/bin/bash
+elopmentimage#!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
 export PROJECT_NAME=sw-backbone
@@ -7,7 +7,7 @@ export PROJECT_NAME=sw-backbone
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com, harbor.mydomain.com
 export DOCKER_REGISTRY=
 # When your registry has subfolders/groups you can add it here 
-export DOCKER_REGISTRY_GROUP=
+export DOCKER_REGISTRY_GROUP=developmentimage
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
