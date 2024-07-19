@@ -1,7 +1,7 @@
 elopmentimage#!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
-export PROJECT_NAME=sw-backbone
+export PROJECT_NAME=docker_image_development
 
 # path to your docker registry, leave blank if you don't have one
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com, harbor.mydomain.com
