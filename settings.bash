@@ -6,12 +6,20 @@ export PROJECT_NAME=sw-backbone
 # path to your docker registry, leave blank if you don't have one
 # e.g. my.registry.com, ghcr.io/dfki-ric, docker.pkg.github.com
 export DOCKER_REGISTRY=d-reg.hb.dfki.de
+# When your registry has subfolders you can 
+export DOCKER_REGISTRY_GROUP=sw-backbone
 
 # in case you are not using a single registry, you can push images in different ones
 # e.g. store base images on hub.docker.com and others in a local registry
 export BASE_REGISTRY=
 export DEVEL_REGISTRY=$DOCKER_REGISTRY
 export RELEASE_REGISTRY=$DOCKER_REGISTRY
+
+# when your images should be stored in different groups of your registry, you can chage it here
+# (or completely customize by setting WORKSPACE_DEVEL_IMAGE, WORKSPACE_RELEASE_IMAGE, WORKSPACE_CD_IMAGE below directly)
+export DEVEL_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
+export RELEASE_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
+export CD_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
 
 # should exec and build scripts auto-pull updated images from the registry?
 export DOCKER_REGISTRY_AUTOPULL=false
@@ -38,10 +46,10 @@ export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
 # e.g MY_PROJECT/docker_image_development:devel
-# under normal circumstances you should not need to change these
-export WORKSPACE_DEVEL_IMAGE=developmentimage/${PROJECT_NAME}:devel
-export WORKSPACE_RELEASE_IMAGE=developmentimage/${PROJECT_NAME}:release
-export WORKSPACE_CD_IMAGE=developmentimage/${PROJECT_NAME}:CD
+# under normal circumstances you should not need to change the values here
+export WORKSPACE_DEVEL_IMAGE=${DEVEL_REGISTRY_GROUP}/${PROJECT_NAME}:devel
+export WORKSPACE_RELEASE_IMAGE=${RELEASE_REGISTRY_GROUP}/${PROJECT_NAME}:release
+export WORKSPACE_CD_IMAGE=${CD_REGISTRY_GROUP}/${PROJECT_NAME}:CD
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
