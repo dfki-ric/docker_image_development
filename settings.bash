@@ -1,4 +1,4 @@
-elopmentimage#!/bin/bash
+#!/bin/bash
 
 # set a project name, no empty spaces or special characters allowed
 export PROJECT_NAME=docker_image_development
