@@ -196,6 +196,7 @@ generate_container(){
                     -e PRINT_DEBUG=${PRINT_DEBUG} \
                     -e PROJECT_NAME=${PROJECT_NAME} \
                     -e EXECMODE=${EXECMODE} \
+                    -u root \
                     $IMAGE_NAME"
     $PRINT_DEBUG "Executing: docker run ${DOCKER_ARGS}"
     docker run ${DOCKER_ARGS} || exit 1
