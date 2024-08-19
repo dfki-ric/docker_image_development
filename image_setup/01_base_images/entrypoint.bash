@@ -75,7 +75,7 @@ if [ "$*" == "init_container" ]; then
     if [ ! -f /initialized_container ]; then
         # only executed by initial docker run, not on docker start
         # releases are creating this file in thrir Dockerfile, so this is not run at all from release images
-        sudo touch /initialized_container
+        touch /initialized_container
         
         $PRINT_INFO
         $PRINT_INFO -e "\e[33mSetting the containers devel user id to host user id\e[0m"
@@ -83,22 +83,22 @@ if [ "$*" == "init_container" ]; then
 
         # create ccache dir, if variable set (enabled in settings and CCACHE_DIR set in run command)
         if [ ! -z $CCACHE_DIR ]; then
-            sudo mkdir -p $CCACHE_DIR
+            mkdir -p $CCACHE_DIR
             # the dockeruser might still have the wrong id, so using the NUID here
-            sudo chown $NUID $CCACHE_DIR
+            chown $NUID $CCACHE_DIR
         else
             unset CCACHE_DIR
         fi
 
         # initialize the container, set the correct UID from host
         # use -E to keep env (for PRINT_* environment)
-        sudo touch /initial_exit
-        sudo -E /bin/bash /opt/init_user_id.bash
+        touch /initial_exit
+        /bin/bash /opt/init_user_id.bash
         # we need to exit here and not in the next if clause, as sudo cannot be run afterwards
         exit 0
     fi
     if [ ! -f /initial_exit ]; then
-        sudo touch /initial_exit
+        touch /initial_exit
         # even thogh the uid setup is not needed by exec.bash, this initial exit is expected also for releases
         # id script needs exit to apply uid next docker start, so exiting here
         # the exec script expects this to happen and rund start/exec afterwards
