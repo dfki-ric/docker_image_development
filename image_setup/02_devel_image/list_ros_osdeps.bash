@@ -7,4 +7,4 @@ if [ -z $ROS_DISTRO ]; then
     exit 13
 fi
 
-rosdep install --from-paths /opt/workspace/src --ignore-src --simulate --reinstall -r -y | awk '{print $6 " "}'
+rosdep install --from-paths /opt/workspace/src --ignore-src --simulate --reinstall -r -y | awk '$3 ~ /apt-get/ {print $6 " "}'
