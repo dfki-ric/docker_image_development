@@ -6,18 +6,19 @@
 
 # on initialization check if the UID of the rosuser user has to be changed:
 if [ "$NUID" -a ! -f /initialized_uid ]; then
-    if [ "$NUID" != "$(id -u dockeruser)" ]; then
+    OUID=$(id -u dockeruser)
+    if [ "$NUID" != "$OUID" ]; then
         $PRINT_DEBUG "UID is going to be changed from $(id -u dockeruser) to $NUID"
         # if group id is given also:
         if [ "$NGID" ]; then
             $PRINT_DEBUG "GID is going to be changed from $(id -g dockeruser) to $NGID"
-            sed s/"x:1000"/"x:$NUID"/ /etc/passwd > /temp
+            sed s/"x:$OUID"/"x:$NUID"/ /etc/passwd > /temp
             mv /temp /etc/passwd
-            sed s/"1000::"/"$NGID::"/ /etc/passwd > /temp
+            sed s/"$OUID::"/"$NGID::"/ /etc/passwd > /temp
             mv /temp /etc/passwd
             chmod 644 /etc/passwd
         else # if no new group id is given just change UID:
-            sed s/"x:1000"/"x:$NUID"/ /etc/passwd > /temp
+            sed s/"x:$OUID"/"x:$NUID"/ /etc/passwd > /temp
             mv /temp /etc/passwd
             chmod 644 /etc/passwd
         fi
