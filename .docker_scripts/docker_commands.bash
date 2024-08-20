@@ -109,7 +109,7 @@ check_iceccd(){
         ICECCD_PID=$(pidof iceccd)
         if [ "${ICECCD_PID}" == "" ]; then
             # no iceccd running on system
-            docker exec $CONTAINER_NAME sudo service iceccd start
+            docker exec -u root $CONTAINER_NAME service iceccd start
             write_value_to_config_file "CONTAINER_ICECCD_PID" $(pidof iceccd)
         else
             # iceccd already running on system
@@ -125,7 +125,7 @@ check_xpra(){
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
         $PRINT_INFO "using xpra server: xpra start :$XPRA_PORT --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT"
         $PRINT_INFO -e "\nRemember to start the xpra client on your PC:\n    bash xpra_attach.bash"
-        docker exec $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
+        docker exec -u dockeruser $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
     fi
 }
 
@@ -210,13 +210,13 @@ generate_container(){
         docker cp ~/.Xauthority $CONTAINER_NAME:/home/dockeruser/
     fi
     $PRINT_DEBUG "running /opt/check_init_workspace.bash in $CONTAINER_NAME"
-    docker exec $DOCKER_FLAGS $CONTAINER_NAME /opt/check_init_workspace.bash
+    docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME /opt/check_init_workspace.bash
     $PRINT_DEBUG "check if iceccd needs to be started $CONTAINER_NAME"
     check_iceccd
     $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
     check_xpra
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
-    docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
+    docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
 }
 
@@ -235,9 +235,9 @@ start_container(){
         # copy most recent XAuthority file to home folder
         $PRINT_DEBUG "copying most recent ~/.Xauthority file to container"
         docker cp ~/.Xauthority $CONTAINER_NAME:/home/dockeruser/
-        docker exec $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
+        docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
     else
-        docker exec $DOCKER_FLAGS $CONTAINER_NAME $@
+        docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME $@
     fi
     DOCKER_EXEC_RETURN_VALUE=$?
 }
