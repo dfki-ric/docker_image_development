@@ -2,9 +2,11 @@
 set -e
 
 #copy scripts VERSION file to put it into the image
-cp ../../VERSION ./
+THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
+cp $ROOT_DIR/VERSION $THIS_DIR/
 
-. ../../settings.bash
+. $ROOT_DIR/settings.bash
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/ros2_humble_22.04_arm64v8_nogl
 
 export BASE_IMAGE=arm64v8/ubuntu:22.04
