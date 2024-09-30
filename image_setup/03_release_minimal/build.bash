@@ -5,7 +5,7 @@ set -e
 # set a NEW base image
 export DISTRO_IMAGE=ubuntu:20.04
 # set executable to be contained in the image
-export EXECUTABLE=/opt/workspace/install/bin/cloud_slam_server
+export EXECUTABLE=PATH_TO_YOUR_BINARY # e.g.:/opt/workspace/install/bin/program
 # add params foe the executable
 export EXECUTABLE_PARAMS=""
 
