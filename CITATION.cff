@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Planthaber"
+  given-names: "Steffen"
+  orcid: "https://orcid.org/0000-0002-9432-465X"
+- family-names: "Danter"
+  given-names: "Leon"
+  #orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "Docker Image Development"
+#version: 2.0.4
+#doi: 10.5281/zenodo.1234
+#date-released: 2017-12-18
+url: "https://github.com/dfki-ric/docker_image_development"
