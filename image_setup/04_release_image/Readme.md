@@ -1,11 +1,11 @@
 # Minimal release
 
-This is a more manual step that preparinf a standard release but it saves image memeory size.
+This is a more manual step that preparing a standard release but it saves image memeory size.
 
-In a normal release the image still containe all headers an libraries that are used to build the image.
+In frozen images the image still contains all headers an libraries that are used to build the image.
 While this can help to restore/change releases these images might not be suitable for "real" deployment in cloud services.
 
-The minimal release build process starts with a besic image to be set in the build.bash file.
+The minimal release build process starts with a basic image (not a :base image) to be set in the build.bash file.
 
 Also in normal docker deployments there is a one image one app rule. This is why you also have to set the executable in build.bash.
 The scripts will collect all linked shared objects and put them into the new image.

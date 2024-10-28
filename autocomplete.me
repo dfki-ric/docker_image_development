@@ -8,7 +8,7 @@ _exec_bash(){
 
     cur=${COMP_WORDS[COMP_CWORD]}
 
-    if [ "${COMP_WORDS[1]}" = "storedrelease" ]; then
+    if [ "${COMP_WORDS[1]}" = "stored" ]; then
         # nothing comes after release
         if [ "${#COMP_WORDS[@]}" -gt "4" ]; then
             return
@@ -28,13 +28,13 @@ _exec_bash(){
         return
     fi
 
-    COMPREPLY=($(compgen -W "base devel release CD storedrelease $(ls startscripts | xargs) /bin/bash write_osdeps" -- "$cur"))
+    COMPREPLY=($(compgen -W "base devel release CD stored $(ls startscripts | xargs) /bin/bash write_osdeps" -- "$cur"))
     
 }
 
 complete -F _exec_bash ./exec.bash
 complete -F _exec_bash exec.bash
-complete -W "base devel release CD storedrelease" ./stop.bash
-complete -W "base devel release CD storedrelease" stop.bash
-complete -W "base devel release CD storedrelease" ./delete_container.bash
-complete -W "base devel release CD storedrelease" delete_container.bash
+complete -W "base devel release CD stored" ./stop.bash
+complete -W "base devel release CD stored" stop.bash
+complete -W "base devel release CD stored" ./delete_container.bash
+complete -W "base devel release CD stored" delete_container.bash

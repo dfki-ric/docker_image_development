@@ -13,11 +13,13 @@ export DOCKER_REGISTRY_GROUP=developmentimage
 # e.g. store base images on hub.docker.com and others in a local registry
 export BASE_REGISTRY=
 export DEVEL_REGISTRY=$DOCKER_REGISTRY
+export FROZEN_REGISTRY=$DOCKER_REGISTRY
 export RELEASE_REGISTRY=$DOCKER_REGISTRY
 
 # when your images should be stored in different groups of your registry, you can chage it here
 # (or completely customize by setting WORKSPACE_DEVEL_IMAGE, WORKSPACE_RELEASE_IMAGE, WORKSPACE_CD_IMAGE below directly)
 export DEVEL_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
+export FROZEN_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
 export RELEASE_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
 export CD_REGISTRY_GROUP=$DOCKER_REGISTRY_GROUP
 
@@ -28,17 +30,18 @@ export DOCKER_REGISTRY_AUTOPULL=false
 ### The checked in version should reflect the image status and be the highest availale image (base - devel - release)
 export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel image (modify setup_workspace.bash)
 # export DEFAULT_EXECMODE="devel" # This is used while deveoping code and preparing a relase
+# export DEFAULT_EXECMODE="frozen" # use the release as default
 # export DEFAULT_EXECMODE="release" # use the release as default
 # export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
-export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
+export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04:base # image with ros2 humble desktop installed
@@ -48,6 +51,7 @@ export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with
 # e.g MY_PROJECT/docker_image_development:devel
 # under normal circumstances you should not need to change the values here
 export WORKSPACE_DEVEL_IMAGE=${DEVEL_REGISTRY_GROUP}/${PROJECT_NAME}:devel
+export WORKSPACE_FROZEN_IMAGE=${RELEASE_REGISTRY_GROUP}/${PROJECT_NAME}:frozen
 export WORKSPACE_RELEASE_IMAGE=${RELEASE_REGISTRY_GROUP}/${PROJECT_NAME}:release
 export WORKSPACE_CD_IMAGE=${CD_REGISTRY_GROUP}/${PROJECT_NAME}:CD
 
