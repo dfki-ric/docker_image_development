@@ -27,7 +27,7 @@ git tag -a release_$TAG -m"${FROZEN_IMAGE_NAME}_$TAG"
 # tag the devel image used to create the release (for extracting workspaces later)
 docker tag $DEVEL_IMAGE_NAME ${DEVEL_IMAGE_NAME}_$TAG
 
-docker build --no-cache --build-arg DEVEL_IMAGE_NAME --build-arg USER --build-arg HOST --build-arg DATE -f $THIS_DIR/Dockerfile -t $RELEASE_IMAGE_NAME --label "release-image-name=$RELEASE_IMAGE_NAME" --label "release-image-created-from=${DEVEL_IMAGE_NAME} - $(docker inspect --format '{{.Id}}' $DEVEL_IMAGE_NAME)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" $ROOT_DIR
+docker build --no-cache --build-arg DEVEL_IMAGE_NAME --build-arg USER --build-arg HOST --build-arg DATE -f $THIS_DIR/Dockerfile -t $FROZEN_IMAGE_NAME --label "frozen-image-name=$FROZEN_IMAGE_NAME" --label "frozen-image-created-from=${DEVEL_IMAGE_NAME} - $(docker inspect --format '{{.Id}}' $DEVEL_IMAGE_NAME)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" $ROOT_DIR
 
 echo "tagging $FROZEN_IMAGE_NAME as ${FROZEN_IMAGE_NAME}_$TAG"
 docker tag $FROZEN_IMAGE_NAME ${FROZEN_IMAGE_NAME}_$TAG

@@ -2,5 +2,6 @@ home
 workspace
 .container_config.txt
 *.tar.gz
+*.tar
 /image_setup/01_base_images/VERSION
 /image_setup/04_save_release/autocomplete.me

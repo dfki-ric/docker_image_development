@@ -51,7 +51,7 @@ export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with
 # e.g MY_PROJECT/docker_image_development:devel
 # under normal circumstances you should not need to change the values here
 export WORKSPACE_DEVEL_IMAGE=${DEVEL_REGISTRY_GROUP}/${PROJECT_NAME}:devel
-export WORKSPACE_FROZEN_IMAGE=${RELEASE_REGISTRY_GROUP}/${PROJECT_NAME}:frozen
+export WORKSPACE_FROZEN_IMAGE=${FROZEN_REGISTRY_GROUP}/${PROJECT_NAME}:frozen
 export WORKSPACE_RELEASE_IMAGE=${RELEASE_REGISTRY_GROUP}/${PROJECT_NAME}:release
 export WORKSPACE_CD_IMAGE=${CD_REGISTRY_GROUP}/${PROJECT_NAME}:CD
 

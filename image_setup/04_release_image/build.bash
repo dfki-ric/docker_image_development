@@ -2,13 +2,10 @@
 
 set -e
 
-# set a NEW base image
+# set a NEW base image with a plain diistribution
 export DISTRO_IMAGE=ubuntu:20.04
 # set executable to be contained in the image
-export EXECUTABLE=PATH_TO_YOUR_BINARY # e.g.:/opt/workspace/install/bin/program
-# add params for the executable
-export EXECUTABLE_PARAMS=""
-
+export EXECUTABLE=/opt/workspace/PATH_TO_YOUR_BINARY # e.g.:/opt/workspace/install/bin/program
 
 THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
@@ -44,10 +41,3 @@ docker build --no-cache --build-arg EXECUTABLE=$EXECUTABLE --build-arg EXECUTABL
 
 echo "tagging $RELEASE_IMAGE_NAME as ${RELEASE_IMAGE_NAME}_$TAG"
 docker tag $RELEASE_IMAGE_NAME ${RELEASE_IMAGE_NAME}_$TAG
-
-echo
-echo "don't forget to push or store the image, if you wish:"
-echo "docker push $RELEASE_IMAGE_NAME"
-echo "docker push ${RELEASE_IMAGE_NAME}_$TAG"
-echo "bash store.bash ${RELEASE_IMAGE_NAME}_$TAG <SHORTNAME>"
-echo
