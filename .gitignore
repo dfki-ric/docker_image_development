@@ -1,5 +1,6 @@
 home
 workspace
+container_root
 .container_config.txt
 *.tar.gz
 /image_setup/01_base_images/VERSION

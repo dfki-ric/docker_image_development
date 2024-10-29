@@ -64,8 +64,18 @@ check_gpu(){
     fi
 }
 
+check_profiling(){
+    if [ "$MOUNT_CONTAINER_ROOT" = "true" ]; then
+        echo "need sudo rights to mount container root dir to $ROOT_DIR/container_root"
+        mkdir -p $ROOT_DIR/container_root
+        sudo bindfs /proc/$(docker inspect --format {{.State.Pid}} $CONTAINER_NAME)/root $ROOT_DIR/container_root
+    fi
+}
+
+
 init_docker(){
     check_gpu
+    check_profiling
 
     if "$INTERACTIVE"; then
         DOCKER_FLAGS="-ti"
