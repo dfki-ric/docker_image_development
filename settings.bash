@@ -109,4 +109,10 @@ export USE_XSERVER_VIA_SSH=false
 export NEEDS_DOCKER_IN_CONTAINER=false
 
 
+# To allow profiling with perf tools on the host, mount the container roor dir to a local folder (./container_root)
+# Then run profiling tools on the host, but provide root folder location to search for libs:
+# sudo hotspot --sysroot ./container_root
+# sudo perf record -o perf.data --call-graph dwarf --aio -z --pid $(pidof my_program) && perf report --symfs ./container_root
+# needs bindfs installed on the host
+export MOUNT_CONTAINER_ROOT=false
 
