@@ -9,17 +9,16 @@ if [ "$NUID" -a ! -f /initialized_uid ]; then
     OUID=$(id -u dockeruser)
     if [ "$NUID" != "$OUID" ]; then
         $PRINT_DEBUG "UID is going to be changed from $(id -u dockeruser) to $NUID"
+        # delete existing users with NUID, that might be present in the base image
+        sed -i /"x:$NUID"/d /etc/passwd
         # if group id is given also:
         if [ "$NGID" ]; then
             $PRINT_DEBUG "GID is going to be changed from $(id -g dockeruser) to $NGID"
-            sed s/"x:$OUID"/"x:$NUID"/ /etc/passwd > /temp
-            mv /temp /etc/passwd
-            sed s/"$OUID::"/"$NGID::"/ /etc/passwd > /temp
-            mv /temp /etc/passwd
+            sed -i s/"x:$OUID"/"x:$NUID"/ /etc/passwd
+            sed -i s/"$OUID::"/"$NGID::"/ /etc/passwd
             chmod 644 /etc/passwd
         else # if no new group id is given just change UID:
-            sed s/"x:$OUID"/"x:$NUID"/ /etc/passwd > /temp
-            mv /temp /etc/passwd
+            sed -i s/"x:$OUID"/"x:$NUID"/ /etc/passwd
             chmod 644 /etc/passwd
         fi
         # change ownerchip to new UID and GID
