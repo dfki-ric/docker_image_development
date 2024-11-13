@@ -10,7 +10,7 @@ cp $ROOT_DIR/VERSION $THIS_DIR/
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/rock_master_22.04
 
 export BASE_IMAGE=nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
-export INSTALL_SCRIPT=install_rock_20.04_dependencies.bash
+export INSTALL_SCRIPT=install_rock_22.04_dependencies.bash
 
 docker pull $BASE_IMAGE
 docker build --no-cache -f $THIS_DIR/Dockerfile -t $IMAGE_NAME:base --build-arg BASE_IMAGE --build-arg INSTALL_SCRIPT --label "base-image-name=$IMAGE_NAME:base" --label "base-image-created-from=${BASE_IMAGE} - $(docker inspect --format '{{.Id}}' $BASE_IMAGE)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" $THIS_DIR
