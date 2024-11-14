@@ -3,9 +3,6 @@
 #requirements for rock-core
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get update && apt-get install -y software-properties-common
-add-apt-repository -y ppa:ubuntuhandbook1/ppa
-
 apt-get update && apt-get install -y \
  apt-transport-https \
  autoconf \
@@ -32,9 +29,6 @@ apt-get update && apt-get install -y \
  libopencv-dev \
  libopenscenegraph-dev \
  libpoco-dev \
- libqt4-dev \
- libqt4-opengl-dev \
- libqtwebkit-dev \
  libsdformat6-dev \
  libsigc++-2.0-0v5 \
  libsigc++-2.0-dev \
@@ -56,8 +50,6 @@ apt-get update && apt-get install -y \
  ruby-activesupport \
  ruby-dev \
  ruby-thor \
- qt4-designer \
- qt4-qmake
 
 # delete downloaded and installed .deb files to lower image size
 apt-get clean
