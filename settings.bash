@@ -35,16 +35,14 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 # export DEFAULT_EXECMODE="CD" # use the continuous deployment image as default
 
 ### The base image used when building a workspace image (one of the ones build in base_images)
-# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_18.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_20.04:base # image with rock core dependencies installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros_melodic_18.04:base # image with basic ros melodic installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/rock_master_22.04:base # image with rock core dependencies installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_18.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04:base # image with ros2 humble desktop installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
 export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04:base # image with ros2 humble desktop installed
 
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name
@@ -113,4 +111,10 @@ export USE_XSERVER_VIA_SSH=false
 export NEEDS_DOCKER_IN_CONTAINER=false
 
 
+# To allow profiling with perf tools on the host, mount the container roor dir to a local folder (./container_root)
+# Then run profiling tools on the host, but provide root folder location to search for libs:
+# sudo hotspot --sysroot ./container_root
+# sudo perf record -o perf.data --call-graph dwarf --aio -z --pid $(pidof my_program) && perf report --symfs ./container_root
+# needs bindfs installed on the host
+export MOUNT_CONTAINER_ROOT=false
 

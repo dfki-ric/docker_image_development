@@ -1,3 +1,4 @@
+5.0.0 - Fix hadling existing users in image (ubuntu:24.04)
 4.0.3 - better error ouput on script/image version mismatch
 4.0.2 - disable incompatibility warning for scriptless runs 
 4.0.1 - fix question behavior "renew" container for inital runs (always asked for renewal on 2nd run)
