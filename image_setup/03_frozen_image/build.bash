@@ -23,7 +23,7 @@ FROZEN_IMAGE_NAME=${FROZEN_REGISTRY:+${FROZEN_REGISTRY}/}$WORKSPACE_FROZEN_IMAGE
 echo "Buidling release image: ${FROZEN_IMAGE_NAME}_$TAG by $USER on $HOST Date: $DATE"
 
 # tag the docker development repo with the release date
-git tag -a release_$TAG -m"${FROZEN_IMAGE_NAME}_$TAG"
+git tag -a frozen_$TAG -m"${FROZEN_IMAGE_NAME}_$TAG"
 # tag the devel image used to create the release (for extracting workspaces later)
 docker tag $DEVEL_IMAGE_NAME ${DEVEL_IMAGE_NAME}_$TAG
 
