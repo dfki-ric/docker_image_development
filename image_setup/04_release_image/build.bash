@@ -41,3 +41,11 @@ docker build --no-cache --build-arg EXECUTABLE=$EXECUTABLE --build-arg EXECUTABL
 
 echo "tagging $RELEASE_IMAGE_NAME as ${RELEASE_IMAGE_NAME}_$TAG"
 docker tag $RELEASE_IMAGE_NAME ${RELEASE_IMAGE_NAME}_$TAG
+
+echo
+echo "don't forget to push or store the image, if you wish:"
+echo "docker push $RELEASE_IMAGE_NAME"
+echo "docker push ${RELEASE_IMAGE_NAME}_$TAG"
+echo "bash store.bash ${RELEASE_IMAGE_NAME}_$TAG <SHORTNAME>"
+echo
+
