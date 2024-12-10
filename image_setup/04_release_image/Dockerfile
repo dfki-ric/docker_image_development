@@ -2,7 +2,6 @@
 ARG DISTRO_IMAGE
 #ARG DEPENDENCIES_FOLDER
 ARG EXECUTABLE
-ARG EXECUTABLE_PARAMS=""
 
 FROM ${DISTRO_IMAGE}
 
@@ -31,11 +30,5 @@ ADD entrypoint.bash /opt/entrypoint.bash
 RUN chmod 755 /opt/entrypoint.bash
 ENTRYPOINT ["/opt/entrypoint.bash"]
 
-
-# add default command
-#use ENV VAR to forward to cmd
-ENV EXECUTABLE_ENVVAR="${EXECUTABLE}"
-ENV EXECUTABLE_PARAMS_ENVVAR="${EXECUTABLE_PARAMS}"
-#CMD [./rrc_gamepad_client config.yml]
-#needs bach for variable 
+# add default command (content of "run" set in entrypoint.bash)
 CMD ["run"]
