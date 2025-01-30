@@ -1,11 +1,11 @@
-# Minimal release
+# Release
 
 This is a more manual step that preparing a standard release but it saves image memeory size.
 
 In frozen images the image still contains all headers an libraries that are used to build the image.
 While this can help to restore/change releases these images might not be suitable for "real" deployment in cloud services.
 
-The release build process starts with a basic image (not a :base image) to be set in the build.bash file. It has to match the pareht image of the :base image you choose, e.g. for developmentimage/plain_22.04:base use ubuntu:22.04 (or nvidia/opengl:1.2-glvnd-devel-ubuntu22.04. See image_setup/01_base_image when in doubt)
+The release build process starts with a basic image (not a :base image) to be set in the Dockerfile. It has to match the parent image of the :base image you choose, e.g. for developmentimage/plain_22.04:base use ubuntu:22.04 (or nvidia/opengl:1.2-glvnd-devel-ubuntu22.04. See image_setup/01_base_image when in doubt)
 
 Fill the files.txt with your desired files (your executable, default config files, plugins).
 The scripts will collect all linked shared objects of the files in that list and put them into the new image.
