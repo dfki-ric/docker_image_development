@@ -1,9 +1,4 @@
-#ARG RELEASE_IMAGE_NAME
-ARG DISTRO_IMAGE
-#ARG DEPENDENCIES_FOLDER
-ARG EXECUTABLE
-
-FROM ${DISTRO_IMAGE}
+FROM ubuntu:22.04
 
 # add alone will overwrite subfolders which would delete libs already in the image
 # so er unpack first and then move each file on its own
@@ -13,12 +8,10 @@ RUN cd /opt/dependencies && \
     find -type f -exec dirname {} \; | xargs printf -- '/%s ' | xargs mkdir -v -p && \
     find -type f -exec mv {} /{} \;
 
-# you can set env vaes here
+# you can set env vars here
 #ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
 
 # add custom files here
-
-
 # TIP: you can also mount e.g. config files using -v
 # docker run --rm -ti -v $(pwd)/ps3_local.yml:/config.yml d-reg.hb.dfki.de/developmentimage/rrc_gamepad_client_20.04:release /bin/bash
 #ENV DEBIAN_FRONTEND=noninteractive
