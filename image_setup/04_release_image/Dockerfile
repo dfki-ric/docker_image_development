@@ -2,7 +2,6 @@
 ARG DISTRO_IMAGE
 #ARG DEPENDENCIES_FOLDER
 ARG EXECUTABLE
-ARG EXECUTABLE_PARAMS=""
 
 FROM ${DISTRO_IMAGE}
 
@@ -14,7 +13,8 @@ RUN cd /opt/dependencies && \
     find -type f -exec dirname {} \; | xargs printf -- '/%s ' | xargs mkdir -v -p && \
     find -type f -exec mv {} /{} \;
 
-ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
+# you can set env vaes here
+#ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
 
 # add custom files here
 
@@ -22,8 +22,10 @@ ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
 # TIP: you can also mount e.g. config files using -v
 # docker run --rm -ti -v $(pwd)/ps3_local.yml:/config.yml d-reg.hb.dfki.de/developmentimage/rrc_gamepad_client_20.04:release /bin/bash
 #ENV DEBIAN_FRONTEND=noninteractive
+# needed to run qt5 applications
+#RUN apt-get update && apt-get install -y libxcb-xinerama0 libqt5widgets5 libqt5webengine5 
 #RUN apt-get update && apt-get install -y libqt5webengine5
-#RUN apt-get update && apt-get install -y libxcb-xinerama0 libqt5widgets5 libqt5webengine5
+
 
 
 ADD entrypoint.bash /opt/entrypoint.bash
@@ -31,11 +33,5 @@ ADD entrypoint.bash /opt/entrypoint.bash
 RUN chmod 755 /opt/entrypoint.bash
 ENTRYPOINT ["/opt/entrypoint.bash"]
 
-
-# add default command
-#use ENV VAR to forward to cmd
-ENV EXECUTABLE_ENVVAR="${EXECUTABLE}"
-ENV EXECUTABLE_PARAMS_ENVVAR="${EXECUTABLE_PARAMS}"
-#CMD [./rrc_gamepad_client config.yml]
-#needs bach for variable 
+# add default command (content of "run" set in entrypoint.bash)
 CMD ["run"]
