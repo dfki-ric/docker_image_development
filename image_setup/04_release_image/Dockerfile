@@ -21,8 +21,10 @@ ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
 # TIP: you can also mount e.g. config files using -v
 # docker run --rm -ti -v $(pwd)/ps3_local.yml:/config.yml d-reg.hb.dfki.de/developmentimage/rrc_gamepad_client_20.04:release /bin/bash
 #ENV DEBIAN_FRONTEND=noninteractive
+# needed to run qt5 applications
+#RUN apt-get update && apt-get install -y libxcb-xinerama0 libqt5widgets5 libqt5webengine5 
 #RUN apt-get update && apt-get install -y libqt5webengine5
-#RUN apt-get update && apt-get install -y libxcb-xinerama0 libqt5widgets5 libqt5webengine5
+
 
 
 ADD entrypoint.bash /opt/entrypoint.bash

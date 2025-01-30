@@ -3,9 +3,9 @@
 set -e
 
 # set a NEW base image with a plain diistribution
-export DISTRO_IMAGE=ubuntu:20.04
+export DISTRO_IMAGE=nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
 # set executable to be contained in the image
-export EXECUTABLE=/opt/workspace/PATH_TO_YOUR_BINARY # e.g.:/opt/workspace/install/bin/program
+export FILELIST=filelist.txt
 
 THIS_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )
@@ -27,9 +27,9 @@ echo "Buidling minimal release image: ${RELEASE_IMAGE_NAME}_$TAG by $USER on $HO
 #run collect_dependencies in devel docker
 echo "collecting dependencies from devel image"
 
-cp $THIS_DIR/additional_workspace_files.txt $ROOT_DIR/workspace/
+cp $THIS_DIR/$FILELIST $ROOT_DIR/workspace/
 cd $ROOT_DIR
-./exec.bash devel /opt/collect_dependencies.bash $EXECUTABLE minimal_release additional_workspace_files.txt
+./exec.bash devel /opt/collect_dependencies.bash $FILELIST minimal_release
 ./stop.bash devel
 cd $THIS_DIR
 #rm -rf $ROOT_DIR/workspace/additional_workspace_files.txt
