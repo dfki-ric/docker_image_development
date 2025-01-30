@@ -27,10 +27,8 @@ RUN cd /opt/dependencies && \
 #RUN apt-get update && apt-get install -y libqt5webengine5
 
 
-
-ADD entrypoint.bash /opt/entrypoint.bash
 #these scripts must be runnable by users, not only root
-RUN chmod 755 /opt/entrypoint.bash
+ADD --chmod=755 entrypoint.bash /opt/entrypoint.bash
 ENTRYPOINT ["/opt/entrypoint.bash"]
 
 # add default command (content of "run" set in entrypoint.bash)
