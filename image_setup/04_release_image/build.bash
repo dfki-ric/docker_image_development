@@ -2,8 +2,6 @@
 
 set -e
 
-# set a NEW base image with a plain diistribution
-export DISTRO_IMAGE=nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
 # set executable to be contained in the image
 export FILELIST=filelist.txt
 
