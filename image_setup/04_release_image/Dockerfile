@@ -13,7 +13,8 @@ RUN cd /opt/dependencies && \
     find -type f -exec dirname {} \; | xargs printf -- '/%s ' | xargs mkdir -v -p && \
     find -type f -exec mv {} /{} \;
 
-ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
+# you can set env vaes here
+#ENV LD_LIBRARY_PATH=/opt/workspace/install/lib/
 
 # add custom files here
 
