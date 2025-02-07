@@ -110,3 +110,22 @@ sudo service iceccd restart
 
 It should be possible to have more complex setups for the iceccd in containers/hosts. So that not necessarily the host has to stop using icecc or multiple container can make use of it.
 
+### Cross Development with docker images
+
+To develop for arm-based systems on x86, you can enable your host machine execute non-native binary formats using [QEMU](https://www.qemu.org) and [binfmt_misc](https://www.kernel.org/doc/html/latest/admin-guide/binfmt-misc.html).
+
+When this is set up, docker is able to run images for the architectures supported by QEMU on your host machine (using CPU emulation).
+
+There is a docker image that can do the settings for you: [see here](https://github.com/multiarch/qemu-user-static)
+
+Quick enable:
+
+    sudo apt-get install qemu binfmt-support qemu-user-static
+    sudo docker run --rm --privileged multiarch/qemu-user-static --reset -p yes --credential yes
+
+Test it using e.g.
+
+    docker run --rm -ti arm64v8/ubuntu uname -m
+    
+Currently you need to build your own base images to use this feature
+    
