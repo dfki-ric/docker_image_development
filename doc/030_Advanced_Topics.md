@@ -120,6 +120,11 @@ There is a docker image that can do the settings for you: [see here](https://git
 
 Quick enable:
 
+ * Ubuntu 24.04:
+    sudo apt-get install qemu-kvm binfmt-support qemu-user-static
+    sudo docker run --rm --privileged multiarch/qemu-user-static --reset -p yes --credential yes
+
+ * Older Ubuntus
     sudo apt-get install qemu binfmt-support qemu-user-static
     sudo docker run --rm --privileged multiarch/qemu-user-static --reset -p yes --credential yes
 
