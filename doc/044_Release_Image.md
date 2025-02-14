@@ -8,9 +8,7 @@ Make sure you have access to the Docker registry if you haven't already pulled t
 
 TIP: you can mount config files and storage locations to have persistent data
 
-docker run --rm --privileged --gpus=all -ti --net=host -v $(pwd)/ps3_local.yml:/config.yml  -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix d-reg.hb.dfki.de/developmentimage/rrc_gamepad_client_20.04:release
-
-As release images are "normal" images, the can also just come as a docker compose file or simular, without the repo.
+As release images are "normal" images, they can also just come as a docker compose file or simular, without the repo.
 
 
 ### Create a Release Image
@@ -31,4 +29,15 @@ Also, you'll need to edit the entrypoint to directly run your allpication `image
 The example provided will still allow to run the console by providing it as command paramater
 
 In order to build the release, execute the `build.bash` in the directory `image_setup/04_release_image`. Afterwards you can push the newly generated image to your registry as desired.
+
+#### Getting params to run the container
+
+If you delete your devel container, exec.bash with VERBOSE=1, will tell you the docker run paramaters are used to start the devel image:
+
+```bash
+$> ./delete_container.bash release
+$> VERBOSE=true ./exec.bash devel /bin/bash`
+```
+
+docker run --rm --privileged --gpus=all -ti --net=host -v $(pwd)/ps3_local.yml:/config.yml  -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix d-reg.hb.dfki.de/developmentimage/rrc_gamepad_client_20.04:release
 
