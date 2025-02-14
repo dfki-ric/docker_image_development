@@ -32,13 +32,13 @@ build_base_image() {
     rm -rf $THIS_DIR/VERSION
 
     echo 
+    echo "you can now use $IMAGE_NAME:base as WORKSPACE_BASE_IMAGE in your settings.bash"
+    echo
     echo "don't forget to push the image if you wish:"
     echo "docker push $IMAGE_NAME:base"
     echo
 
 }
-
-export build_base_image
 
 # make the script also runnable from console
 # check if this is run directly
