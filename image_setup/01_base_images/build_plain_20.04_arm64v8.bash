@@ -9,7 +9,7 @@ cp $ROOT_DIR/VERSION $THIS_DIR/
 . $ROOT_DIR/settings.bash
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/plain_20.04_arm64v8
 
-export BASE_IMAGE=--platform=linux/arm64 ubuntu:20.04
+export BASE_IMAGE="--platform=linux/arm64 ubuntu:20.04"
 export INSTALL_SCRIPT=install_plain_dependencies.bash
 
 docker pull $BASE_IMAGE
