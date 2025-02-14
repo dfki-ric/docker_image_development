@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 #install ROS2
 export DEBIAN_FRONTEND=noninteractive
 export vPYTHON=3
@@ -23,14 +25,22 @@ curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /us
 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-apt update && apt upgrade -y &&  apt install -y \
-    ros-$DISTRO-desktop \
-    ros-$DISTRO-ament-cmake \
-    python$vPYTHON-colcon-common-extensions \
-    python$vPYTHON-rosdep \
-    python$vPYTHON-rosinstall \
-    python$vPYTHON-wstool
-
+if [ "${DISTRO}" = "jazzy" ]; then
+    apt update && apt upgrade -y &&  apt install -y \
+        ros-$DISTRO-desktop \
+        ros-$DISTRO-ament-cmake \
+        python$vPYTHON-colcon-common-extensions \
+        python$vPYTHON-rosdep \
+        python$vPYTHON-rosinstall-generator
+else
+    apt update && apt upgrade -y &&  apt install -y \
+        ros-$DISTRO-desktop \
+        ros-$DISTRO-ament-cmake \
+        python$vPYTHON-colcon-common-extensions \
+        python$vPYTHON-rosdep \
+        python$vPYTHON-rosinstall \
+        python$vPYTHON-wstool
+fi
 #rosdep init && rosdep update
 
 # delete downloaded and installed .deb files to lower image size

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 # To avoid some errors when fetching apt-get updates. # See: https://stackoverflow.com/a/35976127 
 export DEBIAN_FRONTEND=noninteractive
 

@@ -26,7 +26,7 @@ build_base_image() {
     fi
 
     docker pull $FROM_IMAGE
-    docker build ${PLATFORM_ARG} --no-cache -f $THIS_DIR/Dockerfile -t $IMAGE_NAME:base --build-arg BASE_IMAGE="${FROM_IMAGE}" --build-arg INSTALL_SCRIPT --label "base-image-name=$IMAGE_NAME:base" --label "base-image-created-from=${FROM_IMAGE} - $(docker inspect --format '{{.Id}}' $FROM_IMAGE)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" $THIS_DIR
+    docker build ${PLATFORM_ARG} --progress=plain --no-cache -f $THIS_DIR/Dockerfile -t $IMAGE_NAME:base --build-arg BASE_IMAGE="${FROM_IMAGE}" --build-arg INSTALL_SCRIPT --build-arg INSTALL_ARGS --label "base-image-name=$IMAGE_NAME:base" --label "base-image-created-from=${FROM_IMAGE} - $(docker inspect --format '{{.Id}}' $FROM_IMAGE)" --label "dockerfile_repo_commit=$(git rev-parse HEAD)" $THIS_DIR
 
     # remove VERSION file from here
     rm -rf $THIS_DIR/VERSION
