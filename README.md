@@ -34,7 +34,8 @@ In order to achieve this, the **release image** can be created, which contains t
 
 ## Getting Started
 
-Please read the [usage howto](doc/020_Usage.md)
+Read the [quick start guide](doc/010_Quick_Start.md) and/or the [usage howto](doc/020_Usage.md)
+
 
 When you have issues while running the container, please have a look into the [troubleshooting guide](doc/040_Troubleshooting.md) or create a issue in the [original location of the repo](https://github.com/dfki-ric/docker_image_development)
 
