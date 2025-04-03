@@ -135,7 +135,7 @@ check_xpra(){
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
         $PRINT_INFO "using xpra server: xpra start :$XPRA_PORT --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT"
         $PRINT_INFO -e "\nRemember to start the xpra client on your PC:\n    bash xpra_attach.bash"
-        docker exec -u dockeruser $CONTAINER_NAME /bin/bash -c 'xpra start $DISPLAY --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
+        docker exec -u dockeruser $CONTAINER_NAME /bin/bash -c 'xpra start :$XPRA_PORT --sharing=yes --bind-tcp=0.0.0.0:$XPRA_PORT 2> /dev/null && echo'
     fi
 }
 
@@ -171,9 +171,8 @@ set_xserver_args(){
         fi
 
     fi
-    
     if [ "$DOCKER_XSERVER_TYPE" = "xpra" ]; then
-        DOCKER_XSERVER_ARGS="-e USE_XPRA=true -e DISPLAY=:10000 -e XPRA_PORT"
+        DOCKER_XSERVER_ARGS="-e USE_XPRA=true -e DISPLAY=:$XPRA_PORT -e XPRA_PORT -p $XPRA_PORT:$XPRA_PORT"
     fi
 }
 

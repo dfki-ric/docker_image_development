@@ -91,7 +91,7 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 export DOCKER_XSERVER_TYPE=auto
 #xpra_port may be set if --net=host is used, otherwise, please use -p in the ADDITIONAL_DOCKER_RUN_ARGS to assign a port for the
 #xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
-export XPRA_PORT="10000"
+export XPRA_PORT="14500"
 
 # always update DISPLAY variable for new ./exec.bash commands
 # when ./exec.bash is called through ssh -X each ssh conenction will have its own DISPLAY)
