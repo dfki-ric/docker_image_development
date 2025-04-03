@@ -139,6 +139,14 @@ check_xpra(){
     fi
 }
 
+start_services(){
+    SERVICE_ARR=($SERVICES);
+    for service in ${SERVICE_ARR[*]}; do
+        $PRINT_INFO "starting service: $service"
+        docker exec -u dockeruser $CONTAINER_NAME sudo service $service start
+    done
+}
+
 
 set_xserver_args(){
     DOCKER_XSERVER_ARGS=""
@@ -224,6 +232,7 @@ generate_container(){
     check_iceccd
     $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
     check_xpra
+    start_services
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
     docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME $@
     DOCKER_EXEC_RETURN_VALUE=$?
@@ -238,6 +247,7 @@ start_container(){
     check_iceccd
     $PRINT_DEBUG "check if xpra needs to be started $CONTAINER_NAME"
     check_xpra
+    start_services
     $PRINT_DEBUG "running $@ in $CONTAINER_NAME"
 
     if [ "$USE_XSERVER_VIA_SSH" = "true" ]; then

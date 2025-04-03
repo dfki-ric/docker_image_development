@@ -60,6 +60,12 @@ export WORKSPACE_CD_IMAGE=${CD_REGISTRY_GROUP}/${PROJECT_NAME}:CD
 # --privileged
 export ADDITIONAL_DOCKER_RUN_ARGS=""
 
+
+# List of system services to be started in the container
+# e.g. SERVICES="neo4j redis-server"
+# These should be installed in the devel image via dockerfule or workspace_os_dependencies.txt
+export SERVICES=""
+
 # Make the exec script to talk more for debugging/docker setup purposes.
 # This may also be stated in the command line: $> VERBOSE=true ./exec.bash 
 # export VERBOSE=true
