@@ -64,6 +64,12 @@ export WORKSPACE_CD_IMAGE=${CD_REGISTRY_GROUP}/${PROJECT_NAME}:CD
 # --privileged
 export ADDITIONAL_DOCKER_RUN_ARGS=""
 
+
+# List of system services to be started in the container
+# e.g. SERVICES="neo4j redis-server"
+# These should be installed in the devel image via dockerfule or workspace_os_dependencies.txt
+export SERVICES=""
+
 # Make the exec script to talk more for debugging/docker setup purposes.
 # This may also be stated in the command line: $> VERBOSE=true ./exec.bash 
 # export VERBOSE=true
@@ -95,7 +101,7 @@ export ADDITIONAL_DOCKER_RUN_ARGS=""
 export DOCKER_XSERVER_TYPE=auto
 #xpra_port may be set if --net=host is used, otherwise, please use -p in the ADDITIONAL_DOCKER_RUN_ARGS to assign a port for the
 #xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
-export XPRA_PORT="10000"
+export XPRA_PORT="14500"
 
 # always update DISPLAY variable for new ./exec.bash commands
 # when ./exec.bash is called through ssh -X each ssh conenction will have its own DISPLAY)
