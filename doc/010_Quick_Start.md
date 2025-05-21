@@ -1,5 +1,7 @@
 ## Initial Setup
-The setup depends whether soneone already prepared settigns and a docker_image_development fork for your project or not.
+The setup depends whether soneone already prepared settings and a docker_image_development fork for your project or not.
+
+When you are starting from scratch, see [below](#initial-setup-if-there-is-no-prepared-fork-for-your-project)
 
 ### Initial Set-Up if someone already prepared a docker_image_development clone for your project
 
