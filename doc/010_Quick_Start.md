@@ -34,7 +34,7 @@ When you are starting from scratch, see [below](#initial-setup-if-there-is-no-pr
 3. Setup Docker (as above, if not already done on that PC)
 4. Edit settings.bash
    1. set the project name (PROJECT_NAME, defines the name of the images created)
-   2. set the registry urls (if required)  (see doc in settings.bash, you can define different registries for differend stages, default: base images are public, all other go to defined DOCKER_REGISTRY)
+   2. set the registry urls (if required)  (see doc in settings.bash, you can define different registries for different stages, default: base images are public, all other go to defined DOCKER_REGISTRY)
    3. select a base image (WORKSPACE_BASE_IMAGE).
       * building ontop of an existing public base images can save hdd space (shared base layers among multiple workspaces using docker_image_development)
       * In case you don't trust the public images, you can [build your own](041_Base_Image.md)
