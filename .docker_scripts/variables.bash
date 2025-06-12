@@ -54,7 +54,13 @@ function check_registry_overrides() {
         export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
         $PRINT_DEBUG "Overriding devel registry from $OLD_DEVEL_REGISTRY to $DEVEL_REGISTRY"
     fi
-    
+
+    if [ ! "$OVERRIDE_FROZEN_REGISTRY" = "" ]; then
+        export OLD_FROZEN_REGISTRY=$FROZEN_REGISTRY
+        export FROZEN_REGISTRY=$OVERRIDE_FROZEN_REGISTRY
+        $PRINT_DEBUG "Overriding devel registry from $OLD_FROZEN_REGISTRY to $FROZEN_REGISTRY"
+    fi
+
     if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
         export OLD_RELEASE_REGISTRY=$RELEASE_REGISTRY
         export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
