@@ -37,10 +37,11 @@ export DEFAULT_EXECMODE="base" # Use this only for setting up the initial devel 
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros_noetic_20.04:base # image with basic ros noetic installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_foxy_20.04:base # image with ros2 foxy desktop installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/ros2_humble_22.04:base # image with ros2 humble desktop installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_jazzy_24.04:base # image with ros2 humble desktop installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_jazzy_24.04:base # image with ros2 jazzy desktop installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/ros2_lyrical_26.04:base # image with ros2 lyrical desktop installed
 # export WORKSPACE_BASE_IMAGE=developmentimage/plain_20.04:base # plain image with build_essentials installed
-export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
-# export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
+# export WORKSPACE_BASE_IMAGE=developmentimage/plain_22.04:base # plain image with build_essentials installed
+export WORKSPACE_BASE_IMAGE=developmentimage/plain_24.04:base # plain image with build_essentials installed
 
 # The Name of the Workspace image to use
 # you should add a workspace name folder and a image name

@@ -13,7 +13,6 @@ apt-get update && apt-get install -y \
     cmake \
     ccache \
     icecc \
-    xpra \
     git \
     locales \
     nano \
@@ -23,6 +22,8 @@ apt-get update && apt-get install -y \
     sudo \
     vim-tiny \
     wget
+
+apt-get install -y xpra # might fail
 
 locale-gen en_US.UTF-8
 
