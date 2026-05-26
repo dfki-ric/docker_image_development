@@ -26,11 +26,31 @@ The build process will automatically try to pull required images from a docker r
 If the image is already available locally, it doesn't need to be pulled again.
 
 Another goal of this approach is to be able to preserve a working version of a component, a project or a demo and possibly ship it to external partners.
-In order to achieve this, the **release image** can be created, which contains the devel image plus the additional workspace files and run scripts required to operate the product.
+In order to achieve this, the **frozen image** can be created, which contains the devel image plus the additional workspace files and run scripts required to operate the product.
+This frozen image can contain all files for development (source code, compilers, etc), but may be exclude files by using the .dockerignore file.
+
+Finally the **release image** is a stripped down image that does not include the installed programs used for development. It consists a minimal base image, like ubuntu:24.04, and only executables together with their linked libreries.
 
 ![process overview](/doc/docker_development_image.png?raw=true "process overview")
 
+## Features
 
+Features are accessible through the settings.bash file
+
+* XServer - Graphical programs
+  * 3d acceleration (only for nvidia cards)
+  * GUIs on remote mashines
+    *  Ssh -X tunnels to containers on remote machines (use ssh -X to connect a machine whre a GUI runs in a docker)
+    *  Or automated launch of an xpra server in the container
+* Use the hosts ssh-agent in the container (no need to copy, mount or create an key in the container for e.g. ssh checkouts)
+* Creating images from workspaces (e.g. to save a runnable version of a  successful demo)
+* Shares the settings/image names through a common git repo, 
+* ccache and icecc support (compiler cache and distributed compilation)
+* docker in docker
+* Mouting the complete container filesystem on the host (needs sudo on startup)
+  * To be used for profiling with perf/hotspot on the host
+
+For more information see comment sin setting.bash 
 
 ## Getting Started
 

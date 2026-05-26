@@ -15,6 +15,16 @@ IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
 
 INTERACTIVE=${INTERACTIVE:="true"}
 
+if [ "${PROJECT_NAME}" == "docker_image_development" ]; then
+    while $INTERACTIVE; do
+        read -p "your project name is still docker_image_development, proceed anyways [y/n]? " answer
+        case $answer in
+            [Yy]* ) DOCKER_REGISTRY_AUTOPULL=true; break;;
+            [Nn]* ) exit;;
+            * ) echo "Please answer yes or no.";;
+        esac  
+done
+fi
 while $INTERACTIVE; do
     read -p "Do you wish to download the most recent base image [y/n]? " answer
     case $answer in

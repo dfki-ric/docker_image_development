@@ -64,15 +64,22 @@ Devel images should contain project specific dependencies.
 
 If you are a developer using docker_development, please have a look at the [devel image readme](042_Devel_Image.md).
 
+## Frozen Images
+
+Frozen images are ready to run images including the whole workspace (a frozen workspace).
+
+If you are a developer using docker_development, please have a look at the [frozen image readme](043_Frozen_Image.md).
+
+
 ## Release Images
 
-Release images are ready to run, if you already have one, just start it using `./exec.bash` with the correct parameters (see "General Usage").
+Release images are minimized and ready to run, also with docker compose etc.
 
-Please have a look at the [release image readme](043_Release_Image.md).
+Please have a look at the [release image readme](044_Release_Image.md).
 
 ## Exported Images
 
 Release Images can be exported as .tar.gz file and a run sripts .tar.gz file which can be imported an run on another PC.
 
-See [export image readme](044_Export_Image.md).
+See [export image readme](45_Export_Image.md).
 

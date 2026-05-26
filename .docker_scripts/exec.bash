@@ -74,7 +74,7 @@ if [ "$EXECMODE" = "devel" ]; then
     fi
 fi
 
-if [ "$EXECMODE" = "storedrelease" ]; then
+if [ "$EXECMODE" = "stored" ]; then
     # Read image name from command line, first arg already shifted away
     set_stored_image_name $1
     shift

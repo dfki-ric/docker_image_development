@@ -18,7 +18,7 @@ echo "# Install custom packages (e.g. editors) by adding them directly to the Do
 list_autoproj_osdeps () {
     echo "adding dependencies of autoproj workspace folder: $(pwd)"
     . env.sh
-    ruby /opt/list_rock_osdeps.rb >> /opt/workspace_os_dependencies.txt
+    bundle exec ruby /opt/list_rock_osdeps.rb >> /opt/workspace_os_dependencies.txt
 }
 
 list_ros_osdeps () {

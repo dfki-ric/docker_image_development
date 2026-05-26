@@ -10,7 +10,7 @@ SCRIPTSVERSION=$(cat $ROOT_DIR/VERSION | head -n1 | awk -F' ' '{print $1}')
 # (several checkouts  of this repo possible without interfering)
 FOLDER_MD5=$(echo $ROOT_DIR | md5sum | cut -b 1-8)
 
-EXECMODES=("base" "devel" "release" "storedrelease" "CD")
+EXECMODES=("base" "devel" "frozen" "release" "stored" "CD")
 
 PRINT_WARNING=echo
 PRINT_INFO=echo
@@ -54,7 +54,13 @@ function check_registry_overrides() {
         export DEVEL_REGISTRY=$OVERRIDE_DEVEL_REGISTRY
         $PRINT_DEBUG "Overriding devel registry from $OLD_DEVEL_REGISTRY to $DEVEL_REGISTRY"
     fi
-    
+
+    if [ ! "$OVERRIDE_FROZEN_REGISTRY" = "" ]; then
+        export OLD_FROZEN_REGISTRY=$FROZEN_REGISTRY
+        export FROZEN_REGISTRY=$OVERRIDE_FROZEN_REGISTRY
+        $PRINT_DEBUG "Overriding devel registry from $OLD_FROZEN_REGISTRY to $FROZEN_REGISTRY"
+    fi
+
     if [ ! "$OVERRIDE_RELEASE_REGISTRY" = "" ]; then
         export OLD_RELEASE_REGISTRY=$RELEASE_REGISTRY
         export RELEASE_REGISTRY=$OVERRIDE_RELEASE_REGISTRY
@@ -71,10 +77,13 @@ function set_image_name(){
     if [ "$EXECMODE" = "devel" ]; then
         IMAGE_NAME=${DEVEL_REGISTRY:+${DEVEL_REGISTRY}/}$WORKSPACE_DEVEL_IMAGE
     fi
+    if [ "$EXECMODE" = "frozen" ]; then
+        IMAGE_NAME=${FROZEN_REGISTRY:+${FROZEN_REGISTRY}/}$WORKSPACE_FROZEN_IMAGE
+    fi
     if [ "$EXECMODE" = "release" ]; then
         IMAGE_NAME=${RELEASE_REGISTRY:+${RELEASE_REGISTRY}/}$WORKSPACE_RELEASE_IMAGE
     fi
-    if [ "$EXECMODE" = "storedrelease" ]; then
+    if [ "$EXECMODE" = "stored" ]; then
         set_stored_image_name $1
     fi
     if [ "$EXECMODE" = "CD" ]; then
