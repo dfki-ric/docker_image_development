@@ -170,12 +170,12 @@ set_xserver_args(){
     fi
     
     if [ "$DOCKER_XSERVER_TYPE" = "mount" ]; then
-
+	export DOCKER_X11_ARGS="-eXWAYLAND_NO_GLAMOR=1 -e QT_X11_NO_MITSHM=1 -e DISPLAY -e XAUTHORITY"
         if [ "$USE_XSERVER_VIA_SSH" = "false" ]; then
             DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix"
         else
             # neeed to reach xserver through "localhost" for DISPLAY var to work
-            DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix --net=host"
+            DOCKER_XSERVER_ARGS="-e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix --net=host -e WAYLAND_DISPLAY=$WAYLAND_DISPLAY -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/tmp/$WAYLAND_DISPLAY"
         fi
 
     fi
@@ -254,9 +254,15 @@ start_container(){
         # copy most recent XAuthority file to home folder
         $PRINT_DEBUG "copying most recent ~/.Xauthority file to container"
         docker cp ~/.Xauthority $CONTAINER_NAME:/home/dockeruser/
-        docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
+        docker cp $XAUTHORITY $CONTAINER_NAME:$XAUTHORITY
+        docker exec -u dockeruser $DOCKER_X11_ARGS $DOCKER_FLAGS $CONTAINER_NAME /bin/bash -c "export DISPLAY=${DISPLAY} && $@"
     else
-        docker exec -u dockeruser $DOCKER_FLAGS $CONTAINER_NAME $@
+        docker cp ~/.Xauthority $CONTAINER_NAME:/home/dockeruser/
+        docker cp $XAUTHORITY $CONTAINER_NAME:$XAUTHORITY
+        docker exec -u root "$CONTAINER_NAME" mkdir -p ${XAUTHORITY%/*}
+        docker exec -u root "$CONTAINER_NAME" chown -R dockeruser:dockeruser ${XAUTHORITY%/*}
+        echo docker exec -u dockeruser $DOCKER_X11_ARGS $DOCKER_FLAGS $CONTAINER_NAME $@
+        docker exec -u dockeruser $DOCKER_X11_ARGS $DOCKER_FLAGS $CONTAINER_NAME $@
     fi
     DOCKER_EXEC_RETURN_VALUE=$?
 }

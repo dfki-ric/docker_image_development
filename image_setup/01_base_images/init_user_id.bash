@@ -29,6 +29,12 @@ if [ "$NUID" -a ! -f /initialized_uid ]; then
     fi
 fi
 
+# also align the render group id (for 3d dcceleration access in docker for ubuntu 26.04)
+if [ "$RENDER_GROUP_ID" -a ! -f /initialized_uid ]; then
+    groupadd -g $RENDER_GROUP_ID -o host_render || true
+    usermod -aG host_render dockeruser
+fi
+
 if [ "$DOCKER_GROUP_ID" -a ! -f /initialized_docker_gid ]; then
     if [ "$DOCKER_GROUP_ID" != "$(getent group docker | cut -d: -f3)" ]; then
         $PRINT_DEBUG "Docker GID is going to be changed to $DOCKER_GROUP_ID"
