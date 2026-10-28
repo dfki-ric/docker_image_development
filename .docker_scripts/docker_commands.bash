@@ -164,7 +164,6 @@ set_xserver_args(){
             $PRINT_INFO "exec.bash was executed in ssh terminal, using xpra for X Apps"
             DOCKER_XSERVER_TYPE=xpra
         else
-			export DOCKER_X11_ARGS="-eXWAYLAND_NO_GLAMOR=1 -e QT_X11_NO_MITSHM=1 -e DISPLAY -e XAUTHORITY"
             $PRINT_INFO "exec.bash was executed in local terminal, using mount for X Apps"
             DOCKER_XSERVER_TYPE=mount
         fi
