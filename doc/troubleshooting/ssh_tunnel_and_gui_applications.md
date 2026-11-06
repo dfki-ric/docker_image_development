@@ -31,7 +31,7 @@ AND
 
 Normally, docker only allows setting environment variables when creating a container, this option will make the exec script run an extra shell on exec, which has the correct DISPLAY environment variable set.
 
-This DISPLAY env var, includes the hostname "localhost", which is the docker host, in order for the container to reach the host via "localhost" the --net=host flag is added to the run args.
+This DISPLAY env var, includes the hostname "localhost", which is the docker host, in order for the container to reach the host via "localhost" network_mode: host is added to the container configuration (.docker_scripts/compose/xserver_via_ssh.yml).
 
 Also the USE_XSERVER_VIA_SSH option enables copying the ~/.Xauthority file to the containers home/dockeruser directory on each call of `./exec.bash` in order to ensure the container has the correct credentials available to write to the hosts xserver. 
 

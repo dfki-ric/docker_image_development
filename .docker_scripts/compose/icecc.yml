@@ -1,0 +1,7 @@
+# added by exec.bash when USE_ICECC=true (devel exec mode),
+# unless docker-compose.exec.bash.yml uses network_mode: host or publishes the ports already
+services:
+  workspace:
+    ports:
+      - "10245:10245"
+      - "8765:8765/udp"

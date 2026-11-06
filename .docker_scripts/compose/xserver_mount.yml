@@ -1,0 +1,8 @@
+# added by exec.bash when DOCKER_XSERVER_TYPE=mount
+services:
+  workspace:
+    environment:
+      DISPLAY:
+      QT_X11_NO_MITSHM: "1"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix

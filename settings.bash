@@ -59,8 +59,9 @@ export WORKSPACE_CD_IMAGE=${CD_REGISTRY_GROUP}/${PROJECT_NAME}:CD
 
 # In case your docker container needs special run paramaters
 # like open ports, additional mounts etc.
-# When you change this, you need to recreate the container
-# best way to do this, run the delete_contianer.bash script
+# They are translated to docker compose and added to the configuration of docker-compose.exec.bash.yml
+# Run parameters that cannot be translated can be added to docker-compose.exec.bash.yml directly
+# When you change this, ./exec.bash detects it and offers to renew the container
 # often used params:
 # --dns-search=mydomain
 # --net=host
@@ -102,18 +103,17 @@ export SERVICES=""
 # conenct to xserver via [mount, xpra, none, auto]
 # auto will detect if the container is started over an ssh session and if yes, xpra is used, mount otherwise
 export DOCKER_XSERVER_TYPE=auto
-#xpra_port may be set if --net=host is used, otherwise, please use -p in the ADDITIONAL_DOCKER_RUN_ARGS to assign a port for the
-#xpra server, DOCKER_XSERVER_TYPE needs to be "xpra"
+#port of the xpra server (published automatically), used when DOCKER_XSERVER_TYPE is "xpra"
 export XPRA_PORT="14500"
 
 # always update DISPLAY variable for new ./exec.bash commands
 # when ./exec.bash is called through ssh -X each ssh conenction will have its own DISPLAY)
-# this also needs --net=host (auto-added) to reach the xserver via localhost
+# this also needs network_mode: host (auto-added) to reach the xserver via localhost
 export USE_XSERVER_VIA_SSH=false
 
 
 # If you need to start docker contaiers from your workspace (e.g. for launch tools) set this option to true
-# It will add "--privileged -v /var/run/docker.sock:/var/run/docker.sock" to the DOCKER_RUN_ARGS
+# It will mount /var/run/docker.sock into the container (see .docker_scripts/compose/docker_in_container.yml)
 # The hosts docker deamon can then be used from within the container. Setting this to true will also add the dockeruser
 # to the docker group inside the container and set the docker groups id in the container to have the same gid as the host docker group.
 # The docker.io (apt) package has to be installed manually (e.g. through the 02_devel_image/Dockerfile)

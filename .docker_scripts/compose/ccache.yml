@@ -1,0 +1,13 @@
+# added by exec.bash when MOUNT_CCACHE_VOLUME=true (base and devel exec mode)
+# the volume is shared between all workspaces using the same base image
+services:
+  workspace:
+    environment:
+      CCACHE_DIR: /ccache
+    volumes:
+      - ccache:/ccache
+
+volumes:
+  ccache:
+    name: ${CCACHE_VOLUME_NAME}
+    external: true

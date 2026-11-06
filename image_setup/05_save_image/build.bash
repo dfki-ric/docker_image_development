@@ -32,6 +32,7 @@ mkdir -p $SCRIPTFOLDER
 echo "creating scripts archive: $SCRIPTFOLDER.tar.gz"
 cp -R $ROOT_DIR/.docker_scripts/ ./$SCRIPTFOLDER/.docker_scripts/
 cp $ROOT_DIR/settings.bash ./$SCRIPTFOLDER/
+cp $ROOT_DIR/docker-compose.exec.bash.yml ./$SCRIPTFOLDER/
 cp $ROOT_DIR/exec.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/stop.bash ./$SCRIPTFOLDER/
 cp $ROOT_DIR/delete_container.bash ./$SCRIPTFOLDER/

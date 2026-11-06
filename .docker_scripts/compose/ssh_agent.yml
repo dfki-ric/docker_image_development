@@ -1,0 +1,7 @@
+# added by exec.bash when MOUNT_SSH_AGENT=true
+services:
+  workspace:
+    environment:
+      SSH_AUTH_SOCK: /ssh-agent
+    volumes:
+      - ${SSH_AUTH_SOCK:?is not set, MOUNT_SSH_AGENT=true requires a running ssh agent}:/ssh-agent

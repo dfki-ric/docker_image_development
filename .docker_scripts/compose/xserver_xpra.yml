@@ -1,0 +1,9 @@
+# added by exec.bash when DOCKER_XSERVER_TYPE=xpra
+services:
+  workspace:
+    environment:
+      USE_XPRA: "true"
+      DISPLAY: ":${XPRA_PORT}"
+      XPRA_PORT: ${XPRA_PORT}
+    ports:
+      - "${XPRA_PORT}:${XPRA_PORT}"

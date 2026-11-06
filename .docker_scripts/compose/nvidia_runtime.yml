@@ -1,0 +1,4 @@
+# added by exec.bash when the nvidia runtime is available, but docker does not support the --gpus option
+services:
+  workspace:
+    runtime: nvidia

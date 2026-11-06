@@ -1,0 +1,7 @@
+# added by exec.bash when NEEDS_DOCKER_IN_CONTAINER=true
+services:
+  workspace:
+    environment:
+      DOCKER_GROUP_ID: ${DOCKER_GROUP_ID}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

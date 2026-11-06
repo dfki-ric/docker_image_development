@@ -41,6 +41,29 @@ function evaluate_execmode(){
     fi
 }
 
+# needs EXECMODE to be set
+function set_container_name(){
+    # use current folder name + execmode + path md5 as container name, if not set in the env
+    # (several checkouts of this repo possible without interfering)
+    CONTAINER_NAME=${CONTAINER_NAME:="${ROOT_DIR##*/}-$EXECMODE-$FOLDER_MD5"}
+    # each container has its own docker compose project (allowed characters: lowercase letters, digits, dashes and underscores)
+    COMPOSE_PROJECT_NAME=$(echo "$CONTAINER_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/_/g')
+}
+
+# needs set_container_name
+# sets CONTAINER_COMPOSE_PROJECT to the compose project of the container (./exec.bash or the standalone docker-compose.yml)
+# empty if there is none (container created before exec.bash used docker compose, or no container)
+function find_container_compose_project(){
+    CONTAINER_COMPOSE_PROJECT=$(docker inspect --format '{{ index .Config.Labels "com.docker.compose.project" }}' ${CONTAINER_NAME} 2> /dev/null)
+    if [ "$CONTAINER_COMPOSE_PROJECT" = "<no value>" ]; then
+        CONTAINER_COMPOSE_PROJECT=""
+    fi
+    if [ -z "$CONTAINER_COMPOSE_PROJECT" ] && [ "$(docker ps -aq --filter "label=com.docker.compose.project=${COMPOSE_PROJECT_NAME}")" ]; then
+        # the container itself is gone, but additional services of the ./exec.bash project exist
+        CONTAINER_COMPOSE_PROJECT=$COMPOSE_PROJECT_NAME
+    fi
+}
+
 function check_registry_overrides() {
     # In case you are using CD server and need to use other registries, they can be overridden via env variables
     if [ ! "$OVERRIDE_BASE_REGISTRY" = "" ]; then

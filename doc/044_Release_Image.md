@@ -32,12 +32,23 @@ In order to build the release, execute the `build.bash` in the directory `image_
 
 #### Getting params to run the container
 
-If you delete your devel container, exec.bash with VERBOSE=1, will tell you the docker run paramaters are used to start the devel image:
+To run the release image without this repository, you can generate a standalone docker compose file containing the configuration ./exec.bash would use, with all variables resolved:
+
+```bash
+$> ./tools/generate_standalone_compose.bash release
+```
+
+This writes `docker-compose.yml`, see the comments in the file for usage.
+You can also add a `command:` to the workspace service to directly run your application.
+
+Alternatively, if you delete your container, exec.bash with VERBOSE=true will print the complete docker compose configuration used to create the container:
 
 ```bash
 $> ./delete_container.bash release
-$> VERBOSE=true ./exec.bash devel /bin/bash`
+$> VERBOSE=true ./exec.bash release /bin/bash
 ```
+
+e.g. a docker run command derived from it:
 
 docker run --rm --privileged --gpus=all -ti --net=host -v $(pwd)/ps3_local.yml:/config.yml  -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix d-reg.hb.dfki.de/developmentimage/rrc_gamepad_client_20.04:release
 

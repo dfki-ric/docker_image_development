@@ -1,0 +1,12 @@
+# added by exec.bash in "devel" exec mode
+services:
+  workspace:
+    volumes:
+      - ${ROOT_DIR}/startscripts:/opt/startscripts
+      - ${ROOT_DIR}/workspace:/opt/workspace
+      - ${ROOT_DIR}/home:/home/dockeruser
+      - ${ROOT_DIR}/image_setup/02_devel_image/workspace_os_dependencies.txt:/opt/workspace_os_dependencies.txt
+      - ${ROOT_DIR}/image_setup/02_devel_image/list_rock_osdeps.rb:/opt/list_rock_osdeps.rb
+      - ${ROOT_DIR}/image_setup/02_devel_image/list_ros_osdeps.bash:/opt/list_ros_osdeps.bash
+      - ${ROOT_DIR}/image_setup/02_devel_image/write_osdeps.bash:/opt/write_osdeps.bash
+      - ${ROOT_DIR}/image_setup/02_devel_image/collect_dependencies.bash:/opt/collect_dependencies.bash

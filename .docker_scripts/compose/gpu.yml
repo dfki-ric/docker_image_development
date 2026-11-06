@@ -1,0 +1,10 @@
+# added by exec.bash when docker supports the --gpus option (equivalent to: docker run --gpus all)
+services:
+  workspace:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

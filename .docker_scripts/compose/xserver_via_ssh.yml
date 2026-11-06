@@ -1,0 +1,5 @@
+# added by exec.bash when DOCKER_XSERVER_TYPE=mount and USE_XSERVER_VIA_SSH=true
+# the container needs to reach the xserver via "localhost" for the DISPLAY variable to work
+services:
+  workspace:
+    network_mode: host
