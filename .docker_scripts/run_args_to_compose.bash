@@ -31,6 +31,12 @@ run_args_to_compose_yaml(){
             OPT=${BASH_REMATCH[1]}
             VALUE=${BASH_REMATCH[2]}
             HAS_VALUE=true
+        # -ovalue (short option with attached value, e.g. -v/tmp/data:/data)
+        # all supported short options take a value, combined flags like -it are reported as unsupported
+        elif [[ "$ARG" =~ ^(-[a-zA-Z])(.+)$ ]]; then
+            OPT=${BASH_REMATCH[1]}
+            VALUE=${BASH_REMATCH[2]}
+            HAS_VALUE=true
         else
             OPT=$ARG
             VALUE=""
