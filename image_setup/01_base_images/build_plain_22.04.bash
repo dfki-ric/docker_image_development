@@ -9,7 +9,7 @@ cp $ROOT_DIR/VERSION $THIS_DIR/
 . $ROOT_DIR/settings.bash
 export IMAGE_NAME=${BASE_REGISTRY:+${BASE_REGISTRY}/}developmentimage/plain_22.04
 
-export BASE_IMAGE=nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
+export BASE_IMAGE=ubuntu:22.04
 export INSTALL_SCRIPT=install_plain_dependencies.bash
 
 docker pull $BASE_IMAGE
